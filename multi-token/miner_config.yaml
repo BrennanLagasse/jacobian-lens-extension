@@ -1,0 +1,22 @@
+# Example config for phrase_context_miner.py
+# Run with: python phrase_context_miner.py --config config.example.yaml
+
+phrases:
+  - blackmail
+  - plagiarism
+  - cheating
+  - forgery
+  - Connecticut
+  - Rhode Island
+  - New Hampshire
+  - George Washington
+  - Abraham Lincoln
+  - John Adams
+
+dataset: fineweb              # fineweb | pile | wikipedia
+samples_per_phrase: 150
+context_sentences: 2
+out: results.jsonl
+max_docs: 2000000
+case_sensitive: false
+progress_every: 2000
