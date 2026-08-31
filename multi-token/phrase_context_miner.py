@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 phrase_context_miner.py
 
@@ -52,6 +51,8 @@ import sys
 import time
 from collections import defaultdict
 
+from datasets import load_dataset
+
 # Simple sentence splitter (avoids adding nltk as a hard dependency).
 # Splits on '.', '!', '?' followed by whitespace + capital letter/EOF.
 # Good enough for corpus mining; not linguistically perfect.
@@ -93,7 +94,6 @@ def find_context_for_matches(sentences, phrase_regex, context_sentences):
 
 
 def load_stream(dataset_name):
-    from datasets import load_dataset
 
     if dataset_name == "fineweb":
         # ~25M docs in the 10BT sample split; streaming avoids the ~30GB download

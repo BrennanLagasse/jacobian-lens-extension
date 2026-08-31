@@ -12,3 +12,6 @@ dist/
 *.pt
 slice*.html
 slices/
+
+# Intermediate result files
+*.jsonl
