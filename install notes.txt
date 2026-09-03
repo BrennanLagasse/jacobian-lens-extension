@@ -1,0 +1,12 @@
+To be formalized later.
+
+To create environment from scratch for the Orin AGX with Jetpack 2.1:
+
+python -m venv .venv
+python -m pip install torch==2.8.0 torchvision==0.23.0 --index-url=https://pypi.jetson-ai-lab.io/jp6/cu126
+python -m pip install "numpy<2"
+python -m pip install transformers
+python -m pip install datasets
+
+From source of jlens repo:
+pip install -e . --no-deps

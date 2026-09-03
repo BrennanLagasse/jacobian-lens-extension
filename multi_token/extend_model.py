@@ -35,7 +35,12 @@ def generate_extended_tok_and_model(model, tokenizer, emb_method, data_path):
     """
 
     if emb_method == embed_method.AVERAGE_TOKEN_WEIGHTS:
-        raise NotImplementedError
+
+        # TODO: clean this up later
+
+        data = torch.load(data_path, map_location="cpu")
+        
+        new_phrases = list(data['phrase_means'].keys())
 
     if emb_method == embed_method.PRIOR_REPRESENTATION_EMBED:
 
@@ -43,13 +48,16 @@ def generate_extended_tok_and_model(model, tokenizer, emb_method, data_path):
 
         new_phrases = list(data['phrase_means'].keys())
 
-        # Normalize (L2) and stack embeddings
+        # Stabilize weights by subtracting baseline and normalizing in L2
+
+        h_mean = torch.load("./results/h_bar.pt")
+
         new_phrase_weights = torch.stack(
-            [F.normalize(v, p=2, dim=0) for v in data['phrase_means'].values()], 
+            [F.normalize(h - h_mean, p=2, dim=0) for h in data['phrase_means'].values()], 
             dim=0
         )
 
-        updated_model = extend_model(model, new_phrase_weights)
+        updated_model = extend_model(model, tokenizer, new_phrase_weights)
         updated_tokenizer = DecodeExtendedTokenizer(tokenizer, new_phrases)
         
         return updated_model, updated_tokenizer
@@ -57,31 +65,50 @@ def generate_extended_tok_and_model(model, tokenizer, emb_method, data_path):
     raise ValueError
 
 
-def extend_model(model, new_phrase_weights):
-    """ Modify an AutoModelForCausalLM to decode additional strings 
-    
-    Arguments:
-        model (AutoModelForCausalLM): base model
-        new_phrase_weights (torch tensor, v x d_model): set of stacked weight tensors
-        
+import torch
+
+def extend_model(model, tokenizer, new_phrase_weights):
+    """
+    Extend the decoder to emit n new tokens (ids len(tokenizer):len(tokenizer)+n).
+    Input embeddings are also grown to keep dimensions consistent with the
+    rest of the HF framework, but the new input rows are zero-initialized
+    and frozen (never updated, never intended to be used) since these
+    tokens are never fed back into the encoder.
     """
 
-    # Uncouple encoder/decoder if necessary
+    old_len = len(tokenizer)
+    n = new_phrase_weights.shape[0]
+    target_len = old_len + n
+
     if model.config.tie_word_embeddings:
         model.config.tie_word_embeddings = False
         model.get_output_embeddings().weight = torch.nn.Parameter(
             model.get_output_embeddings().weight.data.clone()
         )
 
-    # Append new weights to the unembedding matrix
+    # Grow both embeddings via HF's own logic, so shapes/attrs stay consistent
+    model.resize_token_embeddings(target_len)
+
     lm_head = model.get_output_embeddings()
-    new_phrase_weights = new_phrase_weights.to(lm_head.weight)
-    new_weight = torch.cat([lm_head.weight, new_phrase_weights], dim=0)
-    lm_head.weight = torch.nn.Parameter(new_weight)
+    input_emb = model.get_input_embeddings()
 
-    # Update config
-    model.config.vocab_size = new_weight.shape[0]
+    new_phrase_weights = new_phrase_weights.to(
+        device=lm_head.weight.device, dtype=lm_head.weight.dtype
+    )
+    with torch.no_grad():
+        lm_head.weight[old_len:target_len] = new_phrase_weights
+        input_emb.weight[old_len:target_len] = 0.0  # unused; never fed as input
 
+    # Freeze just the new input rows so they can't drift during training,
+    # since a plain requires_grad=False would freeze the WHOLE embedding table.
+    def _zero_new_input_rows_grad(grad):
+        grad = grad.clone()
+        grad[old_len:target_len] = 0
+        return grad
+
+    input_emb.weight.register_hook(_zero_new_input_rows_grad)
+
+    model.config.vocab_size = target_len
     return model
 
 class DecodeExtendedTokenizer:
@@ -94,8 +121,9 @@ class DecodeExtendedTokenizer:
     def decode(self, ids, **kwargs):
         ids = list(ids)
         # fast path: jlens calls tok.decode([t]) with a single id at a time
-        if len(ids) == 1 and ids[0] in self._extra_lookup:
-            return self._extra_lookup[ids[0]]
+        if len(ids) == 1 and int(ids[0]) in self._extra_lookup:
+            return self._extra_lookup[int(ids[0])]
+            
         # general path: reconstruct in order, in case of mixed id lists
         pieces, buf = [], []
         for i in ids:
