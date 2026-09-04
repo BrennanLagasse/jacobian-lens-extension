@@ -15,7 +15,7 @@ import torch.nn.functional as F
 
 from enum import Enum
 
-class embed_method(Enum):
+class EmbedMethod(Enum):
     AVERAGE_TOKEN_WEIGHTS = 1
     PRIOR_REPRESENTATION_EMBED = 2
 
@@ -34,15 +34,26 @@ def generate_extended_tok_and_model(model, tokenizer, emb_method, data_path):
         new_tokenizer: wrapped tokenizer that can decode new phrases
     """
 
-    if emb_method == embed_method.AVERAGE_TOKEN_WEIGHTS:
+    assert isinstance(emb_method, EmbedMethod)
+
+    if emb_method == EmbedMethod.AVERAGE_TOKEN_WEIGHTS:
 
         # TODO: clean this up later
 
         data = torch.load(data_path, map_location="cpu")
         
-        new_phrases = list(data['phrase_means'].keys())
+        new_phrases = list(data['phrase_means'].keys()) 
 
-    if emb_method == embed_method.PRIOR_REPRESENTATION_EMBED:
+        # Compute mean weights of the phrase
+        encoded_phrases = tokenizer.encode(new_phrases)
+        lm_head_weights = model.get_output_embeddings().weight
+        indices = torch.tensor([idx for phrase in encoded_phrases for idx in phrase], device=lm_head_weights.device)
+        weights = lm_head_weights.index_select(0, indices)
+        lengths = [len(phrase) for phrase in encoded_phrases]
+        split_weights = torch.split(weights, lengths)
+        new_phrase_weights = torch.stack([phrase_weights.mean(dim=0) for phrase_weights in split_weights])
+
+    if emb_method == EmbedMethod.PRIOR_REPRESENTATION_EMBED:
 
         data = torch.load(data_path, map_location="cpu")
 
@@ -57,12 +68,10 @@ def generate_extended_tok_and_model(model, tokenizer, emb_method, data_path):
             dim=0
         )
 
-        updated_model = extend_model(model, tokenizer, new_phrase_weights)
-        updated_tokenizer = DecodeExtendedTokenizer(tokenizer, new_phrases)
+    updated_model = extend_model(model, tokenizer, new_phrase_weights)
+    updated_tokenizer = DecodeExtendedTokenizer(tokenizer, new_phrases)
         
-        return updated_model, updated_tokenizer
-
-    raise ValueError
+    return updated_model, updated_tokenizer
 
 
 import torch
