@@ -18,6 +18,7 @@ from enum import Enum
 class EmbedMethod(Enum):
     AVERAGE_TOKEN_WEIGHTS = 1
     PRIOR_REPRESENTATION_EMBED = 2
+    PRIOR_REPRESENTATION_EMBED_PROJ = 3
 
 def generate_extended_tok_and_model(model, tokenizer, emb_method, data_path):
     """ Generate the extended tokenizer and model at the same time
@@ -68,13 +69,35 @@ def generate_extended_tok_and_model(model, tokenizer, emb_method, data_path):
             dim=0
         )
 
+    if emb_method == EmbedMethod.PRIOR_REPRESENTATION_EMBED_PROJ:
+
+        data = torch.load(data_path, map_location="cpu")
+        
+        new_phrases = list(data['phrase_means'].keys())
+
+        # Stabilize weights by subtracting baseline and normalizing in L2
+
+        h_mean = torch.load("./results/h_bar.pt")
+
+        unnorm_weights = torch.stack(list(data['phrase_means'].values()))
+        
+        def remove_projection(H, x):
+            """
+            H: (v, n)
+            x: (n,)
+
+            Returns:
+                H_perp: (v, n), with the component along x removed
+            """
+            return H - ((H @ x) / torch.dot(x, x)).unsqueeze(1) * x
+
+        new_phrase_weights = remove_projection(unnorm_weights, h_mean)
+        new_phrase_weights = F.normalize(new_phrase_weights, p=2, dim=1)
+
     updated_model = extend_model(model, tokenizer, new_phrase_weights)
     updated_tokenizer = DecodeExtendedTokenizer(tokenizer, new_phrases)
         
     return updated_model, updated_tokenizer
-
-
-import torch
 
 def extend_model(model, tokenizer, new_phrase_weights):
     """

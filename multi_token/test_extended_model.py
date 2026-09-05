@@ -1,6 +1,9 @@
 """
 Tests to ensure that extende model behaves as intended.
 Correct behavior is vital for understanding experimental outputs.
+
+Currently embed method must be set manually.
+
 """
 
 from transformers import AutoTokenizer, AutoModelForCausalLM
@@ -20,7 +23,7 @@ tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
 model, extended_tokenizer = generate_extended_tok_and_model(
     model=model, 
     tokenizer=tokenizer, 
-    emb_method=EmbedMethod.AVERAGE_TOKEN_WEIGHTS,
+    emb_method=EmbedMethod.PRIOR_REPRESENTATION_EMBED_PROJ,
     data_path="./results/phrase_means.pt"
 )
 
