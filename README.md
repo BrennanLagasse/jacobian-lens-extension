@@ -1,5 +1,7 @@
 # jlens — Jacobian lens
 
+NOTE - For code changes related to multi-token reasoning by @BrennanLagasse, see the multi-token folder (seperate readme)
+
 > **Reference implementation.** Not maintained and not accepting contributions.
 
 Companion code for [**Verbalizable Representations Form a Global Workspace in
