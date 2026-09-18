@@ -19,6 +19,7 @@ class EmbedMethod(Enum):
     AVERAGE_TOKEN_WEIGHTS = 1
     PRIOR_REPRESENTATION_EMBED = 2
     PRIOR_REPRESENTATION_EMBED_PROJ = 3
+    FITTED_ROWS = 4  # logistic-regression rows from fit_phrase_rows.py (calibrated; recommended)
 
 def generate_extended_tok_and_model(model, tokenizer, emb_method, data_path):
     """ Generate the extended tokenizer and model at the same time
@@ -46,7 +47,7 @@ def generate_extended_tok_and_model(model, tokenizer, emb_method, data_path):
         new_phrases = list(data['phrase_means'].keys()) 
 
         # Compute mean weights of the phrase
-        encoded_phrases = tokenizer.encode(new_phrases)
+        encoded_phrases = [tokenizer.encode(" " + p, add_special_tokens=False) for p in new_phrases]
         lm_head_weights = model.get_output_embeddings().weight
         indices = torch.tensor([idx for phrase in encoded_phrases for idx in phrase], device=lm_head_weights.device)
         weights = lm_head_weights.index_select(0, indices)
@@ -94,6 +95,13 @@ def generate_extended_tok_and_model(model, tokenizer, emb_method, data_path):
         new_phrase_weights = remove_projection(unnorm_weights, h_mean)
         new_phrase_weights = F.normalize(new_phrase_weights, p=2, dim=1)
 
+    if emb_method == EmbedMethod.FITTED_ROWS:
+
+        data = torch.load(data_path, map_location="cpu")
+
+        new_phrases = list(data['phrase_rows'].keys())
+        new_phrase_weights = torch.stack(list(data['phrase_rows'].values()))
+
     updated_model = extend_model(model, tokenizer, new_phrase_weights)
     updated_tokenizer = DecodeExtendedTokenizer(tokenizer, new_phrases)
         
@@ -130,15 +138,6 @@ def extend_model(model, tokenizer, new_phrase_weights):
     with torch.no_grad():
         lm_head.weight[old_len:target_len] = new_phrase_weights
         input_emb.weight[old_len:target_len] = 0.0  # unused; never fed as input
-
-    # Freeze just the new input rows so they can't drift during training,
-    # since a plain requires_grad=False would freeze the WHOLE embedding table.
-    def _zero_new_input_rows_grad(grad):
-        grad = grad.clone()
-        grad[old_len:target_len] = 0
-        return grad
-
-    input_emb.weight.register_hook(_zero_new_input_rows_grad)
 
     model.config.vocab_size = target_len
     return model

@@ -203,6 +203,7 @@ def main():
     t0 = time.time()
     docs_scanned = 0
     docs_with_hit = 0
+    occ, chars = defaultdict(int), 0  # uncapped, for the corpus prior
 
     with open(args.out, "w", encoding="utf-8") as fout:
         for doc in ds:
@@ -210,12 +211,15 @@ def main():
             text = doc.get(text_key, "")
             if not text:
                 continue
+            chars += len(text)
 
             # Fast pre-filter: skip sentence splitting if no phrase appears at all
             if not phrase_regex.search(text):
                 pass
             else:
                 docs_with_hit += 1
+                for m in phrase_regex.finditer(text):
+                    occ[m.group(0).lower()] += 1
                 sentences = split_sentences(text)
                 for matched_phrase, context in find_context_for_matches(
                     sentences, phrase_regex, args.context_sentences
@@ -259,6 +263,8 @@ def main():
         k = p.lower() if not args.case_sensitive else p
         print(f"  '{p}': {counts.get(k, 0)} samples collected", file=sys.stderr)
     print(f"Output written to {args.out}", file=sys.stderr)
+    with open(args.out + ".stats.json", "w") as f:
+        json.dump({"docs": docs_scanned, "chars": chars, "occ": dict(occ)}, f)
 
 
 if __name__ == "__main__":
