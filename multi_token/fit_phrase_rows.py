@@ -80,10 +80,14 @@ def collect_positives(model, tok, records, pidx, device):
 
 
 @torch.no_grad()
-def collect_generic(model, tok, n_docs, max_len, device, seed):
-    ds = load_dataset("HuggingFaceFW/fineweb", name="sample-10BT", split="train", streaming=True)
+def collect_generic(model, tok, n_docs, max_len, device, seed, jsonl=None):
+    if jsonl:  # local {"text": ...} lines (offline machines / HF rate limits)
+        ds = (json.loads(l) for l in open(jsonl, encoding="utf-8") if l.strip())
+    else:
+        ds = load_dataset("HuggingFaceFW/fineweb", name="sample-10BT", split="train", streaming=True)
+        ds = ds.shuffle(seed=seed, buffer_size=10_000)
     H, LSE, ZT, TOP10, DOC, n_chars, n_tok = [], [], [], [], [], 0, 0
-    for d, doc in enumerate(itertools.islice(ds.shuffle(seed=seed, buffer_size=10_000), n_docs)):
+    for d, doc in enumerate(itertools.islice(ds, n_docs)):
         ids = tok(doc["text"])["input_ids"]
         n_chars += len(doc["text"]); n_tok += len(ids)
         ids = ids[:max_len]
@@ -155,6 +159,7 @@ def main():
     ap.add_argument("--stats", default=None, help="<contexts>.stats.json from the miner (corpus prior)")
     ap.add_argument("--model", default="Qwen/Qwen3.5-9B-Base")
     ap.add_argument("--n-generic-docs", type=int, default=2000)
+    ap.add_argument("--generic-jsonl", default=None, help='read generic docs ({"text": ...} per line) instead of streaming FineWeb')
     ap.add_argument("--tokens-per-doc", type=int, default=512)
     ap.add_argument("--held-out-frac", type=float, default=0.2, help="per-phrase contexts (and generic docs) kept for the report")
     ap.add_argument("--l2", type=float, default=1e-6)
@@ -173,7 +178,7 @@ def main():
     model = AutoModelForCausalLM.from_pretrained(args.model, dtype=dtype).to(args.device).eval()
 
     P = collect_positives(model, tok, records, pidx, args.device)
-    G, chars_per_tok = collect_generic(model, tok, args.n_generic_docs, args.tokens_per_doc, args.device, args.seed)
+    G, chars_per_tok = collect_generic(model, tok, args.n_generic_docs, args.tokens_per_doc, args.device, args.seed, args.generic_jsonl)
 
     stats_path = args.stats or args.contexts + ".stats.json"
     if os.path.exists(stats_path):
