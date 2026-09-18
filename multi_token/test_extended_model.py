@@ -13,7 +13,7 @@ import torch
 
 from extend_model import generate_extended_tok_and_model, EmbedMethod
 
-MODEL_NAME = "Qwen/Qwen3.5-9B"
+MODEL_NAME = "Qwen/Qwen3.5-9B-Base"
 
 # Create base model
 model = AutoModelForCausalLM.from_pretrained(MODEL_NAME, dtype=torch.bfloat16)
@@ -23,8 +23,8 @@ tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
 model, extended_tokenizer = generate_extended_tok_and_model(
     model=model, 
     tokenizer=tokenizer, 
-    emb_method=EmbedMethod.PRIOR_REPRESENTATION_EMBED_PROJ,
-    data_path="./results/phrase_means.pt"
+    emb_method=EmbedMethod.FITTED_ROWS,
+    data_path="./results/phrase_rows.pt"
 )
 
 def test_encoding_stable():
@@ -47,4 +47,5 @@ def test_decode_original_vocab_stable():
 def test_decode_new_token():
     new_id = len(tokenizer)
 
-    assert extended_tokenizer.decode([new_id]) == "New Hampshire"
+    first_phrase = next(iter(torch.load("./results/phrase_rows.pt")["phrase_rows"]))
+    assert extended_tokenizer.decode([new_id]) == first_phrase

@@ -135,7 +135,7 @@ def char_span_to_token_index(offset_mapping, char_start, char_end, position):
         return None
 
     if position == "before":
-        return max(0, token_start - 1)
+        return token_start - 1 if token_start > 0 else None  # phrase opens the context: no "before" state
     elif position == "last_token":
         return token_end
     elif position == "after":
