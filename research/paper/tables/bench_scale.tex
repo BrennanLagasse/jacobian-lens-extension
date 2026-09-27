@@ -1,0 +1,29 @@
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{Benchmark: the four main heads across training scale (means over 15 phrases).}
+\label{tab:bench_scale}
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{llrrrrrr}
+\toprule
+head & contexts & AUROC vs generic & vs 1st-tok.\ sibling & own top-10 & generic top-10 & mass/prior & $\lambda$ picked \\
+\midrule
+Brennan (proj + unit) & 150 & 0.970 & 0.589 & 0.95 & 0.2019 & 8544.6 & --- \\
+ & 600 & 0.970 & 0.583 & 0.95 & 0.2035 & 8075.1 & --- \\
+ & 2400 & 0.969 & 0.582 & 0.95 & 0.2031 & 7686.7 & --- \\
+\midrule
+LDA & 150 & 0.976 & 0.666 & 0.66 & 0.0007 & 60.3 & --- \\
+ & 600 & 0.979 & 0.664 & 0.68 & 0.0008 & 72.9 & --- \\
+ & 2400 & 0.980 & 0.663 & 0.69 & 0.0008 & 73.6 & --- \\
+\midrule
+LR (bias, val.\ pick) & 150 & 0.968 & 0.662 & 0.41 & 0.0003 & 0.5 & $10^{-3}$ \\
+ & 600 & 0.977 & 0.690 & 0.38 & 0.0002 & 0.3 & $10^{-3}$ \\
+ & 2400 & 0.980 & 0.736 & 0.37 & 0.0003 & 0.4 & $10^{-4}$ \\
+\midrule
+LR no bias (val.\ pick) & 150 & 0.980 & 0.705 & 0.46 & 0.0001 & 1.2 & $10^{-6}$ \\
+ & 600 & 0.983 & 0.725 & 0.51 & 0.0003 & 2.5 & $10^{-6}$ \\
+ & 2400 & 0.981 & 0.731 & 0.45 & 0.0003 & 1.0 & $10^{-6}$ \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}

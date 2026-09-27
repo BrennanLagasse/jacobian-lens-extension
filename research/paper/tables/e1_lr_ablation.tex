@@ -1,0 +1,25 @@
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{Experiment 1: the logistic head depends on the optimiser and on the number of negative documents. Three passes over the same states.}
+\label{tab:e1_lr_ablation}
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{llrrrr}
+\toprule
+fit & contexts & AUROC & own top-10 & new-token mass & generic top-10 \\
+\midrule
+minibatch Adam, 60 epochs, 400 generic docs & 150 & 0.965 & 0.39 & 2.8e-5 & 0.0001 \\
+ & 600 & 0.971 & 0.31 & 2.2e-5 & 0.0000 \\
+ & 2400 & 0.970 & 0.25 & 1.9e-5 & 0.0000 \\
+\midrule
+L-BFGS, 400 generic docs, $\lambda{=}10^{-6}$ & 150 & 0.979 & 0.46 & 1.8e-4 & 0.0001 \\
+ & 600 & 0.982 & 0.49 & 1.4e-3 & 0.0005 \\
+ & 2400 & 0.977 & 0.48 & 3.7e-3 & 0.0013 \\
+\midrule
+L-BFGS, 2{,}000 generic docs, $\lambda$ by held-out NLL & 150 & 0.977 & 0.47 & 2.5e-5 & 0.0001 \\
+ & 600 & 0.985 & 0.47 & 2.5e-5 & 0.0001 \\
+ & 2400 & 0.985 & 0.39 & 2.7e-5 & 0.0001 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}

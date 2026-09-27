@@ -1,0 +1,18 @@
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{Stability: mean $\pm$ std over three disjoint 150-context refits.}
+\label{tab:bench_stability}
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{lrrrr}
+\toprule
+head & AUROC & own top-10 & generic top-10 & new-token mass \\
+\midrule
+Brennan (proj + unit) & 0.9694 $\pm$ 0.0008 & 0.949 $\pm$ 0.002 & 0.2026 $\pm$ 0.0005 & 0.3393 $\pm$ 0.0031 \\
+LDA & 0.9770 $\pm$ 0.0008 & 0.658 $\pm$ 0.004 & 0.0007 $\pm$ 0.0000 & 0.0056 $\pm$ 0.0001 \\
+LR (bias, val.\ pick) & 0.9682 $\pm$ 0.0006 & 0.405 $\pm$ 0.003 & 0.0003 $\pm$ 0.0000 & 0.0003 $\pm$ 0.0000 \\
+LR no bias (val.\ pick) & 0.9796 $\pm$ 0.0007 & 0.464 $\pm$ 0.006 & 0.0001 $\pm$ 0.0000 & 0.0002 $\pm$ 0.0000 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}

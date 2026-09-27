@@ -1,0 +1,17 @@
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{Experiment 1, 2{,}400 contexts: cross-phrase confusion. Entry $(p,q)$ is the fraction of held-out positions before phrase $p$ at which the token for phrase $q$ enters the top-10; shown as the diagonal mean, the mean over same-category pairs (crime / state / president) and the mean over cross-category pairs.}
+\label{tab:e1_confusion}
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{lrrr}
+\toprule
+head & diagonal & same category & cross category \\
+\midrule
+Brennan (proj + unit) & 0.98 & 0.90 & 0.44 \\
+LDA & 0.70 & 0.34 & 0.00 \\
+LR (bias, val.\ pick) & 0.39 & 0.02 & 0.00 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}

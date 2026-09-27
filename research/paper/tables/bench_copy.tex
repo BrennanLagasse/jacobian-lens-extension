@@ -1,0 +1,18 @@
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{Copy sensitivity at 2{,}400 contexts: held-out contexts in which the phrase occurs once (84\% of them) vs contexts in which it already appeared earlier.}
+\label{tab:bench_copy}
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{lrrrr}
+\toprule
+head & AUROC single & AUROC copy & own top-10 single & own top-10 copy \\
+\midrule
+Brennan (proj + unit) & 0.971 & 0.961 & 0.95 & 0.95 \\
+LDA & 0.976 & 0.999 & 0.66 & 0.82 \\
+LR (bias, val.\ pick) & 0.977 & 0.994 & 0.34 & 0.53 \\
+LR no bias (val.\ pick) & 0.979 & 0.995 & 0.42 & 0.61 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}

@@ -1,0 +1,31 @@
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{Experiment 1: $L_2$ strength for the biased logistic head, chosen by held-out NLL under the true prior.}
+\label{tab:e1_sweep}
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{llrrrl}
+\toprule
+contexts & $\lambda$ & held NLL generic & held NLL own phrase & row norm &  \\
+\midrule
+150 & $10^{-6}$ & 2.37976 & 7.59 & 2.93 &  \\
+ & $10^{-5}$ & 2.37974 & 6.15 & 1.88 &  \\
+ & $10^{-4}$ & 2.37974 & 5.45 & 1.08 & picked \\
+ & $10^{-3}$ & 2.37975 & 5.44 & 0.44 &  \\
+ & $10^{-2}$ & 2.37978 & 6.75 & 0.18 &  \\
+\midrule
+600 & $10^{-6}$ & 2.38070 & 7.54 & 6.44 &  \\
+ & $10^{-5}$ & 2.37986 & 6.07 & 3.80 &  \\
+ & $10^{-4}$ & 2.37974 & 5.46 & 1.80 & picked \\
+ & $10^{-3}$ & 2.37974 & 5.60 & 0.63 &  \\
+ & $10^{-2}$ & 2.37974 & 6.38 & 0.24 &  \\
+\midrule
+2400 & $10^{-6}$ & 2.38302 & 6.76 & 7.90 &  \\
+ & $10^{-5}$ & 2.38048 & 6.23 & 5.40 &  \\
+ & $10^{-4}$ & 2.37974 & 5.99 & 2.34 & picked \\
+ & $10^{-3}$ & 2.37973 & 6.23 & 0.83 &  \\
+ & $10^{-2}$ & 2.37973 & 6.74 & 0.30 &  \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}

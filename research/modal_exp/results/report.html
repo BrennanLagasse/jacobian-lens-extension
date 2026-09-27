@@ -1,0 +1,277 @@
+<title>Multi-token J-lens Heads</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --paper: #f7f6f1; --ink: #1c2028; --muted: #676d78; --rule: #d8d5cc; --soft: #ebe9e2;
+    --good: #0f766e; --good-bg: #e2f1ee; --bad: #b45309; --bad-bg: #f8ead9; --new: #7c3aed; --new-bg: #ede6fb;
+    --serif: "Fraunces", "Iowan Old Style", Georgia, serif;
+    --sans: "Source Sans 3", "Helvetica Neue", Arial, sans-serif;
+    --mono: "JetBrains Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+    --paper: #15171c; --ink: #e8e6df; --muted: #9aa0ab; --rule: #33373f; --soft: #1f2228;
+    --good: #5fd1c3; --good-bg: #123a36; --bad: #f2a45a; --bad-bg: #3d2a14; --new: #c4a7f7; --new-bg: #2d2342; } }
+  :root[data-theme="dark"] {
+    --paper: #15171c; --ink: #e8e6df; --muted: #9aa0ab; --rule: #33373f; --soft: #1f2228;
+    --good: #5fd1c3; --good-bg: #123a36; --bad: #f2a45a; --bad-bg: #3d2a14; --new: #c4a7f7; --new-bg: #2d2342; }
+  body { background: var(--paper); color: var(--ink); font-family: var(--sans); font-size: 16.5px; line-height: 1.5;
+         padding-inline: 16px; padding-block: 0; }
+  main { max-width: 76ch; margin: 0 auto; padding-block: 40px 64px; }
+  h1 { font-family: var(--serif); font-weight: 500; font-size: 2.3rem; line-height: 1.1; margin: 0 0 8px; text-wrap: balance; }
+  h2 { font-family: var(--serif); font-weight: 600; font-size: 1.45rem; margin: 40px 0 10px; text-wrap: balance; }
+  h4 { font-family: var(--serif); font-weight: 500; font-size: 1.05rem; margin: 20px 0 8px; }
+  .kicker { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
+  .lede { font-size: 1.12rem; max-width: 66ch; }
+  p { max-width: 66ch; margin: 0 0 12px; }
+  .verdict { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin: 22px 0 8px; }
+  .verdict div { border-top: 3px solid var(--rule); padding-top: 8px; }
+  .verdict b { display: block; font-family: var(--serif); font-size: 1.05rem; font-weight: 600; margin-bottom: 2px; }
+  .verdict .bad { border-color: var(--bad); } .verdict .good { border-color: var(--good); }
+  .verdict span { font-size: 0.93rem; color: var(--muted); }
+  .tbl { overflow-x: auto; margin: 12px 0 6px; }
+  table { border-collapse: collapse; font-size: 0.86rem; font-variant-numeric: tabular-nums; }
+  th, td { padding: 6px 10px; text-align: left; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  th { font-weight: 600; font-size: 0.74rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+  td.num { font-family: var(--mono); font-size: 0.8rem; text-align: right; } th.num { text-align: right; }
+  tr.bad td { background: var(--bad-bg); } tr.good td { background: var(--good-bg); }
+  .cap { font-size: 0.86rem; color: var(--muted); max-width: 66ch; margin: 4px 0 0; }
+  .conf td { font-family: var(--mono); font-size: 0.76rem; text-align: right; background: color-mix(in srgb, var(--new) calc(var(--a) * 100%), var(--paper)); border-bottom: 1px solid var(--paper); }
+  .conf th { font-size: 0.7rem; text-transform: none; letter-spacing: 0; }
+  .conf td.diag { outline: 1.5px solid var(--ink); outline-offset: -1.5px; }
+  .confs { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 18px; }
+  .confs h4 { margin-top: 6px; }
+  .lens { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+  .lens-col { background: var(--soft); padding: 10px 12px; }
+  .lens-head { font-weight: 600; font-size: 0.82rem; margin-bottom: 6px; }
+  .lens-row { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; margin: 4px 0; }
+  .layer { font-family: var(--mono); font-size: 0.7rem; color: var(--muted); width: 44px; flex: none; }
+  .chip { font-family: var(--mono); font-size: 0.72rem; padding: 1px 6px; border: 1px solid var(--rule); background: var(--paper); white-space: pre; }
+  .chip.new { background: var(--new-bg); border-color: var(--new); color: var(--ink); font-weight: 500; }
+  code { font-family: var(--mono); font-size: 0.84em; background: var(--soft); padding: 0 4px; }
+  ul { max-width: 66ch; padding-left: 20px; } li { margin-bottom: 6px; }
+  .foot { margin-top: 40px; border-top: 1px solid var(--rule); padding-top: 12px; font-size: 0.86rem; color: var(--muted); }
+</style>
+<main>
+<div class="kicker">Qwen3.5-9B-Base · Base lens · 10 phrases · 2026-09-12</div>
+<h1>Multi-token J-lens heads: the rows are miscalibrated, not undertrained</h1>
+<p class="lede">Brennan's phrase-prototype unembedding rows were rebuilt on the correct base model and compared against a whitened (LDA) head and a logistic-regression head at 150, 600 and 2,400 mined contexts per phrase. The original symptom reproduces at every scale; whitening removes the false positives; only the fitted head is calibrated like a real unembedding row.</p>
+
+<div class="verdict">
+  <div class="bad"><b>Brennan's head</b><span>logit std 18 vs 1.8 for a real row · in the top-10 at 19% of random positions · identical at 150 / 600 / 2,400 contexts</span></div>
+  <div><b>LDA / whitening</b><span>false positives gone (0.07%) · rank 1 on 70% of own positions · but 70× prior mass and category bleed</span></div>
+  <div class="good"><b>Logistic regression</b><span>AUROC 0.985 · mass at prior (2.7e-5 vs 7e-5) · confusion ≤ 0.10 · sensible lens readouts</span></div>
+</div>
+
+<h2>Setup</h2>
+<p>Model <code>Qwen/Qwen3.5-9B-Base</code> (32 layers, d = 4096) with the matching Base lens from <code>neuronpedia/jacobian-lens</code>. Brennan's ten phrases and his miner recipe, run over the whole FineWeb 10BT sample (14,868,862 documents); every phrase yielded over 4,200 unique contexts. Per phrase: 100 held-out contexts, then nested training subsets of 150, 600 and 2,400. The state is the post-final-norm residual at the token before the phrase, verified identical to what <code>lens.apply</code> unembeds. Baseline mean and covariance come from 2,000 FineWeb documents (his <code>embed_baseline.py</code> recipe); 71,012 positions from a further 200 documents are held out for the false-positive check.</p>
+<p>All heads are applied to the same states, so only the rows differ. <em>proj</em> is his <code>PRIOR_REPRESENTATION_EMBED_PROJ</code>. <em>LDA</em> is Σ⁻¹(μ − h̄) with the Gaussian log-odds bias, log prior and mean log-sum-exp so it lives in logit units. <em>Logistic regression</em> fits the ten rows and biases by full-batch L-BFGS on the extended softmax with the real unembedding frozen, then shifts each bias from the training prior to the FineWeb prior. Four of the phrases (blackmail, plagiarism, cheating, Connecticut) are already single tokens in Qwen's vocabulary, so their new row competes with an existing row that is the ideal answer.</p>
+
+<h2>Headline numbers, mean over the ten phrases</h2>
+<div class="tbl"><table>
+<thead><tr><th class="num">contexts / phrase</th><th>head</th><th class="num">own positions: in top-10</th><th class="num">own positions: median rank</th><th class="num">generic: in top-10</th><th class="num">generic: mass on new tokens</th><th class="num">AUROC</th><th class="num">generic logit mean ± std</th></tr></thead>
+<tbody><tr class="bad"><td class="num">150</td><td>Brennan (proj + unit)</td><td class="num">0.98</td><td class="num">1</td><td class="num">0.1881</td><td class="num">3.2e-01</td><td class="num">0.974</td><td class="num">-0.6 ± 18.1</td></tr>
+<tr class=""><td class="num">150</td><td>avg W_U rows</td><td class="num">0.34</td><td class="num">37</td><td class="num">0.0000</td><td class="num">3.4e-05</td><td class="num">0.971</td><td class="num">2.1 ± 2.3</td></tr>
+<tr class=""><td class="num">150</td><td>LDA / whitening</td><td class="num">0.68</td><td class="num">1</td><td class="num">0.0006</td><td class="num">4.0e-03</td><td class="num">0.978</td><td class="num">-172.5 ± 20.5</td></tr>
+<tr class=""><td class="num">150</td><td>LDA, W_U-scaled</td><td class="num">0.70</td><td class="num">1</td><td class="num">0.0007</td><td class="num">2.2e-03</td><td class="num">0.978</td><td class="num">-1.7 ± 2.0</td></tr>
+<tr class="good"><td class="num">150</td><td>logistic regression</td><td class="num">0.47</td><td class="num">16</td><td class="num">0.0001</td><td class="num">2.5e-05</td><td class="num">0.977</td><td class="num">1.6 ± 2.5</td></tr>
+<tr class="bad"><td class="num">600</td><td>Brennan (proj + unit)</td><td class="num">0.98</td><td class="num">1</td><td class="num">0.1877</td><td class="num">3.2e-01</td><td class="num">0.974</td><td class="num">-0.6 ± 18.1</td></tr>
+<tr class=""><td class="num">600</td><td>avg W_U rows</td><td class="num">0.34</td><td class="num">37</td><td class="num">0.0000</td><td class="num">3.4e-05</td><td class="num">0.971</td><td class="num">2.1 ± 2.3</td></tr>
+<tr class=""><td class="num">600</td><td>LDA / whitening</td><td class="num">0.69</td><td class="num">1</td><td class="num">0.0007</td><td class="num">4.8e-03</td><td class="num">0.979</td><td class="num">-171.9 ± 20.3</td></tr>
+<tr class=""><td class="num">600</td><td>LDA, W_U-scaled</td><td class="num">0.70</td><td class="num">1</td><td class="num">0.0008</td><td class="num">2.6e-03</td><td class="num">0.979</td><td class="num">-1.7 ± 2.0</td></tr>
+<tr class="good"><td class="num">600</td><td>logistic regression</td><td class="num">0.47</td><td class="num">16</td><td class="num">0.0001</td><td class="num">2.5e-05</td><td class="num">0.985</td><td class="num">-0.1 ± 3.1</td></tr>
+<tr class="bad"><td class="num">2400</td><td>Brennan (proj + unit)</td><td class="num">0.98</td><td class="num">1</td><td class="num">0.1880</td><td class="num">3.2e-01</td><td class="num">0.973</td><td class="num">-0.6 ± 18.2</td></tr>
+<tr class=""><td class="num">2400</td><td>avg W_U rows</td><td class="num">0.34</td><td class="num">37</td><td class="num">0.0000</td><td class="num">3.4e-05</td><td class="num">0.971</td><td class="num">2.1 ± 2.3</td></tr>
+<tr class=""><td class="num">2400</td><td>LDA / whitening</td><td class="num">0.70</td><td class="num">1</td><td class="num">0.0008</td><td class="num">5.2e-03</td><td class="num">0.979</td><td class="num">-165.2 ± 20.0</td></tr>
+<tr class=""><td class="num">2400</td><td>LDA, W_U-scaled</td><td class="num">0.71</td><td class="num">1</td><td class="num">0.0008</td><td class="num">2.8e-03</td><td class="num">0.979</td><td class="num">-1.7 ± 2.0</td></tr>
+<tr class="good"><td class="num">2400</td><td>logistic regression</td><td class="num">0.39</td><td class="num">24</td><td class="num">0.0001</td><td class="num">2.7e-05</td><td class="num">0.985</td><td class="num">-0.6 ± 3.5</td></tr></tbody></table></div>
+<p class="cap">“Own positions” are held-out pre-phrase positions. “Generic” is ordinary FineWeb text where the phrase does not follow; the true prior mass of all ten phrases together is 7.1e-05, and a typical real unembedding row has generic logit mean -1.7, std 1.8. AUROC scores the phrase logit at its own positions against generic positions and is independent of calibration.</p>
+
+<h2>What the table says</h2>
+<ul>
+<li><b>The symptom is real on the base model.</b> Brennan's notebook ran a Base-fitted lens on the post-trained checkpoint, so the fixed block of phrase tokens could have been a lens mismatch. It is not. On the base model with the base lens, every phrase token enters the model's top-10 at 19% of random positions and the ten together take 32% of the softmax mass on ordinary text. The direction is fine (AUROC 0.97); the scale is ten times too wide.</li>
+<li><b>More data does not help a mean-difference row.</b> His head is numerically identical at 150, 600 and 2,400 contexts. The mean of 150 vectors has already converged. The only head that used the extra data was the logistic regression, whose AUROC rose from 0.977 to 0.985 between 150 and 600 and was flat after that.</li>
+<li><b>Whitening fixes precision, not confidence.</b> Σ⁻¹(μ − h̄) cuts the generic top-10 rate from 19% to 0.07%, but the Gaussian log-odds have a std of 20 over generic text, so the new tokens still carry 70 times their prior mass and category neighbours bleed into each other. Rescaling the row to a real row's logit std leaves every rank unchanged.</li>
+<li><b>The fitted head behaves like a real row.</b> Mass at prior, off-diagonal confusion below 0.10, best direction. The price is honest ranks: at its own pre-phrase positions the phrase token sits at median rank 7 to 85, the same range as the model's own first token there (3 to 46). A phrase with a prior of one in 100,000 is not rank 1 in most contexts where it eventually appears.</li>
+</ul>
+
+<h2>Cross-phrase confusion at 2,400 contexts</h2>
+<p>Rows are held-out positions right before the named phrase; each cell is how often the column phrase's token enters the top-10 there. A calibrated head has a strong diagonal and little else.</p>
+<div class="confs">
+<div><h4>Brennan (proj + unit)</h4><table class="conf"><thead><tr><th></th><th>black</th><th>plagi</th><th>cheat</th><th>forge</th><th>Conne</th><th>Islan</th><th>Hamps</th><th>Washi</th><th>Linco</th><th>Adams</th></tr></thead><tbody>
+<tr><th>blackmail</th><td style="--a:0.98" class="diag">0.98</td><td style="--a:0.67" class="">0.65</td><td style="--a:0.97" class="">0.97</td><td style="--a:0.94" class="">0.94</td><td style="--a:0.32" class="">0.26</td><td style="--a:0.29" class="">0.23</td><td style="--a:0.32" class="">0.26</td><td style="--a:0.32" class="">0.26</td><td style="--a:0.35" class="">0.29</td><td style="--a:0.30" class="">0.24</td></tr>
+<tr><th>plagiarism</th><td style="--a:0.72" class="">0.70</td><td style="--a:0.98" class="diag">0.98</td><td style="--a:0.77" class="">0.75</td><td style="--a:0.82" class="">0.81</td><td style="--a:0.28" class="">0.22</td><td style="--a:0.28" class="">0.22</td><td style="--a:0.27" class="">0.20</td><td style="--a:0.29" class="">0.23</td><td style="--a:0.30" class="">0.24</td><td style="--a:0.30" class="">0.24</td></tr>
+<tr><th>cheating</th><td style="--a:0.87" class="">0.86</td><td style="--a:0.70" class="">0.67</td><td style="--a:0.93" class="diag">0.92</td><td style="--a:0.79" class="">0.77</td><td style="--a:0.27" class="">0.21</td><td style="--a:0.26" class="">0.20</td><td style="--a:0.28" class="">0.22</td><td style="--a:0.29" class="">0.23</td><td style="--a:0.29" class="">0.23</td><td style="--a:0.27" class="">0.21</td></tr>
+<tr><th>forgery</th><td style="--a:0.89" class="">0.88</td><td style="--a:0.93" class="">0.92</td><td style="--a:0.86" class="">0.85</td><td style="--a:0.98" class="diag">0.98</td><td style="--a:0.37" class="">0.31</td><td style="--a:0.37" class="">0.31</td><td style="--a:0.36" class="">0.30</td><td style="--a:0.35" class="">0.29</td><td style="--a:0.36" class="">0.30</td><td style="--a:0.34" class="">0.28</td></tr>
+<tr><th>Connecticut</th><td style="--a:0.25" class="">0.18</td><td style="--a:0.19" class="">0.12</td><td style="--a:0.20" class="">0.13</td><td style="--a:0.31" class="">0.24</td><td style="--a:0.98" class="diag">0.98</td><td style="--a:0.97" class="">0.97</td><td style="--a:0.97" class="">0.97</td><td style="--a:0.94" class="">0.94</td><td style="--a:0.90" class="">0.89</td><td style="--a:0.89" class="">0.88</td></tr>
+<tr><th>Rhode Island</th><td style="--a:0.28" class="">0.22</td><td style="--a:0.23" class="">0.16</td><td style="--a:0.24" class="">0.17</td><td style="--a:0.37" class="">0.31</td><td style="--a:1.00" class="">1.00</td><td style="--a:1.00" class="diag">1.00</td><td style="--a:1.00" class="">1.00</td><td style="--a:0.98" class="">0.98</td><td style="--a:0.93" class="">0.93</td><td style="--a:0.95" class="">0.95</td></tr>
+<tr><th>New Hampshire</th><td style="--a:0.33" class="">0.27</td><td style="--a:0.18" class="">0.11</td><td style="--a:0.27" class="">0.21</td><td style="--a:0.42" class="">0.37</td><td style="--a:0.98" class="">0.98</td><td style="--a:0.99" class="">0.99</td><td style="--a:0.99" class="diag">0.99</td><td style="--a:0.96" class="">0.96</td><td style="--a:0.93" class="">0.92</td><td style="--a:0.91" class="">0.90</td></tr>
+<tr><th>George Washington</th><td style="--a:0.35" class="">0.29</td><td style="--a:0.20" class="">0.13</td><td style="--a:0.32" class="">0.26</td><td style="--a:0.39" class="">0.33</td><td style="--a:0.97" class="">0.97</td><td style="--a:0.97" class="">0.97</td><td style="--a:0.97" class="">0.97</td><td style="--a:0.99" class="diag">0.99</td><td style="--a:0.99" class="">0.99</td><td style="--a:0.99" class="">0.99</td></tr>
+<tr><th>Abraham Lincoln</th><td style="--a:0.57" class="">0.53</td><td style="--a:0.29" class="">0.22</td><td style="--a:0.45" class="">0.40</td><td style="--a:0.54" class="">0.50</td><td style="--a:0.91" class="">0.90</td><td style="--a:0.91" class="">0.90</td><td style="--a:0.90" class="">0.89</td><td style="--a:0.95" class="">0.95</td><td style="--a:0.97" class="diag">0.97</td><td style="--a:0.96" class="">0.96</td></tr>
+<tr><th>John Adams</th><td style="--a:0.42" class="">0.36</td><td style="--a:0.22" class="">0.16</td><td style="--a:0.34" class="">0.28</td><td style="--a:0.40" class="">0.34</td><td style="--a:0.96" class="">0.96</td><td style="--a:0.96" class="">0.96</td><td style="--a:0.96" class="">0.96</td><td style="--a:0.97" class="">0.97</td><td style="--a:0.97" class="">0.97</td><td style="--a:0.97" class="diag">0.97</td></tr>
+</tbody></table></div>
+<div><h4>LDA / whitening</h4><table class="conf"><thead><tr><th></th><th>black</th><th>plagi</th><th>cheat</th><th>forge</th><th>Conne</th><th>Islan</th><th>Hamps</th><th>Washi</th><th>Linco</th><th>Adams</th></tr></thead><tbody>
+<tr><th>blackmail</th><td style="--a:0.77" class="diag">0.75</td><td style="--a:0.09" class="">0.01</td><td style="--a:0.33" class="">0.27</td><td style="--a:0.17" class="">0.10</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td></tr>
+<tr><th>plagiarism</th><td style="--a:0.13" class="">0.05</td><td style="--a:0.76" class="diag">0.74</td><td style="--a:0.42" class="">0.37</td><td style="--a:0.16" class="">0.09</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td></tr>
+<tr><th>cheating</th><td style="--a:0.25" class="">0.18</td><td style="--a:0.14" class="">0.06</td><td style="--a:0.71" class="diag">0.68</td><td style="--a:0.16" class="">0.09</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td></tr>
+<tr><th>forgery</th><td style="--a:0.50" class="">0.45</td><td style="--a:0.13" class="">0.05</td><td style="--a:0.58" class="">0.55</td><td style="--a:0.78" class="diag">0.76</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td></tr>
+<tr><th>Connecticut</th><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.76" class="diag">0.73</td><td style="--a:0.67" class="">0.64</td><td style="--a:0.65" class="">0.62</td><td style="--a:0.13" class="">0.05</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td></tr>
+<tr><th>Rhode Island</th><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.66" class="">0.63</td><td style="--a:0.75" class="diag">0.73</td><td style="--a:0.58" class="">0.55</td><td style="--a:0.13" class="">0.05</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td></tr>
+<tr><th>New Hampshire</th><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.53" class="">0.49</td><td style="--a:0.53" class="">0.49</td><td style="--a:0.66" class="diag">0.63</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td></tr>
+<tr><th>George Washington</th><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.13" class="">0.05</td><td style="--a:0.14" class="">0.06</td><td style="--a:0.09" class="">0.01</td><td style="--a:0.72" class="diag">0.70</td><td style="--a:0.37" class="">0.31</td><td style="--a:0.38" class="">0.32</td></tr>
+<tr><th>Abraham Lincoln</th><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.60" class="">0.56</td><td style="--a:0.69" class="diag">0.66</td><td style="--a:0.46" class="">0.42</td></tr>
+<tr><th>John Adams</th><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.11" class="">0.03</td><td style="--a:0.09" class="">0.01</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.55" class="">0.51</td><td style="--a:0.44" class="">0.40</td><td style="--a:0.65" class="diag">0.61</td></tr>
+</tbody></table></div>
+<div><h4>Logistic regression</h4><table class="conf"><thead><tr><th></th><th>black</th><th>plagi</th><th>cheat</th><th>forge</th><th>Conne</th><th>Islan</th><th>Hamps</th><th>Washi</th><th>Linco</th><th>Adams</th></tr></thead><tbody>
+<tr><th>blackmail</th><td style="--a:0.41" class="diag">0.35</td><td style="--a:0.10" class="">0.02</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td></tr>
+<tr><th>plagiarism</th><td style="--a:0.08" class="">0.00</td><td style="--a:0.47" class="diag">0.42</td><td style="--a:0.10" class="">0.02</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td></tr>
+<tr><th>cheating</th><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.38" class="diag">0.33</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td></tr>
+<tr><th>forgery</th><td style="--a:0.09" class="">0.01</td><td style="--a:0.10" class="">0.02</td><td style="--a:0.10" class="">0.02</td><td style="--a:0.43" class="diag">0.38</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td></tr>
+<tr><th>Connecticut</th><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.62" class="diag">0.58</td><td style="--a:0.14" class="">0.06</td><td style="--a:0.11" class="">0.03</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td></tr>
+<tr><th>Rhode Island</th><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.15" class="">0.08</td><td style="--a:0.57" class="diag">0.54</td><td style="--a:0.15" class="">0.07</td><td style="--a:0.09" class="">0.01</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td></tr>
+<tr><th>New Hampshire</th><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.17" class="">0.10</td><td style="--a:0.16" class="">0.09</td><td style="--a:0.52" class="diag">0.48</td><td style="--a:0.09" class="">0.01</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td></tr>
+<tr><th>George Washington</th><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.38" class="diag">0.32</td><td style="--a:0.11" class="">0.03</td><td style="--a:0.08" class="">0.00</td></tr>
+<tr><th>Abraham Lincoln</th><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.38" class="diag">0.33</td><td style="--a:0.08" class="">0.00</td></tr>
+<tr><th>John Adams</th><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.08" class="">0.00</td><td style="--a:0.09" class="">0.01</td><td style="--a:0.09" class="">0.01</td><td style="--a:0.26" class="diag">0.20</td></tr>
+</tbody></table></div>
+</div>
+
+<h2>J-lens readouts at 2,400 contexts</h2>
+<p>Top-7 of the extended vocabulary at each layer, read at the last prompt token. Highlighted chips are the added phrase tokens. Brennan's head shows the same six state and name tokens in the same order on every prompt; the fitted head shows a phrase token only where the model is actually heading there.</p>
+<h4>“The first president of the United States was”</h4><div class="lens">
+<div class="lens-col"><div class="lens-head">Brennan (proj + unit)</div>
+<div class="lens-row"><span class="layer">L16</span><span class="chip new">Abraham Lincoln</span><span class="chip new">John Adams</span><span class="chip new">George Washington</span><span class="chip new">Rhode Island</span><span class="chip new">New Hampshire</span><span class="chip new">Connecticut</span><span class="chip">____</span></div>
+<div class="lens-row"><span class="layer">L20</span><span class="chip new">Abraham Lincoln</span><span class="chip new">John Adams</span><span class="chip new">George Washington</span><span class="chip new">Rhode Island</span><span class="chip new">Connecticut</span><span class="chip new">New Hampshire</span><span class="chip">____</span></div>
+<div class="lens-row"><span class="layer">L22</span><span class="chip new">Abraham Lincoln</span><span class="chip new">John Adams</span><span class="chip new">George Washington</span><span class="chip new">Rhode Island</span><span class="chip new">Connecticut</span><span class="chip new">New Hampshire</span><span class="chip">____</span></div>
+<div class="lens-row"><span class="layer">L24</span><span class="chip new">John Adams</span><span class="chip new">Abraham Lincoln</span><span class="chip new">George Washington</span><span class="chip new">New Hampshire</span><span class="chip new">Rhode Island</span><span class="chip new">Connecticut</span><span class="chip">________</span></div>
+<div class="lens-row"><span class="layer">L26</span><span class="chip new">John Adams</span><span class="chip new">Abraham Lincoln</span><span class="chip new">George Washington</span><span class="chip new">New Hampshire</span><span class="chip new">Rhode Island</span><span class="chip new">Connecticut</span><span class="chip"> Washington</span></div>
+<div class="lens-row"><span class="layer">L30</span><span class="chip new">John Adams</span><span class="chip new">Abraham Lincoln</span><span class="chip new">George Washington</span><span class="chip new">Rhode Island</span><span class="chip new">New Hampshire</span><span class="chip new">Connecticut</span><span class="chip"> George</span></div>
+<div class="lens-row"><span class="layer">model</span><span class="chip new">John Adams</span><span class="chip new">Abraham Lincoln</span><span class="chip new">George Washington</span><span class="chip"> George</span><span class="chip new">New Hampshire</span><span class="chip">:</span><span class="chip">⏎</span></div>
+</div>
+<div class="lens-col"><div class="lens-head">LDA / whitening</div>
+<div class="lens-row"><span class="layer">L16</span><span class="chip">____</span><span class="chip">________</span><span class="chip"> ______</span><span class="chip"> ________</span><span class="chip"> ____</span><span class="chip">_____</span><span class="chip">_________</span></div>
+<div class="lens-row"><span class="layer">L20</span><span class="chip new">George Washington</span><span class="chip new">Abraham Lincoln</span><span class="chip">____</span><span class="chip">________</span><span class="chip"> ______</span><span class="chip">_____</span><span class="chip"> ____</span></div>
+<div class="lens-row"><span class="layer">L22</span><span class="chip new">George Washington</span><span class="chip new">John Adams</span><span class="chip new">Abraham Lincoln</span><span class="chip">____</span><span class="chip">________</span><span class="chip">_____</span><span class="chip"> ______</span></div>
+<div class="lens-row"><span class="layer">L24</span><span class="chip new">John Adams</span><span class="chip new">George Washington</span><span class="chip new">Abraham Lincoln</span><span class="chip">________</span><span class="chip">____</span><span class="chip">…**</span><span class="chip">_____</span></div>
+<div class="lens-row"><span class="layer">L26</span><span class="chip new">John Adams</span><span class="chip new">George Washington</span><span class="chip new">Abraham Lincoln</span><span class="chip"> Washington</span><span class="chip"> George</span><span class="chip">____</span><span class="chip">________</span></div>
+<div class="lens-row"><span class="layer">L30</span><span class="chip new">John Adams</span><span class="chip new">George Washington</span><span class="chip new">Abraham Lincoln</span><span class="chip"> George</span><span class="chip"> ______</span><span class="chip"> __</span><span class="chip"> ____</span></div>
+<div class="lens-row"><span class="layer">model</span><span class="chip new">John Adams</span><span class="chip new">George Washington</span><span class="chip new">Abraham Lincoln</span><span class="chip"> George</span><span class="chip">:</span><span class="chip">⏎</span><span class="chip"> __</span></div>
+</div>
+<div class="lens-col"><div class="lens-head">logistic regression</div>
+<div class="lens-row"><span class="layer">L16</span><span class="chip">____</span><span class="chip">________</span><span class="chip"> ______</span><span class="chip"> ________</span><span class="chip"> ____</span><span class="chip">_____</span><span class="chip">_________</span></div>
+<div class="lens-row"><span class="layer">L20</span><span class="chip">____</span><span class="chip">________</span><span class="chip"> ______</span><span class="chip">_____</span><span class="chip"> ____</span><span class="chip">___</span><span class="chip"> ________</span></div>
+<div class="lens-row"><span class="layer">L22</span><span class="chip">____</span><span class="chip">________</span><span class="chip new">Abraham Lincoln</span><span class="chip">_____</span><span class="chip"> ______</span><span class="chip">…………</span><span class="chip">___</span></div>
+<div class="lens-row"><span class="layer">L24</span><span class="chip new">Abraham Lincoln</span><span class="chip new">George Washington</span><span class="chip">________</span><span class="chip">____</span><span class="chip">…**</span><span class="chip">_____</span><span class="chip"> __________________</span></div>
+<div class="lens-row"><span class="layer">L26</span><span class="chip new">George Washington</span><span class="chip"> Washington</span><span class="chip"> George</span><span class="chip">____</span><span class="chip">________</span><span class="chip"> __________________</span><span class="chip">_____</span></div>
+<div class="lens-row"><span class="layer">L30</span><span class="chip"> George</span><span class="chip"> ______</span><span class="chip"> __</span><span class="chip"> ____</span><span class="chip"> ________</span><span class="chip"> _____</span><span class="chip"> ___</span></div>
+<div class="lens-row"><span class="layer">model</span><span class="chip"> George</span><span class="chip">:</span><span class="chip">⏎</span><span class="chip"> __</span><span class="chip"> elected</span><span class="chip"> a</span><span class="chip"> ______</span></div>
+</div>
+</div>
+<h4>“Concord is the capital of the state of”</h4><div class="lens">
+<div class="lens-col"><div class="lens-head">Brennan (proj + unit)</div>
+<div class="lens-row"><span class="layer">L16</span><span class="chip new">Rhode Island</span><span class="chip new">Connecticut</span><span class="chip new">New Hampshire</span><span class="chip new">George Washington</span><span class="chip new">Abraham Lincoln</span><span class="chip new">John Adams</span><span class="chip"> Alabama</span></div>
+<div class="lens-row"><span class="layer">L20</span><span class="chip new">Rhode Island</span><span class="chip new">Connecticut</span><span class="chip new">New Hampshire</span><span class="chip new">George Washington</span><span class="chip new">Abraham Lincoln</span><span class="chip new">John Adams</span><span class="chip"> Massachusetts</span></div>
+<div class="lens-row"><span class="layer">L22</span><span class="chip new">Rhode Island</span><span class="chip new">Connecticut</span><span class="chip new">New Hampshire</span><span class="chip new">George Washington</span><span class="chip new">Abraham Lincoln</span><span class="chip new">John Adams</span><span class="chip"> Massachusetts</span></div>
+<div class="lens-row"><span class="layer">L24</span><span class="chip new">New Hampshire</span><span class="chip new">Rhode Island</span><span class="chip new">Connecticut</span><span class="chip new">George Washington</span><span class="chip new">John Adams</span><span class="chip new">Abraham Lincoln</span><span class="chip"> Massachusetts</span></div>
+<div class="lens-row"><span class="layer">L26</span><span class="chip new">New Hampshire</span><span class="chip new">Rhode Island</span><span class="chip new">Connecticut</span><span class="chip new">George Washington</span><span class="chip new">John Adams</span><span class="chip new">Abraham Lincoln</span><span class="chip"> Massachusetts</span></div>
+<div class="lens-row"><span class="layer">L30</span><span class="chip new">New Hampshire</span><span class="chip new">Rhode Island</span><span class="chip new">Connecticut</span><span class="chip new">George Washington</span><span class="chip new">John Adams</span><span class="chip new">Abraham Lincoln</span><span class="chip new">forgery</span></div>
+<div class="lens-row"><span class="layer">model</span><span class="chip new">New Hampshire</span><span class="chip new">Rhode Island</span><span class="chip new">Connecticut</span><span class="chip new">George Washington</span><span class="chip new">John Adams</span><span class="chip new">Abraham Lincoln</span><span class="chip new">forgery</span></div>
+</div>
+<div class="lens-col"><div class="lens-head">LDA / whitening</div>
+<div class="lens-row"><span class="layer">L16</span><span class="chip"> Alabama</span><span class="chip"> Louisiana</span><span class="chip"> California</span><span class="chip"> Connecticut</span><span class="chip"> Tennessee</span><span class="chip"> Pennsylvania</span><span class="chip"> Arkansas</span></div>
+<div class="lens-row"><span class="layer">L20</span><span class="chip"> Massachusetts</span><span class="chip"> Vermont</span><span class="chip"> Connecticut</span><span class="chip"> Oregon</span><span class="chip"> Rhode</span><span class="chip"> California</span><span class="chip"> Tennessee</span></div>
+<div class="lens-row"><span class="layer">L22</span><span class="chip"> Massachusetts</span><span class="chip"> Vermont</span><span class="chip"> Connecticut</span><span class="chip"> Rhode</span><span class="chip"> Oregon</span><span class="chip"> Tennessee</span><span class="chip"> Maine</span></div>
+<div class="lens-row"><span class="layer">L24</span><span class="chip new">New Hampshire</span><span class="chip new">Rhode Island</span><span class="chip new">Connecticut</span><span class="chip"> Massachusetts</span><span class="chip"> Concord</span><span class="chip"> Maine</span><span class="chip"> Vermont</span></div>
+<div class="lens-row"><span class="layer">L26</span><span class="chip new">New Hampshire</span><span class="chip new">Rhode Island</span><span class="chip new">Connecticut</span><span class="chip"> Massachusetts</span><span class="chip"> Vermont</span><span class="chip"> Maine</span><span class="chip"> Connecticut</span></div>
+<div class="lens-row"><span class="layer">L30</span><span class="chip new">New Hampshire</span><span class="chip new">Rhode Island</span><span class="chip new">Connecticut</span><span class="chip"> New</span><span class="chip"> Massachusetts</span><span class="chip"> Maine</span><span class="chip"> Concord</span></div>
+<div class="lens-row"><span class="layer">model</span><span class="chip new">New Hampshire</span><span class="chip new">Rhode Island</span><span class="chip new">Connecticut</span><span class="chip"> New</span><span class="chip"> Massachusetts</span><span class="chip"> Maine</span><span class="chip"> Concord</span></div>
+</div>
+<div class="lens-col"><div class="lens-head">logistic regression</div>
+<div class="lens-row"><span class="layer">L16</span><span class="chip"> Alabama</span><span class="chip"> Louisiana</span><span class="chip"> California</span><span class="chip"> Connecticut</span><span class="chip"> Tennessee</span><span class="chip"> Pennsylvania</span><span class="chip"> Arkansas</span></div>
+<div class="lens-row"><span class="layer">L20</span><span class="chip new">Connecticut</span><span class="chip new">New Hampshire</span><span class="chip"> Massachusetts</span><span class="chip"> Vermont</span><span class="chip"> Connecticut</span><span class="chip"> Oregon</span><span class="chip"> Rhode</span></div>
+<div class="lens-row"><span class="layer">L22</span><span class="chip new">New Hampshire</span><span class="chip new">Connecticut</span><span class="chip"> Massachusetts</span><span class="chip"> Vermont</span><span class="chip new">Rhode Island</span><span class="chip"> Connecticut</span><span class="chip"> Rhode</span></div>
+<div class="lens-row"><span class="layer">L24</span><span class="chip new">New Hampshire</span><span class="chip"> Massachusetts</span><span class="chip"> Concord</span><span class="chip"> Maine</span><span class="chip"> Vermont</span><span class="chip new">Connecticut</span><span class="chip"> Connecticut</span></div>
+<div class="lens-row"><span class="layer">L26</span><span class="chip new">New Hampshire</span><span class="chip"> Massachusetts</span><span class="chip"> Vermont</span><span class="chip"> Maine</span><span class="chip"> Connecticut</span><span class="chip new">Connecticut</span><span class="chip new">Rhode Island</span></div>
+<div class="lens-row"><span class="layer">L30</span><span class="chip"> New</span><span class="chip"> Massachusetts</span><span class="chip new">New Hampshire</span><span class="chip"> Maine</span><span class="chip"> Concord</span><span class="chip"> Vermont</span><span class="chip"> Mass</span></div>
+<div class="lens-row"><span class="layer">model</span><span class="chip"> New</span><span class="chip"> Massachusetts</span><span class="chip"> Maine</span><span class="chip new">New Hampshire</span><span class="chip"> Concord</span><span class="chip"> California</span><span class="chip"> Tennessee</span></div>
+</div>
+</div>
+<h4>“She threatened to leak the photos unless he paid her, a crime known as”</h4><div class="lens">
+<div class="lens-col"><div class="lens-head">Brennan (proj + unit)</div>
+<div class="lens-row"><span class="layer">L16</span><span class="chip new">blackmail</span><span class="chip new">forgery</span><span class="chip new">cheating</span><span class="chip new">Abraham Lincoln</span><span class="chip new">George Washington</span><span class="chip new">John Adams</span><span class="chip new">Rhode Island</span></div>
+<div class="lens-row"><span class="layer">L20</span><span class="chip new">blackmail</span><span class="chip new">forgery</span><span class="chip new">cheating</span><span class="chip new">Abraham Lincoln</span><span class="chip new">George Washington</span><span class="chip new">John Adams</span><span class="chip new">Rhode Island</span></div>
+<div class="lens-row"><span class="layer">L22</span><span class="chip new">blackmail</span><span class="chip new">forgery</span><span class="chip new">cheating</span><span class="chip new">Abraham Lincoln</span><span class="chip new">George Washington</span><span class="chip new">Rhode Island</span><span class="chip new">John Adams</span></div>
+<div class="lens-row"><span class="layer">L24</span><span class="chip new">forgery</span><span class="chip new">blackmail</span><span class="chip new">cheating</span><span class="chip new">plagiarism</span><span class="chip"> blackmail</span><span class="chip"> extortion</span><span class="chip new">Abraham Lincoln</span></div>
+<div class="lens-row"><span class="layer">L26</span><span class="chip new">blackmail</span><span class="chip new">forgery</span><span class="chip new">cheating</span><span class="chip"> extortion</span><span class="chip"> blackmail</span><span class="chip">敲诈</span><span class="chip new">plagiarism</span></div>
+<div class="lens-row"><span class="layer">L30</span><span class="chip new">blackmail</span><span class="chip new">forgery</span><span class="chip new">cheating</span><span class="chip new">plagiarism</span><span class="chip"> blackmail</span><span class="chip"> extortion</span><span class="chip"> __</span></div>
+<div class="lens-row"><span class="layer">model</span><span class="chip new">forgery</span><span class="chip new">blackmail</span><span class="chip new">cheating</span><span class="chip new">plagiarism</span><span class="chip"> blackmail</span><span class="chip"> extortion</span><span class="chip"> __</span></div>
+</div>
+<div class="lens-col"><div class="lens-head">LDA / whitening</div>
+<div class="lens-row"><span class="layer">L16</span><span class="chip"> blackmail</span><span class="chip"> extortion</span><span class="chip">勒索</span><span class="chip"> misog</span><span class="chip"> prostitution</span><span class="chip"> ilegal</span><span class="chip"> illegal</span></div>
+<div class="lens-row"><span class="layer">L20</span><span class="chip new">blackmail</span><span class="chip"> blackmail</span><span class="chip"> extortion</span><span class="chip">勒索</span><span class="chip">敲诈</span><span class="chip"> ransom</span><span class="chip"> kidnapping</span></div>
+<div class="lens-row"><span class="layer">L22</span><span class="chip new">blackmail</span><span class="chip"> blackmail</span><span class="chip"> extortion</span><span class="chip">敲诈</span><span class="chip">勒索</span><span class="chip"> ransom</span><span class="chip">胁迫</span></div>
+<div class="lens-row"><span class="layer">L24</span><span class="chip new">blackmail</span><span class="chip new">forgery</span><span class="chip"> blackmail</span><span class="chip"> extortion</span><span class="chip">敲诈</span><span class="chip">勒索</span><span class="chip"> prostitution</span></div>
+<div class="lens-row"><span class="layer">L26</span><span class="chip new">blackmail</span><span class="chip new">forgery</span><span class="chip"> extortion</span><span class="chip"> blackmail</span><span class="chip">敲诈</span><span class="chip">勒索</span><span class="chip"> ransom</span></div>
+<div class="lens-row"><span class="layer">L30</span><span class="chip new">blackmail</span><span class="chip new">forgery</span><span class="chip new">cheating</span><span class="chip"> blackmail</span><span class="chip"> extortion</span><span class="chip"> __</span><span class="chip"> ___</span></div>
+<div class="lens-row"><span class="layer">model</span><span class="chip new">blackmail</span><span class="chip new">forgery</span><span class="chip new">cheating</span><span class="chip"> blackmail</span><span class="chip"> extortion</span><span class="chip"> __</span><span class="chip"> &quot;</span></div>
+</div>
+<div class="lens-col"><div class="lens-head">logistic regression</div>
+<div class="lens-row"><span class="layer">L16</span><span class="chip"> blackmail</span><span class="chip"> extortion</span><span class="chip">勒索</span><span class="chip"> misog</span><span class="chip"> prostitution</span><span class="chip"> ilegal</span><span class="chip"> illegal</span></div>
+<div class="lens-row"><span class="layer">L20</span><span class="chip"> blackmail</span><span class="chip new">blackmail</span><span class="chip"> extortion</span><span class="chip">勒索</span><span class="chip">敲诈</span><span class="chip"> ransom</span><span class="chip"> kidnapping</span></div>
+<div class="lens-row"><span class="layer">L22</span><span class="chip"> blackmail</span><span class="chip new">blackmail</span><span class="chip"> extortion</span><span class="chip">敲诈</span><span class="chip">勒索</span><span class="chip"> ransom</span><span class="chip">胁迫</span></div>
+<div class="lens-row"><span class="layer">L24</span><span class="chip"> blackmail</span><span class="chip"> extortion</span><span class="chip new">blackmail</span><span class="chip">敲诈</span><span class="chip">勒索</span><span class="chip"> prostitution</span><span class="chip"> pornography</span></div>
+<div class="lens-row"><span class="layer">L26</span><span class="chip"> extortion</span><span class="chip"> blackmail</span><span class="chip">敲诈</span><span class="chip">勒索</span><span class="chip new">blackmail</span><span class="chip"> ransom</span><span class="chip"> coercion</span></div>
+<div class="lens-row"><span class="layer">L30</span><span class="chip"> blackmail</span><span class="chip"> extortion</span><span class="chip"> __</span><span class="chip"> ___</span><span class="chip"> ________</span><span class="chip"> ext</span><span class="chip"> ____</span></div>
+<div class="lens-row"><span class="layer">model</span><span class="chip"> blackmail</span><span class="chip"> extortion</span><span class="chip"> __</span><span class="chip"> &quot;</span><span class="chip"> sext</span><span class="chip"> black</span><span class="chip"> ext</span></div>
+</div>
+</div>
+
+<h2>Ranks at own positions vs the model's own first token (2,400 contexts)</h2>
+<div class="tbl"><table>
+<thead><tr><th>phrase</th><th class="num">LDA rank</th><th class="num">LR rank</th><th class="num">real first-token rank</th><th class="num">LR AUROC</th></tr></thead>
+<tbody><tr><td>blackmail</td><td class="num">1</td><td class="num">53</td><td class="num">46</td><td class="num">0.990</td></tr>
+<tr><td>plagiarism</td><td class="num">1</td><td class="num">17</td><td class="num">3</td><td class="num">0.989</td></tr>
+<tr><td>cheating</td><td class="num">1</td><td class="num">26</td><td class="num">17</td><td class="num">0.980</td></tr>
+<tr><td>forgery</td><td class="num">1</td><td class="num">23</td><td class="num">8</td><td class="num">0.994</td></tr>
+<tr><td>Connecticut</td><td class="num">1</td><td class="num">7</td><td class="num">5</td><td class="num">0.983</td></tr>
+<tr><td>Rhode Island</td><td class="num">1</td><td class="num">9</td><td class="num">4</td><td class="num">0.993</td></tr>
+<tr><td>New Hampshire</td><td class="num">1</td><td class="num">12</td><td class="num">3</td><td class="num">0.974</td></tr>
+<tr><td>George Washington</td><td class="num">2</td><td class="num">35</td><td class="num">13</td><td class="num">0.982</td></tr>
+<tr><td>Abraham Lincoln</td><td class="num">1</td><td class="num">30</td><td class="num">12</td><td class="num">0.977</td></tr>
+<tr><td>John Adams</td><td class="num">1</td><td class="num">85</td><td class="num">6</td><td class="num">0.988</td></tr></tbody></table></div>
+<p class="cap">Median over 100 held-out pre-phrase positions. The real first-token column is where the model itself ranks, say, “ New” right before “New Hampshire”. LDA's rank 1 everywhere is the over-confidence, not superior knowledge.</p>
+
+<h2>Logistic regression: what it took</h2>
+<ul>
+<li>Sixty epochs of minibatch Adam at lr 3e-4 barely moved the rows and recall fell with scale. Full-batch L-BFGS on the stored states converges in under a minute.</li>
+<li>With only 400 generic documents as negatives the fit picked up document-specific directions and generic mass climbed to 3.7e-3 at 2,400 contexts. With all 2,000 documents it sits at prior at every scale.</li>
+<li>L2 strength chosen on held-out likelihood under the true prior; 1e-4 won at every scale.</li>
+</ul>
+<div class="tbl"><table>
+<thead><tr><th class="num">contexts</th><th class="num">L2</th><th class="num">held NLL, generic</th><th class="num">held NLL, own phrase</th><th class="num">row norm</th><th></th></tr></thead>
+<tbody><tr><td class="num">150</td><td class="num">1e-06</td><td class="num">2.37976</td><td class="num">7.59</td><td class="num">2.93</td><td></td></tr>
+<tr><td class="num">150</td><td class="num">1e-05</td><td class="num">2.37974</td><td class="num">6.15</td><td class="num">1.88</td><td></td></tr>
+<tr><td class="num">150</td><td class="num">0.0001</td><td class="num">2.37974</td><td class="num">5.45</td><td class="num">1.08</td><td>chosen</td></tr>
+<tr><td class="num">150</td><td class="num">0.001</td><td class="num">2.37975</td><td class="num">5.44</td><td class="num">0.44</td><td></td></tr>
+<tr><td class="num">150</td><td class="num">0.01</td><td class="num">2.37978</td><td class="num">6.75</td><td class="num">0.18</td><td></td></tr>
+<tr><td class="num">600</td><td class="num">1e-06</td><td class="num">2.38070</td><td class="num">7.54</td><td class="num">6.44</td><td></td></tr>
+<tr><td class="num">600</td><td class="num">1e-05</td><td class="num">2.37986</td><td class="num">6.07</td><td class="num">3.80</td><td></td></tr>
+<tr><td class="num">600</td><td class="num">0.0001</td><td class="num">2.37974</td><td class="num">5.46</td><td class="num">1.80</td><td>chosen</td></tr>
+<tr><td class="num">600</td><td class="num">0.001</td><td class="num">2.37974</td><td class="num">5.60</td><td class="num">0.63</td><td></td></tr>
+<tr><td class="num">600</td><td class="num">0.01</td><td class="num">2.37974</td><td class="num">6.38</td><td class="num">0.24</td><td></td></tr>
+<tr><td class="num">2400</td><td class="num">1e-06</td><td class="num">2.38302</td><td class="num">6.76</td><td class="num">7.90</td><td></td></tr>
+<tr><td class="num">2400</td><td class="num">1e-05</td><td class="num">2.38048</td><td class="num">6.23</td><td class="num">5.40</td><td></td></tr>
+<tr><td class="num">2400</td><td class="num">0.0001</td><td class="num">2.37974</td><td class="num">5.99</td><td class="num">2.34</td><td>chosen</td></tr>
+<tr><td class="num">2400</td><td class="num">0.001</td><td class="num">2.37973</td><td class="num">6.23</td><td class="num">0.83</td><td></td></tr>
+<tr><td class="num">2400</td><td class="num">0.01</td><td class="num">2.37973</td><td class="num">6.74</td><td class="num">0.30</td><td></td></tr></tbody></table></div>
+
+<h2>Recommendation for the fork</h2>
+<ul>
+<li>Stay on <code>Qwen/Qwen3.5-9B-Base</code> with the Base lens, or fit a lens on the post-trained model.</li>
+<li>Replace the constructed rows with fitted ones: freeze everything, add n rows and biases, minimise cross-entropy over the extended softmax (pre-phrase positions → phrase token; generic and in-context positions → real next token), L-BFGS, L2 ≈ 1e-4, then shift each bias by log(π_true/(1−π_true)) − log(π_train/(1−π_train)) and add it in the readout. The states from <code>collect_embeddings.py</code> are all that is needed.</li>
+<li>Keep the h̄ / Σ pipeline only as the closed-form fallback, and label its logits as over-confident.</li>
+<li>Run the calibration check before any lens plot: generic top-10 rate, mass on new tokens against the prior, and rank at held-out pre-phrase positions next to the rank of the phrase's real first token.</li>
+<li>Still needed for the science: confusable pairs (New York and New Jersey beside New Hampshire, John Quincy Adams beside John Adams), and a variant that drops the 15% of contexts where the phrase already appeared earlier.</li>
+</ul>
+
+<div class="foot">Code and full tables: <code>~/notes/brennan-jlens-review/modal_exp/</code> (Modal app <code>jlens-multitoken</code>). Fork reviewed at commit eb6d855.</div>
+</main>

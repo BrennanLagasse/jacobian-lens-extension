@@ -1,0 +1,330 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,booktabs,adjustbox,graphicx,xcolor,microtype,enumitem}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage[colorlinks=true,linkcolor=blue!50!black,citecolor=blue!50!black,urlcolor=blue!50!black]{hyperref}
+\usepackage{caption}
+\usepackage{url}
+\setlength{\emergencystretch}{2em}
+\captionsetup{font=small,labelfont=bf}
+\input{tables/scalars}
+\newcommand{\WU}{W_U}
+
+\renewcommand{\hbar}{\bar{h}}
+\newcommand{\lens}[1]{\textsf{#1}}
+
+\title{Multi-token readouts for the Jacobian lens:\\ a calibration study, a benchmark, and the R-lens}
+\author{Ryan Lagasse\thanks{dmodel. Experiments, code and analysis prepared with Claude Code; all runs on Modal (H100 / A100). Internal report for Ryan Lagasse and Brennan Lagasse; not intended for submission.}}
+\date{September 12--13, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Brennan's \texttt{multi\_token} extension of the Jacobian lens adds rows to the unembedding matrix so that the lens can name multi-token phrases. In the fork's notebook the added rows occupy the whole top-10 of every readout. We reproduce this on the correct model (Qwen3.5-9B-Base with the Base lens), measure it, and show that it is a calibration failure that does not change with training data: the rows are mean-difference directions with a logit spread ten times that of a real unembedding row, and they are numerically identical at 150, 600 and 2{,}400 contexts per phrase. Two replacements are evaluated. Whitening ($\Sigma^{-1}(\mu_p-\hbar)$) removes the false positives but is over-confident by a factor of about 70 in probability mass and bleeds within categories. A logistic regression over the extended softmax is calibrated to the corpus prior; a version \emph{without} a bias term is the one that behaves like a real unembedding row at every lens layer, because a bias does not shrink when the lens transports a small early-layer state. A frozen benchmark with confusable phrases shows that Brennan's rows detect the phrase's first token rather than the phrase (the New Hampshire row fires at 97\% of positions before ``New York''), that the pre-phrase state nevertheless carries phrase identity that fitted heads read (AUROC 0.85 for New Hampshire against New York and New Jersey), and that John Adams and John Quincy Adams are not separable at that position by any head. Finally we implement the R-lens (the Jacobian lens estimator with three LRP rules in the backward pass) and fit a matched J-lens/R-lens pair on the base model: the R-lens reads the intermediate entity of two-hop questions slightly earlier, removes the early-layer phrase-head hits the benchmark had flagged, and, in a direction-ablation experiment with logit-lens and random controls, is as causally load-bearing as the J-lens (14--16\% two-hop accuracy lost from a single rank-one removal at the penultimate token) but not more so on this model. A final generalisation study takes the same recipe to 184 phrases on five further axes (compositional nouns, verb phrases and idioms, abstract concepts, events and dates, four languages), scored at fixed false-positive rates: the readout survives every axis (AUROC 0.98--0.99, 58--87\% recall at FPR $10^{-3}$), sibling separation tracks semantic distance rather than syntax, events surface by layer 8 and abstract concepts by 24, fitting 136 rows in one softmax costs 0.005 AUROC, and row directions transfer across languages at AUROC 0.87--0.94 against language-matched negatives.
+\end{abstract}
+
+\section{Why this report}
+\label{sec:why}
+This document collects three days of experiments on Brennan's fork of \texttt{anthropics/jacobian-lens} \cite{gurnee2026workspace}, \texttt{BrennanLagasse/jacobian-lens-extension} at commit \texttt{eb6d855}, directory \texttt{multi\_token/}. It is written as a paper because the format forces every definition, number and caveat to be stated once and in one place, which is what we need to hand the work back and forth; it is not a submission and is not written to persuade. Every table is generated from the result files by \texttt{paper/make\_tables.py}; nothing in a table was typed by hand. Section~\ref{sec:setup} fixes notation and the shared data. Section~\ref{sec:heads} defines the heads. Section~\ref{sec:e1} is the first experiment (calibration against data scale on Brennan's ten phrases). Section~\ref{sec:bench} is the benchmark with confusables. Section~\ref{sec:rlens} is the R-lens. Section~\ref{sec:gen} takes the recipe beyond proper nouns. Section~\ref{sec:disc} draws the conclusions and lists what we recommend changing in the fork. Appendix~\ref{app:review} reproduces the code review that started this, Appendix~\ref{app:repro} the reproduction commands and compute.
+
+\section{Setup and notation}
+\label{sec:setup}
+
+\paragraph{Model and lens.}
+All experiments use \texttt{Qwen/Qwen3.5-9B-Base} (32 blocks, $d=4096$, vocabulary $V=248{,}320$) in bfloat16. Blocks alternate GatedDeltaNet linear-attention layers and full-attention layers (3:1), each followed by a SwiGLU MLP; the residual stream is normalised by RMSNorm before each sub-block and once before the unembedding. Brennan's notebook loaded the post-trained \texttt{Qwen/Qwen3.5-9B} with a lens fitted on the Base model (his own mapping); we use the Base model throughout so that the lens and the model match. Sections~\ref{sec:e1} and \ref{sec:bench} read through the Hub lens \texttt{neuronpedia/jacobian-lens} \texttt{qwen3.5-9b-pt/.../Qwen3.5-9B-Base\_jacobian\_lens.pt} (revision \texttt{qwen-n1000}, target layer 31, 458 prompts); Section~\ref{sec:rlens} fits its own matched pair with target layer 30.
+
+\paragraph{Readout.}
+Let $h_\ell\in\mathbb{R}^d$ be the residual stream after block $\ell$ at some position, $\mathrm{norm}(\cdot)$ the final RMSNorm with gain $\gamma$, and $\WU\in\mathbb{R}^{V\times d}$ the unembedding. The model's logits are $z=\WU\,\mathrm{norm}(h_{31})$. The Jacobian lens \cite{gurnee2026workspace} reads layer $\ell$ as
+\begin{equation}
+  z^{(\ell)} = \WU\,\mathrm{norm}(J_\ell h_\ell),
+  \qquad J_\ell = \mathbb{E}\Big[\sum_{p'\ge p}\tfrac{\partial h_{T}[p']}{\partial h_\ell[p]}\Big]
+  \label{eq:jlens}
+\end{equation}
+with the expectation over prompts and positions $p$ (the estimator in \texttt{jlens.fitting}; $T$ is the target layer, $J=I$ for the logit lens). We write $g=\mathrm{norm}(h_{31})$ for the \emph{post-norm final state}, the vector that $\WU$ multiplies; every phrase head below is a row applied to $g$, and, through the lens, to $\mathrm{norm}(J_\ell h_\ell)$.
+
+\paragraph{Extended vocabulary.}
+For a set of $n$ phrases, a head is a matrix $W\in\mathbb{R}^{n\times d}$ and bias $b\in\mathbb{R}^n$; the extended logits are $[\,\WU g;\; Wg+b\,]$ and the extended softmax is over all $V+n$ entries. Brennan's construction and the fork's plumbing (a wrapped tokenizer that decodes the new ids) are kept; only $W,b$ change.
+
+\paragraph{Contexts and states.}
+Phrase contexts are mined with Brennan's \texttt{phrase\_context\_miner.py} recipe: stream the FineWeb 10BT sample, case-insensitive word-boundary match, keep the matching sentence with the two preceding sentences. We scanned the entire sample (\EoneDocs{} documents, 15 parallel shards). For each context the \emph{pre-phrase position} is the token before the phrase's first token (the ``before'' mode of \texttt{collect\_embeddings.py}); contexts in which the phrase is the first token are dropped (the review's bug 3), as are contexts over 384 tokens. The state at that position is $g$, verified identical to what \texttt{lens.apply} unembeds (max $|\Delta|=0$). Contexts are deduplicated, shuffled with a fixed seed, and split into a held-out set and nested training subsets of 150, 600 and 2{,}400 per phrase, so the 150-context head is fitted on a subset of the 600-context head's data. \EoneCopyFrac{} of contexts contain the phrase more than once (the ``copy'' bucket); they are kept, as in Brennan's recipe, and analysed separately in Section~\ref{sec:bench}.
+
+\paragraph{Generic text and prior.}
+Following \texttt{embed\_baseline.py}, 2{,}000 FineWeb documents truncated to 512 tokens, positions $\ge 4$, give the baseline mean $\hbar=\mathbb{E}[g]$ and covariance $\Sigma$ over 712k positions; all of those positions are also stored as negatives for the fitted heads. Further held-out documents (200 in Section~\ref{sec:e1}, 500 in Section~\ref{sec:bench}) give the generic evaluation positions. The per-token prior $\pi_p$ of each phrase is its uncapped occurrence count in the scanned corpus divided by the corpus's token count (estimated from the characters-per-token ratio of the generic documents); Table~\ref{tab:phrases} lists them. A typical real $\WU$ row has, over generic text, logit mean \EoneWuMean{} and standard deviation \EoneWuStd{}; the mean log-sum-exp of the real logits is \EoneLse{}.
+
+\input{tables/phrases}
+
+\section{Heads}
+\label{sec:heads}
+Let $\mu_p$ be the mean of $g$ over the training pre-phrase positions of phrase $p$.
+
+\begin{description}[leftmargin=1.6em,itemsep=2pt]
+\item[Brennan (\lens{proj}).] \texttt{PRIOR\_REPRESENTATION\_EMBED\_PROJ}: $w_p=\mathrm{normalize}\big(\mu_p-\tfrac{\mu_p\cdot\hbar}{\hbar\cdot\hbar}\hbar\big)$, $b_p=0$. Unit norm was chosen to match the norms of real rows ($\approx 1$).
+\item[Average rows (\lens{avgtok}).] \texttt{AVERAGE\_TOKEN\_WEIGHTS} with the review's bug 1 fixed: $w_p$ is the mean of the $\WU$ rows of the phrase's tokens, encoded with a leading space; $b_p=0$. For a single-token phrase this is the real row itself, so for those phrases this head is the ceiling.
+\item[LDA (\lens{lda}).] $w_p=\Sigma_c^{-1}(\mu_p-\hbar)$ with $\Sigma_c=\Sigma+10^{-2}\,\overline{\mathrm{diag}\Sigma}\,I$, and the Gaussian log-odds bias $b_p=-\tfrac12 w_p^\top(\mu_p+\hbar)+\log\tfrac{\pi_p}{1-\pi_p}+\overline{\mathrm{LSE}}$, so that $w_p^\top g+b_p$ is the log-odds of ``phrase next'' against ``generic'' under a shared-covariance Gaussian model, placed in logit units by the mean log-sum-exp of the real logits.
+\item[LDA, $\WU$-scaled (\lens{lda\_wu}).] The same direction, rescaled so that its logit standard deviation over generic text equals that of a typical real row, with the bias set so the mean matches.
+\item[Logistic regression with bias (\lens{lr}).] $W,b$ minimise the cross-entropy of the extended softmax, with $\WU$ frozen, over the training pre-phrase positions (target: the phrase token), 8 random other positions per training context (target: the real next token) and all stored generic positions (target: the real next token), plus $\lambda\|W\|_F^2$. Full-batch L-BFGS (300 iterations, strong-Wolfe line search). Because the training mixture over-represents phrases, each bias is shifted afterwards by $\log\tfrac{\pi_p}{1-\pi_p}-\log\tfrac{\pi^{\mathrm{train}}_p}{1-\pi^{\mathrm{train}}_p}$, exact for a logistic model. $\lambda\in\{10^{-5},10^{-4},10^{-3}\}$ is chosen by the held-out cross-entropy of the same mixture.
+\item[Logistic regression without bias (\lens{lr\_nobias}).] As above with $b\equiv 0$; instead of a post-hoc shift, the positives are weighted by $\pi_p/\pi^{\mathrm{train}}_p$ in the objective (accumulated in double precision), so the fit sees the corpus prior directly. $\lambda\in\{10^{-6},10^{-7},10^{-8}\}$, chosen the same way. This is the head recommended in Section~\ref{sec:disc}.
+\item[Controls.] A random unit row per phrase ($b=0$) as the floor.
+\end{description}
+
+\paragraph{Metrics.}
+On held-out pre-phrase positions of phrase $p$ (``own'' positions): the rank of the phrase token in the extended vocabulary (median), the fraction in the top-10 and at rank 1, the rank of the phrase's real first token at the same positions, and the median of $\log(\mathrm{rank}_{\mathrm{phrase}}/\mathrm{rank}_{\mathrm{first}})$, which is $0$ when the row is as confident as the model is about the first token. AUROC of the phrase logit at own positions against (a) generic positions, (b) positions before phrases sharing the first token (first-token siblings), (c) positions before other phrases of the same category. On generic positions: the fraction at which the phrase token enters the model's top-10 (should be $\approx 0$), the mean extended-softmax mass on the phrase token divided by $\pi_p$ (should be $\approx 1$), and a prior-weighted expected calibration error. For the lens: at 11 layers, whether the token is in the top-10 of the lens readout, computed exactly to rank 10 and on a rank grid beyond it.
+
+\section{Experiment 1: calibration against training scale}
+\label{sec:e1}
+Brennan's ten phrases (four of which, \emph{blackmail}, \emph{plagiarism}, \emph{cheating}, \emph{Connecticut}, are already single tokens in Qwen's vocabulary), 100 held-out contexts per phrase, 150 / 600 / 2{,}400 training contexts, \EoneGenericEval{} generic evaluation positions. Table~\ref{tab:e1_headline} is the headline.
+
+\input{tables/e1_headline}
+
+\paragraph{The symptom reproduces on the correct model.}
+With the Base model and the Base lens, each of Brennan's rows enters the model's top-10 at 19\% of random generic positions, and the ten together carry 32\% of the softmax mass on ordinary text against a true prior of \EonePriorSum{}. Their logit standard deviation over generic text is 18, ten times a real row's \EoneWuStd{}. Through the lens, every state and president prompt shows the same block of six state and name tokens at every layer in a nearly fixed order; on ``The first president of the United States was'' the block reads John Adams, Abraham Lincoln, George Washington while the model's own top token is `` George''. The direction is not the problem (AUROC 0.97 against generic positions); the scale is.
+
+\paragraph{More data does not help.}
+The \lens{proj} rows are numerically identical at 150, 600 and 2{,}400 contexts (generic top-10 rate 0.188 / 0.188 / 0.188). A mean of 150 vectors of a 4096-dimensional distribution has already converged; more samples estimate the same badly scaled direction more precisely. The ``undertrained'' hypothesis is therefore ruled out for this construction. LDA is likewise flat across scale (AUROC 0.978 $\to$ 0.979), and only the logistic head used the extra data (0.977 $\to$ 0.985 between 150 and 600, flat after).
+
+\paragraph{Whitening fixes precision, not confidence.}
+$\Sigma^{-1}(\mu_p-\hbar)$ cuts the generic top-10 rate to 0.07\% and puts the phrase at rank 1 at 60--70\% of its own positions. But the Gaussian log-odds have a standard deviation of 20 over generic text, so the new tokens still carry 60--70 times their prior mass, and the confusion matrix (Table~\ref{tab:e1_confusion}) shows the consequence: at positions before \emph{Connecticut}, the Rhode Island and New Hampshire tokens are in the top-10 about 60\% of the time, and John Adams still outranks George Washington on the first-president prompt. Rescaling the direction to a real row's logit spread (\lens{lda\_wu}) leaves every rank unchanged, since ranks are decided by the direction: LDA is the right closed-form \emph{direction}, but its logit \emph{scale} must come from elsewhere.
+
+\input{tables/e1_confusion}
+
+\paragraph{The logistic head is calibrated, and needs two things.}
+Fitted over the extended softmax, the rows land in the same logit units as $\WU$: mass on the new tokens $2.7\times10^{-5}$ against a prior of $7\times10^{-5}$, off-diagonal confusion below 0.10, best AUROC. Its honest ranks are the price: at its own pre-phrase positions the phrase token sits at median rank 7--85, the same range as the model's own first token there (3--46); a phrase with a prior of one in $10^5$ is not rank~1 in most contexts where it eventually appears, and neither is `` New'' before ``New Hampshire''. Table~\ref{tab:e1_lr_ablation} records what it took to get here: sixty epochs of minibatch Adam barely moved the rows and recall fell with scale; with L-BFGS but only 400 generic documents as negatives the fit picked up document-specific directions and generic mass rose to $3.7\times10^{-3}$ at 2{,}400 contexts; with all 2{,}000 documents and $\lambda$ chosen on held-out likelihood (Table~\ref{tab:e1_sweep}) it is at prior at every scale.
+
+\input{tables/e1_lr_ablation}
+\input{tables/e1_sweep}
+
+\section{The benchmark}
+\label{sec:bench}
+Experiment 1 could not tell whether a row that fires before ``New Hampshire'' encodes the phrase or merely the fact that `` New'' comes next. The benchmark adds five confusables---\emph{New York} and \emph{New Jersey} (first-token siblings of New Hampshire), \emph{John Quincy Adams} (sibling of John Adams), \emph{Massachusetts} and \emph{Vermont} (category siblings)---and freezes an evaluation set: 200 held-out contexts per phrase (\BnHeld{} usable positions, \BsingleFrac{} single-occurrence), 500 held-out generic documents (\BnGenericEval{} positions), nested training subsets, the lens states at 11 layers for every held-out context under both the J-lens and the logit lens, three disjoint 150-context refits for stability, and the floor and ceiling controls of Section~\ref{sec:heads}. Every head is scored on the same states. Table~\ref{tab:bench_headline} is the headline at 2{,}400 contexts; Table~\ref{tab:bench_scale} the scale dependence; Table~\ref{tab:bench_stability} the refit spread, which bounds every AUROC difference in the other tables at $\pm0.001$.
+
+\input{tables/bench_headline}
+\input{tables/bench_scale}
+\input{tables/bench_stability}
+
+\subsection{The first-token confound}
+Table~\ref{tab:bench_sibling} is the decisive test. Heads fitted on Brennan's ten phrases only, never shown New York, New Jersey or John Quincy Adams, are scored at those phrases' pre-phrase positions. Brennan's New Hampshire row is in the top-10 at 97\% of positions before ``New York'' or ``New Jersey'' and separates them from its own positions at AUROC 0.59; his John Adams row is at 98\% of positions before ``John Quincy Adams'' at AUROC 0.48. These rows detect the first token. A logistic head fitted on the same ten phrases separates New Hampshire from New York and New Jersey at 0.85 and fires at 2--7\% of their positions, so the state before `` New'' does carry which ``New\ldots'' is coming and a mean-difference row discards it. John Adams against John Quincy Adams is at chance for every head; from the John Adams side the two are indistinguishable at the pre-phrase position (the John Quincy Adams row does separate its own contexts, presumably from ``sixth president'' cues), and no claim should rest on that pair.
+
+\input{tables/bench_sibling}
+
+\subsection{A bias term is a lens hazard}
+The biased logistic head is the best calibrated at the final layer (Table~\ref{tab:bench_headline}: mass 0.4$\times$ prior, ECE $10^{-5}$). Its bias, however, is a constant of $+7$ to $+10$ logits added to a state that, when the lens transports an early-layer residual, has compressed real logits. Table~\ref{tab:bench_profiles} and Figure~\ref{fig:profiles} show the result over all held-out contexts: under the J-lens the biased head puts the phrase token in the top-10 at 49\% of contexts at layer 8 and 20\% at layer 4, where the real first token is at 0\%; the hand prompts (Table~\ref{tab:hand_prompts}) show four to eight phrase tokens in the top-10 at layer 8. That is Brennan's failure in a smaller dose. Real unembedding rows have no bias, and neither should a phrase row. The bias-free head, weighted to the prior instead, is at 6\% / 14\% at layers 4 / 8 under the J-lens and 1\% / 5\% under the logit lens, and its per-prompt counts at layer 8 are 0--2.
+
+\input{tables/bench_profiles}
+
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}
+\begin{axis}[width=0.9\textwidth,height=6.2cm,xlabel={layer},ylabel={fraction in top-10},ymin=0,ymax=1,grid=major,legend pos=north west,legend style={font=\scriptsize},legend columns=2,xtick={4,8,12,16,20,24,28}]
+\addplot[black,thick] table[x=layer,y=first] {figures/bench_profiles.dat};\addlegendentry{real first token, J-lens}
+\addplot[black,dashed] table[x=layer,y=first_logit] {figures/bench_profiles.dat};\addlegendentry{real first token, logit lens}
+\addplot[red!70!black,thick] table[x=layer,y=proj] {figures/bench_profiles.dat};\addlegendentry{phrase, Brennan}
+\addplot[orange!80!black,thick] table[x=layer,y=lr] {figures/bench_profiles.dat};\addlegendentry{phrase, LR with bias}
+\addplot[blue!60!black,thick] table[x=layer,y=lda] {figures/bench_profiles.dat};\addlegendentry{phrase, LDA}
+\addplot[teal!80!black,very thick] table[x=layer,y=lrnb] {figures/bench_profiles.dat};\addlegendentry{phrase, LR no bias}
+\addplot[teal!80!black,dashed] table[x=layer,y=lrnb_only] {figures/bench_profiles.dat};\addlegendentry{phrase in top-10, first token not}
+\end{axis}
+\end{tikzpicture}
+\caption{Benchmark layer profiles under the Hub J-lens (target 31), all \BnHeld{} held-out contexts, heads at 2{,}400 contexts. Brennan's rows and the biased logistic head are ``in the top-10'' at layer 8, where nothing real is; the bias-free head tracks the real first token's curve.}
+\label{fig:profiles}
+\end{figure}
+
+\subsection{The bias-free head}
+It has the best or joint-best direction (AUROC 0.981--0.982 against generic positions, 0.73--0.74 against first-token siblings, 0.81--0.82 against category siblings), mass $1.0\times$ prior, and a rank at its own positions within a factor 1.25 of the model's own first-token rank there (median $\log$ ratio $+0.22$; LDA is $-1.43$, i.e.\ four times \emph{more} confident than the model about `` New''; Brennan's is $-2.70$). Table~\ref{tab:bench_perphrase} gives it per phrase: rank 4--19 for thirteen phrases, with John Adams (148) and John Quincy Adams (214) the exceptions, where the two rows split the `` John'' evidence. It is as stable as the others (Table~\ref{tab:bench_stability}). Copy contexts are easier for every fitted head (Table~\ref{tab:bench_copy}: AUROC 0.995 against 0.979), but single-occurrence performance stays high, so induction copying is not what the heads read; Brennan's head is indifferent to the bucket because it fires regardless.
+
+\input{tables/bench_perphrase}
+\input{tables/bench_copy}
+
+\subsection{What the lens shows with a calibrated row}
+The dashed teal curve in Figure~\ref{fig:profiles} is the population in which the phrase token is in the lens top-10 while the phrase's real first token is not: 13--25\% of contexts through layers 8--24. That is where a multi-token row shows something the single-token readout does not, and it is the thing to examine next; its early-layer end is exactly where Section~\ref{sec:rlens} shows the J-lens to be least trustworthy. On the hand prompts, ``Trenton is the capital of'' reads \emph{New Jersey} first from layer 24 through the model's own logits; ``Concord is the capital of the state of'' reads \emph{Massachusetts} and \emph{New Hampshire} at layers 24--26, then the model's `` New'' with \emph{New Hampshire} at rank 4. The George Washington row is the weakest (never in the top-10 for 54\% of its own contexts) and shows nothing on the president prompts, where LDA still ranks John Adams above George Washington.
+
+\subsection{Two things the $\lambda$ sweeps say}
+At 150 and 600 contexts the held-out likelihood prefers the strongest $L_2$ for the biased head ($10^{-3}$) while the weakest ($10^{-5}$) ranks better; the likelihood-optimal and rank-optimal regularisation differ at small data, and which to use depends on whether the rows are read as probabilities or as rankings. For the bias-free head, the $L_2$ that suited the biased fit crushes it: with positives down-weighted to their prior, $\lambda=10^{-4}$ gave AUROC 0.94, and $10^{-6}$ (chosen at every scale) gives 0.98.
+
+\section{The R-lens}
+\label{sec:rlens}
+\subsection{Definition and implementation}
+The R-lens \cite{blank2026rlens} is the estimator of Eq.~\eqref{eq:jlens} with three layer-wise-relevance-propagation rules (RelP, \cite{relp2025}) installed in the backward pass, so that what is transported and averaged is a relevance coefficient rather than a raw gradient:
+\begin{align*}
+\text{LN-rule:}&\quad \mathrm{RMSNorm}(x)=x\cdot\underbrace{(\mathrm{mean}(x^2)+\epsilon)^{-1/2}}_{\text{constant in backward}}\cdot(1+w),\\
+\text{identity-rule:}&\quad \mathrm{SiLU}(g)=g\cdot\underbrace{\sigma(g)}_{\text{constant in backward}},\\
+\text{half-rule:}&\quad a\odot u \;\to\; \beta\,(a\odot \mathrm{sg}[u]) + (1-\beta)\,(\mathrm{sg}[a]\odot u),\quad \beta=\tfrac12,
+\end{align*}
+where $\mathrm{sg}$ is stop-gradient and $a\odot u$ is the SwiGLU product. The provenance stored in the authors' \texttt{qwen3.5-9b/r-lens/lens.pt} (\texttt{camilablank/workspace-lenses}) fixes the configuration we copied: the three rules with $\beta=0.5$, the q/k RMSNorms and the GatedDeltaNet gated norms left untouched, target layer 30 (penultimate), 25 prompts from \texttt{NeelNanda/pile-10k} at 128 tokens, skip-first 4. We implemented the rules as instance-level forward overrides on the two residual RMSNorms of each block, the final norm, and the gated MLP, each returning $\mathrm{sg}[y_{\mathrm{std}}]+(y_{\mathrm{RelP}}-\mathrm{sg}[y_{\mathrm{RelP}}])$ so that the forward value is the standard one bit for bit and only the gradient changes (a first attempt that recomputed SiLU as $g\,\sigma(g)$ in bfloat16 drifted by 1\% over 32 layers). A J-lens and an R-lens were then fitted on the base model with this recipe (16 output dimensions per backward pass, 21 minutes each on an H100). The R-lens per-prompt Jacobian norms are about half the J-lens's ($\max\|J\|/\sqrt d$ of 2.9 against 5.6 at the last prompt), as the half-rule and the dropped normalisation terms predict.
+
+\subsection{pass@10 on two-hop questions}
+Fifty base-model prompts of the form ``Fact: The capital of the country where the Eiffel Tower stands is'' with a latent intermediate (France) and an answer (Paris); the full list, with the baseline accuracy of each, is Table~\ref{tab:multihop}. pass@10 asks whether the intermediate's first token is in the lens top-10 at the penultimate token (Table~\ref{tab:rlens_pass10}, Figure~\ref{fig:pass10}). Both lenses read the intermediate from layer 6, where the logit lens shows nothing until layer 24. The R-lens leads at layers 4--6 and 22--26 and the J-lens is marginally ahead at 12--16; over all layers the means are \PtenMeanrlens{} (R), \PtenMeanjlens{} (J) and \PtenMeanlogit{} (logit), and over layers 0--15 \PtenEarlyrlens{}, \PtenEarlyjlens{}, \PtenEarlylogit{}. The direction matches the post; the size of the gain on a 9B dense base model is modest, and the post itself reports its largest gains on a large MoE.
+
+\input{tables/rlens_pass10}
+
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}
+\begin{axis}[width=0.9\textwidth,height=5.6cm,xlabel={layer},ylabel={pass@10 at position $-2$},ymin=0,ymax=1,grid=major,legend pos=north west,legend style={font=\scriptsize}]
+\addplot[teal!80!black,very thick] table[x=layer,y=R] {figures/pass10.dat};\addlegendentry{R-lens}
+\addplot[black,thick] table[x=layer,y=J] {figures/pass10.dat};\addlegendentry{J-lens}
+\addplot[gray,dashed,thick] table[x=layer,y=logit] {figures/pass10.dat};\addlegendentry{logit lens}
+\end{axis}
+\end{tikzpicture}
+\caption{pass@10 by layer on the \ATnQ{} two-hop questions, read at the penultimate token. Layer 30 is the target layer of the matched pair, so all three coincide there.}
+\label{fig:pass10}
+\end{figure}
+
+\subsection{Direction ablation}
+For each question and lens we take the unit direction $d_\ell=\mathrm{normalize}(J_\ell^\top(\gamma\odot\WU[t]))$ of the intermediate's first token $t$ at every layer ($J=I$ for the logit lens and for layers $\ge 30$; $\gamma$ is the final-norm gain), project it out of the residual, $h\leftarrow h-(h\cdot d_\ell)\,d_\ell$, at the penultimate token during the prompt forward pass---at layers 0--15 or at all layers---and sample eight continuations at temperature 0.7, top-$p$ 0.95, twelve new tokens; a continuation is correct if it contains an answer alias. A random unit direction per layer is the control, and a variant also removes the direction at the last token. \ATnGood{} of \ATnQ{} questions have baseline accuracy $\ge0.5$ (mean \ATbase) and enter the summary; intervals are bootstraps over questions. Table~\ref{tab:rlens_ablation} and Figure~\ref{fig:ablation} give the results, Table~\ref{tab:rlens_paired} the paired R-minus-J differences, Table~\ref{tab:rlens_examples} the most affected questions.
+
+\input{tables/rlens_ablation}
+\input{tables/rlens_paired}
+
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}
+\begin{axis}[width=0.9\textwidth,height=5.6cm,ybar,bar width=9pt,ylabel={relative accuracy loss},ymin=-0.1,ymax=0.35,grid=major,
+  xtick=data,xticklabels from table={figures/ablation.dat}{label},x tick label style={rotate=35,anchor=east,font=\scriptsize},enlarge x limits=0.08]
+\addplot+[fill=teal!60!black,draw=none,error bars/.cd,y dir=both,y explicit] table[x=idx,y=loss,y error plus expr=\thisrow{hi}-\thisrow{loss},y error minus expr=\thisrow{loss}-\thisrow{lo}] {figures/ablation.dat};
+\end{axis}
+\end{tikzpicture}
+\caption{Relative two-hop accuracy loss from projecting the intermediate's direction out of the penultimate token, with 95\% bootstrap intervals over the \ATnGood{} baseline-correct questions.}
+\label{fig:ablation}
+\end{figure}
+
+\input{tables/rlens_examples}
+
+Three things follow. First, \emph{the lens directions are causally load-bearing and the logit-lens direction is not}: a single rank-one removal per layer at one position costs 14--16\% of two-hop accuracy for either lens and 10--11\% when only the first sixteen layers are touched, while the logit-lens and random directions cost nothing (every interval includes zero); \ATwipe{} questions go from at least 6/8 to 0/8 under either lens direction and stay correct under the controls. This is the qualitative content of the post's attribution figure, here with controls and intervals. Second, \emph{R-lens and J-lens are not distinguishable by this test on this model}: the paired differences at the penultimate position are within $\pm0.02$ with intervals spanning zero, and with the last position included the J-lens direction removes slightly more (significant at the 5\% level). The post's ``much larger'' R-lens effect does not reproduce on Qwen3.5-9B-Base with \ATnGood{} questions and alias-matched accuracy; their result was obtained on larger instruction-tuned models with an autorater. On this model the R-lens's advantage is in the readout, not in the ablation. Third, \emph{position matters}: removing the direction at the last token as well doubles the damage and makes even the logit-lens direction bite (33\%), because at the answer position the intermediate is already represented in the unembedding basis at late layers; the post's choice of the penultimate position is what isolates the lens-specific contribution.
+
+\subsection{The phrase benchmark under the matched lenses}
+Table~\ref{tab:rlens_phrases} and Figure~\ref{fig:rlens_phrases} recompute the benchmark's held-out profiles under the matched pair and the logit lens, with the bias-free head refit from the stored states (row norms 2.23, identical to the benchmark run). Under the J-lens the bias-free phrase row was in the top-10 at 6\% / 17\% / 20\% of contexts at layers 4 / 8 / 12, where the real first token is at 0--3\%; under the R-lens it is 0\% / 8\% / 10\%, and the late-layer curves are unchanged. The R-lens also surfaces the real first token slightly earlier (0.23 / 0.30 / 0.41 against 0.20 / 0.27 / 0.39 at layers 24 / 26 / 28), the same ordering as in the two-hop pass@10. Brennan's head stays saturated under either lens (36\% at layer 8, 87\% at layer 24 under the R-lens): its problem is the row, not the lens. Absolute numbers differ from Table~\ref{tab:bench_profiles} because that table used the Hub lens (target 31, 458 prompts) and this pair targets layer 30 with 25 prompts, so layer 30 is read without transport.
+
+\input{tables/rlens_phrases}
+
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}
+\begin{axis}[width=0.9\textwidth,height=6cm,xlabel={layer},ylabel={fraction in top-10},ymin=0,ymax=1,grid=major,legend pos=north west,legend style={font=\scriptsize},legend columns=2,xtick={4,8,12,16,20,24,28}]
+\addplot[black,thick] table[x=layer,y=first_R] {figures/rlens_phrases.dat};\addlegendentry{first token, R-lens}
+\addplot[black,dashed] table[x=layer,y=first_J] {figures/rlens_phrases.dat};\addlegendentry{first token, J-lens}
+\addplot[teal!80!black,very thick] table[x=layer,y=lr_R] {figures/rlens_phrases.dat};\addlegendentry{phrase (LR no bias), R-lens}
+\addplot[teal!80!black,dashed] table[x=layer,y=lr_J] {figures/rlens_phrases.dat};\addlegendentry{phrase (LR no bias), J-lens}
+\addplot[gray,dotted,thick] table[x=layer,y=lr_logit] {figures/rlens_phrases.dat};\addlegendentry{phrase (LR no bias), logit lens}
+\addplot[red!70!black,thick] table[x=layer,y=proj_R] {figures/rlens_phrases.dat};\addlegendentry{phrase (Brennan), R-lens}
+\end{axis}
+\end{tikzpicture}
+\caption{Phrase-benchmark profiles under the matched J-lens / R-lens pair (target 30), \RPnHeld{} held-out contexts. The R-lens removes the early-layer phrase hits and leaves the late layers unchanged.}
+\label{fig:rlens_phrases}
+\end{figure}
+
+\section{Beyond proper nouns: a generalisation study}
+\label{sec:gen}
+The benchmark's phrases were proper nouns. To find the boundary of the method we ran the same recipe on five further axes, each with sibling groups so that the first-token test of Section~\ref{sec:bench} runs everywhere: 45 compositional noun phrases in 16 first-token groups (\emph{ice cream / ice age / ice hockey}, \emph{hard drive / hard disk / hard work}), 43 verb phrases and idioms in 14 groups (\emph{take into account / take place / take advantage / take care}, \emph{in spite of / in addition to / in front of / in terms of}), 20 abstract concepts defined by surface-form sets (\emph{betrayal} = betray, betrayed, treachery, \ldots; \emph{recursion} = recursion, recursive, recursively) in four category groups, 28 named events, dates and years in 12 groups (\emph{French Revolution / French Riviera}, \emph{July 4, 1776 / July 20, 1969}, \emph{1984 / 1989}), and 12 concepts in four languages (English, Spanish, French, Chinese, each mined from its own FineWeb or FineWeb-2 corpus). Everything else is as in Section~\ref{sec:bench}: 200 held-out contexts per phrase, up to 1{,}200 training contexts (300 for \emph{kick the bucket}, 97--531 for four rare event strings), the benchmark's generic negatives, and the bias-free logistic row at $\lambda=10^{-6}$. Two additions: a \emph{presence probe} (one binary logistic row per phrase, positives = the pre-phrase position and every token inside the phrase, no softmax competition), and ROC-style metrics throughout: TPR at FPR $10^{-4}$, $10^{-3}$, $10^{-2}$ against generic text and against siblings, FPR at TPR 0.9, the same at every position from two tokens before the phrase to one after, and, for ``when it pops up'', TPR at FPR $10^{-2}$ at each lens layer with the threshold taken from 18{,}622 generic positions transported through the same lens to the same layer. Tables~\ref{tab:gen_headline}--\ref{tab:gen_xling_concepts} and Figure~\ref{fig:gen_layers} hold the results; \path{modal_exp/results/GEN_<axis>.md} the per-phrase detail.
+
+\input{tables/gen_headline}
+\input{tables/gen_layers}
+\input{tables/gen_earliest}
+
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}
+\begin{axis}[width=0.9\textwidth,height=6cm,xlabel={layer},ylabel={TPR at FPR $10^{-2}$ (R-lens)},ymin=0,ymax=1,grid=major,legend pos=north west,legend style={font=\scriptsize},legend columns=2,xtick={8,12,16,20,24,28}]
+\addplot[teal!80!black,very thick] table[x=layer,y=nouns_R] {figures/gen_layers.dat};\addlegendentry{nouns}
+\addplot[blue!60!black,thick] table[x=layer,y=verbs_R] {figures/gen_layers.dat};\addlegendentry{verb phrases}
+\addplot[orange!80!black,thick] table[x=layer,y=abstract_R] {figures/gen_layers.dat};\addlegendentry{abstract concepts}
+\addplot[red!70!black,thick] table[x=layer,y=events_R] {figures/gen_layers.dat};\addlegendentry{events, dates, years}
+\addplot[black,dashed] table[x=layer,y=nouns_first] {figures/gen_layers.dat};\addlegendentry{real first token in top-10 (nouns)}
+\addplot[black,dotted] table[x=layer,y=events_first] {figures/gen_layers.dat};\addlegendentry{real first token in top-10 (events)}
+\end{axis}
+\end{tikzpicture}
+\caption{When the phrase pops up: TPR of the bias-free row at a fixed 1\% false-positive rate, by R-lens layer, mean over the phrases of each axis. Dashed and dotted: the rate at which the phrase's real first token is in the lens top-10 at the same positions.}
+\label{fig:gen_layers}
+\end{figure}
+
+\paragraph{The method leaves proper nouns intact.}
+Every axis separates its phrases from generic text at AUROC 0.98--0.99, and at a false-positive rate of one in a thousand a row still recovers 58\% (verb phrases) to 87\% (events) of the positions at which its phrase is about to appear; at one in ten thousand, 35--71\%. Mass on the new tokens stays within 2--3$\times$ the corpus prior.
+
+\paragraph{Sibling separation tracks semantic distance, not syntax.}
+Rows fitted with their first-token siblings present separate them at AUROC 0.88--0.92 on average (Table~\ref{tab:gen_siblings}). The failures are the pairs a reader would also be unable to tell apart at that position: \emph{hard drive} vs \emph{hard disk} (0.80 / 0.76, sibling TPR 0.03--0.05), \emph{health care} vs \emph{health insurance} (0.69 / 0.80), \emph{climate change} vs \emph{climate crisis} (0.75), \emph{World War II} vs \emph{World War I} (0.86), \emph{irony} vs \emph{hypocrisy} and \emph{ambition} (0.82), and the cleanest negative, \emph{1984} vs \emph{1989} (0.58 / 0.63, sibling TPR 0.02): the state before a year says ``a year comes next'' (AUROC 1.00 against generic text) and nothing about which year. The successes are pairs whose continuations live in different worlds: \emph{machine learning} vs \emph{machine gun} 0.98, \emph{black pepper} vs \emph{black hole} / \emph{black market} 0.99, \emph{prime number} vs \emph{prime minister} 0.98, \emph{photosynthesis} vs the other sciences 0.98, \emph{inflation} vs the other economy concepts 0.99.
+
+\input{tables/gen_siblings}
+
+\paragraph{When a phrase pops up depends on how far the context has already committed.}
+Named events and dates are readable early: at layer 8 the events row already recovers 51\% of its positions at FPR $10^{-2}$, and 15 of 28 event phrases reach half-recall by layer 8 (\emph{Great Depression}, \emph{Great Barrier Reef}, \emph{2008 financial crisis}, \emph{July 4, 1776}, \emph{Berlin Wall}, \emph{moon landing}). Compositional nouns and verb phrases mostly arrive at layers 20--24 (median 20); abstract concepts at 24--28 (median 24), with the technical ones ahead (\emph{photosynthesis} at 8, \emph{recursion} 12, \emph{inflation} 20) of the emotions (\emph{betrayal}, \emph{regret}, \emph{gratitude} 24; \emph{jealousy}, \emph{curiosity} 28; \emph{nostalgia} never). Within an axis the same rule holds: \emph{ice age} and \emph{solar system} by layer 8, \emph{ice cream} and \emph{high school} not before 28, because the former are predictable from their topic and the latter appear anywhere.
+
+\paragraph{The phrase row is ahead of the model's own next-token prediction at every layer.}
+At layer 24 the rows recover 62--89\% of upcoming phrases at FPR $10^{-2}$ while the phrase's real first token is in the lens top-10 at 10--39\% of the same positions; even at the final layer the first token is in the top-10 at only 45--72\% (Table~\ref{tab:gen_layers}). The row reads ``this phrase is coming'' from a state in which the model has not yet settled on the phrase's first token.
+
+\paragraph{At fixed FPR the R-lens and J-lens agree; top-10 counts do not.}
+With thresholds calibrated on generic lens states, the TPR curves under the two lenses agree to $\pm0.03$ at every layer (the R-lens is ahead at layer 8 for events, 0.51 vs 0.45). Top-10 rates differ by up to 0.2 at layers 8--16, J-lens higher, which is the early-layer inflation of the J-lens's real logits seen in Section~\ref{sec:rlens}. Fixed-FPR metrics are the right ones for ``when does it pop up''.
+
+\paragraph{The row and the presence probe answer different questions.}
+The row fires at the token before the phrase (TPR 0.8--0.97 at FPR $10^{-2}$ for verb phrases) and already at the token before that in 20--58\% of contexts, then switches off inside the phrase (0.02--0.7 at the first token, depending on whether the second word is still open: \emph{kick} $\to$ 0.72, \emph{take care} $\to$ 0.02). The probe covers the inside of the phrase at 0.9--1.0 and lingers after it (0.2--0.6 for verb phrases, 0.4--0.9 for abstract concepts, which stay active longer than idioms), and is weaker at the pre-phrase position (AUROC 0.90--0.97) because it spends its capacity inside. It fails outright on the rarest phrase (\emph{kick the bucket}, 300 contexts, TPR 0.00 at every position): with positives weighted to a prior of $10^{-7}$ and no softmax to anchor the scale, 300 positives are too few, while the row on the same contexts is fine (TPR 0.81).
+
+\paragraph{One softmax for everything costs little and calibrates better.}
+Fitting the 136 rows of the four English axes jointly against the same negatives (Table~\ref{tab:gen_joint}) loses 0.003--0.006 AUROC and 0.01--0.03 TPR at FPR $10^{-3}$ per axis relative to the separate fits, and 0.004--0.025 sibling AUROC; the mass-to-prior ratios drop from 1.6--3.0 to 1.0--1.7 because the rows now compete, and the rows stay diverse (mean pairwise cosine 0.065, participation ratio 84 of 136). The confound we deferred is real but small; a single joint head is the right default for a lens with many phrases.
+
+\input{tables/gen_joint}
+
+\paragraph{Cross-lingual rows transfer, with a language-specific component on top.}
+Twelve concepts in English, Spanish, French and Chinese, each language mined from its own corpus (FineWeb-2 for the non-English ones). A row fitted on language $a$ is scored at language $b$'s pre-phrase positions of the same concept against $b$'s positions of the other eleven concepts, so language identity cannot carry the score (a first pass with English generic thresholds read as ``no transfer'', TPR 0.07--0.13, which was the negatives being out of distribution). Tables~\ref{tab:gen_xling} and \ref{tab:gen_xling_concepts}: an English row separates the concept from the others in Spanish, French or Chinese at AUROC 0.87--0.91 (0.98 at home), recovering 36--49\% of positions at FPR $10^{-2}$ against 79\% in English; Spanish and French share the most (0.94 both ways), Chinese the least (0.82--0.87), and every direction is symmetric to within 0.03. \emph{Climate change}, \emph{solar system}, \emph{civil war}, \emph{human rights} and \emph{health insurance} transfer at 0.92--0.99, \emph{credit card} (English $\to$ Spanish 0.69) and \emph{ice cream} least. The presence probe transfers better still (English $\to$ 0.97 / 0.96 / 0.89): whether a concept is \emph{present} is more language-neutral than whether the model is \emph{about to say} it, which is the row's question and carries the surface form with it. Own-language rows for the non-English text are as good as the English ones (Spanish and French 0.99, Chinese 0.97), so none of this is an English artefact. The row direction is largely shared across languages, with a language-specific component on top.
+
+\input{tables/gen_xling}
+\input{tables/gen_xling_concepts}
+
+\section{Discussion and recommendations}
+\label{sec:disc}
+\paragraph{What the rows measure.}
+A mean-difference row through a strongly anisotropic state (every post-norm state has cosine $\approx0.7$ with $\hbar$) inherits the high-variance directions of that state. Subtracting $\hbar$ removes the mean, not the variance, and unit-normalising amplifies what is left into a prompt-independent offset of tens of logits. Whitening removes the variance but, as a Gaussian log-odds, overstates the evidence about tenfold. Only a head fitted against the real softmax lands in the model's own units, and only a head without a bias stays in those units when the lens transports a state whose scale differs from the final layer's. These three statements are Tables~\ref{tab:e1_headline}, \ref{tab:bench_headline} and \ref{tab:bench_profiles}.
+
+\paragraph{What the benchmark adds.}
+Confusables are not optional. Without them, Experiment~1's ``rank~1 at 98\% of own positions'' looks like success; with them it is a first-token detector (Table~\ref{tab:bench_sibling}). The same table shows the positive result: the pre-phrase state does carry phrase identity beyond the first token, at least for the New Hampshire / New York / New Jersey triple, and the fitted heads read it. The John Adams / John Quincy Adams pair is the negative result, and it is worth remembering when choosing phrases: names that share a first token and a category may not be separable at all at the pre-phrase position.
+
+\paragraph{What the R-lens adds.}
+For phrase heads, cleaner early layers at no cost: same forward, same fit time, and the suspect layer-4 and layer-8 hits of the benchmark largely disappear. For causal claims, the ablation protocol with logit-lens and random controls separates lens directions from controls cleanly at forty-three questions, and it does not separate R from J on this model.
+
+\paragraph{Recommended changes to the fork.}
+\begin{enumerate}[leftmargin=1.6em,itemsep=2pt]
+\item Use \texttt{Qwen/Qwen3.5-9B-Base} with a Base lens, or fit a lens on the post-trained model (bug 2 of Appendix~\ref{app:review}).
+\item Replace \texttt{PRIOR\_REPRESENTATION\_EMBED*} with the bias-free logistic head: freeze everything, add $n$ rows (no biases), minimise the extended-softmax cross-entropy on the union of (pre-phrase positions $\to$ phrase token, weighted by $\pi_p/\pi_p^{\mathrm{train}}$) and (generic and in-context positions $\to$ real next token), L-BFGS, $\lambda\approx10^{-6}$. The states from \texttt{collect\_embeddings.py} plus a generic-corpus pass are all that is needed; fitting takes under a minute on an A100.
+\item Keep the $\hbar/\Sigma$ pipeline only as the closed-form fallback, and label its logits as over-confident.
+\item Before any lens plot, report for each row: AUROC against generic positions and against first-token siblings, mass against prior, and rank relative to the phrase's first token. A row that fails the sibling test is a first-token detector.
+\item Read the lens with the R-lens, show the phrase's first token alongside, and treat phrase hits below layer 16 as suspect until the row's early-layer false-positive rate on held-out contexts is known.
+\item Use the ablation protocol of Section~\ref{sec:rlens} as the causal check for any new head.
+\end{enumerate}
+
+\paragraph{Limitations.}
+One model at one size. Two-sentence contexts and the copy bucket as in Brennan's recipe (a variant that drops contexts where the phrase already appeared is not run). Prior-weighted ECE is dominated by the generic class and near zero for every calibrated head; the mass/prior ratio is the more discriminating number. Lens ranks beyond 10 are bucketed on a grid. Fifty hand-written two-hop questions with alias matching rather than an autorater; the post's projection operator is not specified, so $d_\ell=\mathrm{normalize}(J_\ell^\top(\gamma\odot\WU[t]))$ is our reading of ``the projection of the lens direction for the intermediate token''. The R-lens pair is fitted on 25 prompts as in the authors' artifacts. The 20 hand prompts are illustrations; the held-out profiles are the evidence.
+
+\bibliographystyle{plain}
+\bibliography{refs}
+
+\appendix
+\section{The code review (2026-09-05, commit \texttt{eb6d855})}
+\label{app:review}
+Ordered by impact, as filed in \texttt{REVIEW.md}.
+\begin{enumerate}[leftmargin=1.6em,itemsep=2pt]
+\item \texttt{extend\_model.py:49} passes a list of strings to \texttt{tokenizer.encode}, which treats it as pre-tokenised tokens of one sequence; the \texttt{AVERAGE\_TOKEN\_WEIGHTS} path is broken. Encode each phrase separately with a leading space.
+\item Lens/model mismatch: the notebook loads the post-trained \texttt{Qwen/Qwen3.5-9B} with the Hub lens fitted on \texttt{Qwen3.5-9B-Base}.
+\item \texttt{collect\_embeddings.py:138} clamps \texttt{token\_start-1} to 0, so a phrase at the start of a context yields the state at its own first token. Skip those contexts (74 of 25{,}000 in Experiment~1, 138 of 37{,}700 in the benchmark).
+\item Two contradicting normalisations (\texttt{\_EMBED} subtracts $\hbar$, \texttt{\_PROJ} projects it out) coexist; only one is used, and they are nearly identical in effect.
+\item A gradient hook to ``freeze the new input rows during training'' when nothing trains; \texttt{config.vocab\_size} set redundantly.
+\item Case variants are merged only with \texttt{--case-insensitive}, which the README pipeline omits.
+\item A test depends on dictionary ordering of \texttt{phrase\_means.pt}.
+\item New-token strings lack the leading space every in-text $\WU$ token has.
+\end{enumerate}
+The 2026-09-05 review also diagnosed, on a toy replica (\texttt{cone\_test.py}, \texttt{sink\_test.py}, Qwen2.5-1.5B), the anisotropy mechanism confirmed at scale in Section~\ref{sec:e1}, and recommended the logistic-regression head, a held-out calibration check, and confusable pairs; this report is the execution of those recommendations.
+
+\section{Hand prompts and the question set}
+\input{tables/hand_prompts}
+\input{tables/multihop}
+
+\section{Reproduction and compute}
+\label{app:repro}
+All code is in \path{~/notes/brennan-jlens-review/modal_exp/} and runs on Modal in the \texttt{d-model} workspace against the volume \texttt{jlens-multitoken}, which holds the model cache, mined contexts, collected states (\path{states/states.pt}, \path{states/bench.pt}), the fitted lenses (\path{lenses/base_jlens_t30.pt}, \path{lenses/base_rlens_t30.pt}) and every result file.
+\begin{itemize}[leftmargin=1.6em,itemsep=1pt]
+\item Experiment 1: \path{jlens_mt.py} (\texttt{--stage mine | merge | collect | eval}); results \path{results/results.json}, with the Adam and 400-document passes kept as \path{results_adam.json} and \path{results_lbfgs_400docs.json}.
+\item Benchmark: \path{jlens_bench.py} (same stages); \path{results/bench.json}, with the pass before the bias-free head as \path{bench_v1_biasonly.json}.
+\item R-lens: \path{jlens_rlens.py} (\texttt{--stage fit | attribution | phrases}); \path{results/rlens_attribution.json}, \path{rlens_phrases.json}.
+\item This document: \path{paper/make_tables.py} then \texttt{tectonic main.tex}; the HTML companion \path{paper/report.html} is built by \path{paper/make_html.py} from the same table file.
+\end{itemize}
+Compute, wall-clock: mining 5 min on 15 CPU containers per phrase set; state collection 12--15 min on an H100; head fitting and evaluation 20--25 min on an A100-80GB per pass (six passes in total across the two experiments); lens fitting 21 min per lens on an H100; the attribution run 35 min and the matched-lens phrase profiles 10 min on an H100. Everything is public: the model, the Hub lens, the authors' R-lens artifacts and FineWeb need no token.
+
+\end{document}

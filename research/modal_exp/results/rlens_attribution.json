@@ -1,0 +1,4302 @@
+{
+ "items": [
+  {
+   "prompt": "Fact: The currency used in the country shaped like a boot is",
+   "answer": [
+    "euro",
+    "lira"
+   ],
+   "intermediate": "Italy",
+   "base_acc": 1.0,
+   "base_samples": [
+    " the euro.\nQuestion: The currency used in the country",
+    " the euro.\n\nQuestion: Which of the following sentences is",
+    " the Euro.\nQuestion: Which of the following might be"
+   ],
+   "abl": {
+    "rlens|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " the euro.\nQuestion: In a country shaped like a"
+    },
+    "rlens|first_half|(-2, -1)": {
+     "acc": 0.875,
+     "sample": " the euro.\nQuestion: Which of the following options is"
+    },
+    "rlens|all|(-2,)": {
+     "acc": 0.875,
+     "sample": " the euro.  \nQuestion: Which country uses the euro as"
+    },
+    "rlens|all|(-2, -1)": {
+     "acc": 0.875,
+     "sample": " the euro.\nQuestion: If a man were to travel"
+    },
+    "jlens|first_half|(-2,)": {
+     "acc": 0.875,
+     "sample": " the Euro.\nQuestion: What currency is used in a"
+    },
+    "jlens|first_half|(-2, -1)": {
+     "acc": 0.75,
+     "sample": " the peseta.  \nQuestion: Which currency is used in"
+    },
+    "jlens|all|(-2,)": {
+     "acc": 0.875,
+     "sample": " the euro.\nQuestion: Does the euro have a currency"
+    },
+    "jlens|all|(-2, -1)": {
+     "acc": 0.875,
+     "sample": " the euro.\nQuestion: Where is the euro used?"
+    },
+    "logit|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " the euro.  \nQuestion: Which of the following sentences is"
+    },
+    "logit|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the euro.\n\nQuestion: In which country is the euro"
+    },
+    "logit|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " the euro.\nQuestion: Which of the following is something"
+    },
+    "logit|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the euro.\nQuestion: What is the currency used in"
+    },
+    "random|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " the euro.\nQuestion: Where is the euro used?"
+    },
+    "random|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the euro.  \nQuestion: Which country\u2019s currency is the"
+    },
+    "random|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " the Euro.\nQuestion: Which country is shaped like a"
+    },
+    "random|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the euro.  \nQuestion: What is the currency in Italy"
+    }
+   }
+  },
+  {
+   "prompt": "Fact: The capital of the country where the Eiffel Tower stands is",
+   "answer": [
+    "Paris"
+   ],
+   "intermediate": "France",
+   "base_acc": 1.0,
+   "base_samples": [
+    " Paris.\nQuestion: What is the capital of the country",
+    " Paris.\nQuestion: The Eiffel Tower is in\n",
+    " Paris.\nQuestion: Which of the following statements is most"
+   ],
+   "abl": {
+    "rlens|first_half|(-2,)": {
+     "acc": 0.875,
+     "sample": " Paris.\nQuestion: Which country's capital is Paris?"
+    },
+    "rlens|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Paris.  \nQuestion: What is the capital of the country"
+    },
+    "rlens|all|(-2,)": {
+     "acc": 0.875,
+     "sample": " the same as the capital of the country where the Taj Mah"
+    },
+    "rlens|all|(-2, -1)": {
+     "acc": 0.375,
+     "sample": " a city located in the northwest of its nation, on the"
+    },
+    "jlens|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Paris. Question: The capital of which country is Paris?"
+    },
+    "jlens|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Paris.\nQuestion: Which of the following is a capital"
+    },
+    "jlens|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Paris. Question: In which country is the Eiffel Tower"
+    },
+    "jlens|all|(-2, -1)": {
+     "acc": 0.375,
+     "sample": " called Paris.\nQuestion: Where is the Eiffel Tower"
+    },
+    "logit|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Paris.\nQuestion: Which country is the Eiffel Tower"
+    },
+    "logit|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Paris.\nQuestion: Which country's capital city is Paris"
+    },
+    "logit|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Paris.\nQuestion: Paris is the capital of which country"
+    },
+    "logit|all|(-2, -1)": {
+     "acc": 0.5,
+     "sample": " a city with a population of 2.2 million and"
+    },
+    "random|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Paris.\nQuestion: Which of the following options is most"
+    },
+    "random|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Paris.  \nQuestion: Is Paris the capital of France?"
+    },
+    "random|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Paris.\nQuestion: What country is the Eiffel Tower"
+    },
+    "random|all|(-2, -1)": {
+     "acc": 0.875,
+     "sample": " Paris.\nQuestion: The Eiffel Tower is in what"
+    }
+   }
+  },
+  {
+   "prompt": "Fact: The official language of the country whose capital is Madrid is",
+   "answer": [
+    "Spanish",
+    "Castilian"
+   ],
+   "intermediate": "Spain",
+   "base_acc": 1.0,
+   "base_samples": [
+    " Spanish.  \nQuestion: What language is spoken in Spain?",
+    " Spanish.\nQuestion: The official language of Madrid is?",
+    " Spanish.  \nQuestion: Which country has Spanish as its official"
+   ],
+   "abl": {
+    "rlens|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Spanish.  \nQuestion: Which language is spoken in the capital"
+    },
+    "rlens|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Spanish. \nQuestion: Which country's capital is Madrid?"
+    },
+    "rlens|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Spanish.  \nQuestion: Which country has a capital called Madrid"
+    },
+    "rlens|all|(-2, -1)": {
+     "acc": 0.875,
+     "sample": " Spanish.\nQuestion: Which country has the capital of Madrid"
+    },
+    "jlens|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Spanish.  \nQuestion: Which language is officially spoken in Spain"
+    },
+    "jlens|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Spanish.\nQuestion: Which country has an official language of"
+    },
+    "jlens|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Spanish.\nQuestion: A language called Spanish is spoken in"
+    },
+    "jlens|all|(-2, -1)": {
+     "acc": 0.625,
+     "sample": " _____________.\nQuestion: Which country has the official"
+    },
+    "logit|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Spanish.  \nQuestion: What is the official language of Spain"
+    },
+    "logit|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Spanish.\n\nQuestion: Which country is Spanish the official language"
+    },
+    "logit|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Spanish.  \nQuestion: Which country's official language is Spanish"
+    },
+    "logit|all|(-2, -1)": {
+     "acc": 0.75,
+     "sample": " Castilian.\n\nQuestion: Which country\u2019s capital is Madrid"
+    },
+    "random|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Spanish.  \nQuestion: Which language is spoken in the country"
+    },
+    "random|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Spanish.  \nQuestion: Which of the following statements follows logically"
+    },
+    "random|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Spanish. \nQuestion: Which language is the official language of"
+    },
+    "random|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Spanish.  \nQuestion: What is the official language of Spain"
+    }
+   }
+  },
+  {
+   "prompt": "Fact: The currency of the country famous for the Great Pyramids is",
+   "answer": [
+    "pound"
+   ],
+   "intermediate": "Egypt",
+   "base_acc": 1.0,
+   "base_samples": [
+    " called the Pound.\nQuestion: The country famous for the",
+    " the Egyptian pound.\n\nQuestion: Which country is famous for",
+    " the Egyptian pound.\n\nQuestion: What country uses the Egyptian"
+   ],
+   "abl": {
+    "rlens|first_half|(-2,)": {
+     "acc": 0.0,
+     "sample": " the euro.\nQuestion: The euro is the currency of"
+    },
+    "rlens|first_half|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " called the euro.\nQuestion: The currency of the country"
+    },
+    "rlens|all|(-2,)": {
+     "acc": 0.0,
+     "sample": " the euro.\nQuestion: Which country is famous for the"
+    },
+    "rlens|all|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " the Euro.\nQuestion: The currency of the country famous"
+    },
+    "jlens|first_half|(-2,)": {
+     "acc": 0.0,
+     "sample": " the Peso.\nQuestion: Which country is famous for the"
+    },
+    "jlens|first_half|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " the euro.\nQuestion: What is the currency of Spain"
+    },
+    "jlens|all|(-2,)": {
+     "acc": 0.0,
+     "sample": " the euro.\nIs the following statement true?\n\"The"
+    },
+    "jlens|all|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " the Euro.\nQuestion: Where is the famous landmark located"
+    },
+    "logit|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " the pound.\nAnswer:\n\n<think>\nWe are given"
+    },
+    "logit|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the Egyptian pound.\nQuestion: Which country has the Great"
+    },
+    "logit|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " the Egyptian pound.\nQuestion: The Great Pyramids are"
+    },
+    "logit|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the Egyptian pound.\nQuestion: What currency do you use"
+    },
+    "random|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " the Egyptian pound.\nQuestion: The currency of the country"
+    },
+    "random|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the Egyptian Pound.\nQuestion: The currency of Egypt is"
+    },
+    "random|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " the Egyptian pound.\nQuestion: The currency of which country"
+    },
+    "random|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the Egyptian pound.\n\nQuestion: The currency of the country"
+    }
+   }
+  },
+  {
+   "prompt": "Fact: The capital of the country that hosted the 2016 Summer Olympics is",
+   "answer": [
+    "Bras",
+    "Brasilia",
+    "Bras\u00edlia"
+   ],
+   "intermediate": "Brazil",
+   "base_acc": 0.25,
+   "base_samples": [
+    " Brasilia.  \nQuestion: What is the capital of the",
+    " Buenos Aires.\nQuestion: Which city hosted the 2",
+    " Brasilia.\n\nQuestion: In which capital was the "
+   ],
+   "abl": {
+    "rlens|first_half|(-2,)": {
+     "acc": 0.0,
+     "sample": " Sofia.\n\nQuestion: Which city is the capital of Bulgaria"
+    },
+    "rlens|first_half|(-2, -1)": {
+     "acc": 0.125,
+     "sample": " Seoul.\n\n**Question:** Which country hosted the 2"
+    },
+    "rlens|all|(-2,)": {
+     "acc": 0.25,
+     "sample": " Bras\u00edlia.\n\nQuestion: Which capital city hosted the 2"
+    },
+    "rlens|all|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " Athens.\n\nQuestion: Which country\u2019s capital city is Athens"
+    },
+    "jlens|first_half|(-2,)": {
+     "acc": 0.125,
+     "sample": " Sofia.\n\nQuestion: The capital of which country hosts the"
+    },
+    "jlens|first_half|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " the most populous city in the world.\nAnswer: The"
+    },
+    "jlens|all|(-2,)": {
+     "acc": 0.0,
+     "sample": " Brussels.\n\nQuestion: What is the capital of the country"
+    },
+    "jlens|all|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " Paris.\nQuestion: Which city hosted the 20"
+    },
+    "logit|first_half|(-2,)": {
+     "acc": 0.0,
+     "sample": " Berlin.\n\nQuestion: The capital of the country where the"
+    },
+    "logit|first_half|(-2, -1)": {
+     "acc": 0.25,
+     "sample": " Paris.  \nQuestion: What is the capital of the country"
+    },
+    "logit|all|(-2,)": {
+     "acc": 0.0,
+     "sample": " located in the southeastern part of Europe.\n\nQuestion: Which"
+    },
+    "logit|all|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " Seoul.  \nQuestion: Which country's capital is Seoul?"
+    },
+    "random|first_half|(-2,)": {
+     "acc": 0.125,
+     "sample": " Buenos Aires.\nQuestion: Where is the capital of the"
+    },
+    "random|first_half|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " Seoul.\n\n**Question:** Which country hosted the 2"
+    },
+    "random|all|(-2,)": {
+     "acc": 0.25,
+     "sample": " Athens.  \nQuestion: Which capital city hosted the 2"
+    },
+    "random|all|(-2, -1)": {
+     "acc": 0.25,
+     "sample": " Rio de Janeiro.  \nQuestion: The capital of the country"
+    }
+   }
+  },
+  {
+   "prompt": "Fact: The largest city in the state whose capital is Sacramento is",
+   "answer": [
+    "Los Angeles"
+   ],
+   "intermediate": "California",
+   "base_acc": 0.0,
+   "base_samples": [
+    " San Jose.\nQuestion: Is Sacramento the largest city in",
+    " Sacramento.\nQuestion: Which city has the highest population in",
+    " Sacramento.\nClaim: Sacramento is the largest city in its"
+   ],
+   "abl": {
+    "rlens|first_half|(-2,)": {
+     "acc": 0.0,
+     "sample": " San Francisco.\nQuestion: Which city has a population of"
+    },
+    "rlens|first_half|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " Sacramento.\nQuestion: The largest city in the state whose"
+    },
+    "rlens|all|(-2,)": {
+     "acc": 0.0,
+     "sample": " not in the state whose capital is Sacramento.\nRule:"
+    },
+    "rlens|all|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " Louisville.\nQuestion: Louisville is in the state of which"
+    },
+    "jlens|first_half|(-2,)": {
+     "acc": 0.0,
+     "sample": " Sacramento.\nQuestion: What is the capital of the state"
+    },
+    "jlens|first_half|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " Sacramento.\nQuestion: What is the largest city in the"
+    },
+    "jlens|all|(-2,)": {
+     "acc": 0.0,
+     "sample": " the state whose capital is Austin.\nQuestion: What city"
+    },
+    "jlens|all|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " named after the Spanish word for swamp.  \nQuestion: Which"
+    },
+    "logit|first_half|(-2,)": {
+     "acc": 0.25,
+     "sample": " Los Angeles.\nQuestion: Which is the largest city in"
+    },
+    "logit|first_half|(-2, -1)": {
+     "acc": 0.25,
+     "sample": " Los Angeles.\nQuestion: Which of the following would be"
+    },
+    "logit|all|(-2,)": {
+     "acc": 0.125,
+     "sample": " San Francisco.\nQuestion: What is the largest city in"
+    },
+    "logit|all|(-2, -1)": {
+     "acc": 0.125,
+     "sample": " Sacramento.\nQuestion: Which is the largest city in the"
+    },
+    "random|first_half|(-2,)": {
+     "acc": 0.25,
+     "sample": " San Francisco.\nQuestion: San Francisco is located in which"
+    },
+    "random|first_half|(-2, -1)": {
+     "acc": 0.25,
+     "sample": " San Jose.\nQuestion: The largest city in the state"
+    },
+    "random|all|(-2,)": {
+     "acc": 0.5,
+     "sample": " located in the western United States.  \nQuestion: What is"
+    },
+    "random|all|(-2, -1)": {
+     "acc": 0.25,
+     "sample": " Los Angeles.\n\nQuestion: Which city has a larger population"
+    }
+   }
+  },
+  {
+   "prompt": "Fact: The capital of the country where Mount Fuji is located is",
+   "answer": [
+    "Tokyo"
+   ],
+   "intermediate": "Japan",
+   "base_acc": 1.0,
+   "base_samples": [
+    " Tokyo.\nQuestion: Where is Mount Fuji located?\n",
+    " Tokyo.\nQuestion: Mount Fuji is a very large mountain",
+    " Tokyo.\nQuestion: Where is Mount Fuji\nA."
+   ],
+   "abl": {
+    "rlens|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Tokyo.\nQuestion: Where is Mount Fuji located?\n"
+    },
+    "rlens|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Tokyo.\nQuestion: Which of the following options is most"
+    },
+    "rlens|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Tokyo.\nQuestion: What mountain is the highest in Japan"
+    },
+    "rlens|all|(-2, -1)": {
+     "acc": 0.375,
+     "sample": " the largest city in the world by land area.\nQuestion"
+    },
+    "jlens|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Tokyo.\nQuestion: Where is Mount Fuji located?\n"
+    },
+    "jlens|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Tokyo.\nClaim: Mount Fuji is located in the country"
+    },
+    "jlens|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Tokyo.\nQuestion: Where is Mount Fuji?\nOptions"
+    },
+    "jlens|all|(-2, -1)": {
+     "acc": 0.625,
+     "sample": " Tokyo.\nQuestion: Which of the following would be the"
+    },
+    "logit|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Tokyo.\nQuestion: The capital of the country where Mount"
+    },
+    "logit|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Tokyo.\nQuestion: Tokyo is the capital of which country"
+    },
+    "logit|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Tokyo.\nQuestion: Where is Mount Fuji?\nA"
+    },
+    "logit|all|(-2, -1)": {
+     "acc": 0.125,
+     "sample": " the city where a famous film director was born. Question:"
+    },
+    "random|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Tokyo.\nQuestion: Mount Fuji is located in which country"
+    },
+    "random|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Tokyo.\nQuestion: Where is Mount Fuji\nA."
+    },
+    "random|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Tokyo.\nQuestion: Mount Fuji is located in which country"
+    },
+    "random|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Tokyo.\n\nQuestion: Mount Fuji is in what country's"
+    }
+   }
+  },
+  {
+   "prompt": "Fact: The currency of the country where the Kremlin stands is",
+   "answer": [
+    "ruble",
+    "rouble"
+   ],
+   "intermediate": "Russia",
+   "base_acc": 1.0,
+   "base_samples": [
+    " the Ruble.\nQuestion: Where does the Kremlin stand",
+    " the Ruble.\nQuestion: Where did the Kremlin stand",
+    " the Russian ruble.\nQuestion: The Kremlin is in"
+   ],
+   "abl": {
+    "rlens|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " the Russian ruble.\nQuestion: The Kremlin is located"
+    },
+    "rlens|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the ruble.\nQuestion: Does the Kremlin stand in"
+    },
+    "rlens|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " the Russian Ruble.\nQuestion: Who is the president"
+    },
+    "rlens|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the Russian ruble.\nQuestion: Where is the Kremlin"
+    },
+    "jlens|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " the ruble.\nQuestion: The Kremlin stands in the"
+    },
+    "jlens|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the ruble.\nQuestion: Where does the Kremlin stand"
+    },
+    "jlens|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " the Russian ruble.\nQuestion: The Kremlin is located"
+    },
+    "jlens|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the ruble.\nQuestion: The Kremlin is located in"
+    },
+    "logit|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " the ruble.\nPremise: In the Kremlin,"
+    },
+    "logit|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the Russian ruble.\nQuestion: Does the Kremlin stand"
+    },
+    "logit|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " the ruble.\nQuestion: The Kremlin is in Russia"
+    },
+    "logit|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the Russian ruble.\nQuestion: If I go to"
+    },
+    "random|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " the Russian Ruble.\nQuestion: The Kremlin stands in"
+    },
+    "random|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the rouble.\nWhat is the relation between these two"
+    },
+    "random|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " the ruble.\nQuestion: If the Kremlin is in"
+    },
+    "random|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the Russian Ruble.\nQuestion: Where can you find"
+    }
+   }
+  },
+  {
+   "prompt": "Fact: The continent containing the country whose capital is Nairobi is",
+   "answer": [
+    "Africa"
+   ],
+   "intermediate": "Kenya",
+   "base_acc": 0.5,
+   "base_samples": [
+    " also home to the country whose capital is Lusaka.\n\n",
+    " also home to the world\u2019s largest desert.  \nQuestion:",
+    " the same continent as the country whose capital is Moscow.  \n"
+   ],
+   "abl": {
+    "rlens|first_half|(-2,)": {
+     "acc": 0.25,
+     "sample": " the second largest continent.\n\nQuestion: Which continent is the"
+    },
+    "rlens|first_half|(-2, -1)": {
+     "acc": 0.875,
+     "sample": " Africa.\n\n**1. What is Africa?**  \nAfrica"
+    },
+    "rlens|all|(-2,)": {
+     "acc": 0.25,
+     "sample": " also the continent that contains the country whose capital is Rabat"
+    },
+    "rlens|all|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " the same as the continent containing the country whose capital is Add"
+    },
+    "jlens|first_half|(-2,)": {
+     "acc": 0.375,
+     "sample": " also the continent containing the country whose capital is Bujumb"
+    },
+    "jlens|first_half|(-2, -1)": {
+     "acc": 0.25,
+     "sample": " Africa.\nQuestion: Which continent contains the capital of Kenya"
+    },
+    "jlens|all|(-2,)": {
+     "acc": 0.5,
+     "sample": " Africa.  \nQuestion: What continent contains the country whose capital"
+    },
+    "jlens|all|(-2, -1)": {
+     "acc": 0.125,
+     "sample": " the continent whose capital is Addis Ababa.\nQuestion"
+    },
+    "logit|first_half|(-2,)": {
+     "acc": 0.5,
+     "sample": " Africa.\nQuestion: What continent is Kenya in?\n"
+    },
+    "logit|first_half|(-2, -1)": {
+     "acc": 0.625,
+     "sample": " also the continent that contains the country whose capital is Kinsh"
+    },
+    "logit|all|(-2,)": {
+     "acc": 0.625,
+     "sample": " Africa.\nQuestion: Which continent is Nairobi in?\n"
+    },
+    "logit|all|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " the same continent that contains the country whose capital is Ottawa."
+    },
+    "random|first_half|(-2,)": {
+     "acc": 0.25,
+     "sample": " the same continent that contains the country whose capital is Dakar."
+    },
+    "random|first_half|(-2, -1)": {
+     "acc": 0.25,
+     "sample": " the same continent that contains the country whose capital is Mbab"
+    },
+    "random|all|(-2,)": {
+     "acc": 0.5,
+     "sample": " also the location of the world\u2019s highest mountain, Mount\ufffd"
+    },
+    "random|all|(-2, -1)": {
+     "acc": 0.625,
+     "sample": " Africa.  \n\nQuestion: What continent is home to the country"
+    }
+   }
+  },
+  {
+   "prompt": "Fact: The capital of the country that has the Taj Mahal is",
+   "answer": [
+    "Delhi"
+   ],
+   "intermediate": "India",
+   "base_acc": 0.625,
+   "base_samples": [
+    " Delhi.\nQuestion: Which country has the Taj Mahal",
+    " Agra.  \nQuestion: Which country is the Taj Mah",
+    " Agra.\nQuestion: In which country is the Taj"
+   ],
+   "abl": {
+    "rlens|first_half|(-2,)": {
+     "acc": 0.875,
+     "sample": " Delhi.\nQuestion: What city is the capital of India"
+    },
+    "rlens|first_half|(-2, -1)": {
+     "acc": 0.875,
+     "sample": " Agra.  \nQuestion: Which country does the Taj Mah"
+    },
+    "rlens|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Delhi.\nQuestion: The Taj Mahal is in which"
+    },
+    "rlens|all|(-2, -1)": {
+     "acc": 0.625,
+     "sample": " also the capital of the country that has the Eiffel Tower"
+    },
+    "jlens|first_half|(-2,)": {
+     "acc": 0.875,
+     "sample": " Delhi.\nQuestion: Delhi is a city in what country"
+    },
+    "jlens|first_half|(-2, -1)": {
+     "acc": 0.875,
+     "sample": " Delhi.  \nQuestion: The Taj Mahal is a famous"
+    },
+    "jlens|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Delhi.\nQuestion: If the Taj Mahal is in"
+    },
+    "jlens|all|(-2, -1)": {
+     "acc": 0.5,
+     "sample": " New Delhi.\nQuestion: What is the capital of the"
+    },
+    "logit|first_half|(-2,)": {
+     "acc": 0.75,
+     "sample": " New Delhi.\n\nQuestion: Which of the following statements is"
+    },
+    "logit|first_half|(-2, -1)": {
+     "acc": 0.875,
+     "sample": " New Delhi.\nQuestion: The Taj Mahal is in"
+    },
+    "logit|all|(-2,)": {
+     "acc": 0.875,
+     "sample": " Delhi.\nQuestion: Which country's capital is Delhi?"
+    },
+    "logit|all|(-2, -1)": {
+     "acc": 0.75,
+     "sample": " New Delhi.  \nQuestion: Which country's capital is New"
+    },
+    "random|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " New Delhi.\nQuestion: Where is the Taj Mahal"
+    },
+    "random|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Delhi.\nQuestion: Which city is the capital of India"
+    },
+    "random|all|(-2,)": {
+     "acc": 0.875,
+     "sample": " Delhi.\n\nQuestion: The Taj Mahal is located in"
+    },
+    "random|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Delhi.\nQuestion: What is the capital of the country"
+    }
+   }
+  },
+  {
+   "prompt": "Fact: The national language of the country whose capital is Berlin is",
+   "answer": [
+    "German"
+   ],
+   "intermediate": "Germany",
+   "base_acc": 1.0,
+   "base_samples": [
+    " German.  \nQuestion: What is the national language of the",
+    " German.\nQuestion: Germany is the capital of Berlin.",
+    " German.\nQuestion: What language is spoken in Germany?"
+   ],
+   "abl": {
+    "rlens|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " German.\nQuestion: The national language of the country whose"
+    },
+    "rlens|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " German.  \nQuestion: Which country's national language is German"
+    },
+    "rlens|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " German.  \nQuestion: What is the national language of the"
+    },
+    "rlens|all|(-2, -1)": {
+     "acc": 0.5,
+     "sample": " the language whose name is the same as the country\u2019s capital"
+    },
+    "jlens|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " German.  \nQuestion: The national language of Germany is German"
+    },
+    "jlens|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " German.\nQuestion: What is the official language of Berlin"
+    },
+    "jlens|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " German.  \nQuestion: Which country's national language is German"
+    },
+    "jlens|all|(-2, -1)": {
+     "acc": 0.375,
+     "sample": " Danish.\nIs the following statement true?\n\"Dan"
+    },
+    "logit|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " German.\nQuestion: (All answers have 1 word"
+    },
+    "logit|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " German.\nQuestion: The national language of the country whose"
+    },
+    "logit|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " German.  \nQuestion: The national language of Germany is German"
+    },
+    "logit|all|(-2, -1)": {
+     "acc": 0.5,
+     "sample": " English.\nQuestion: Which country has a capital city of"
+    },
+    "random|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " German. Question: Who speaks German?\nA:\n\n"
+    },
+    "random|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " German.\n\nQuestion: (All statements are true.) Which"
+    },
+    "random|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " German.  \nQuestion: Which country has Berlin as its capital"
+    },
+    "random|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " German.  \nQuestion: Which country\u2019s national language is German"
+    }
+   }
+  },
+  {
+   "prompt": "Fact: The capital of the country where the Colosseum stands is",
+   "answer": [
+    "Rome"
+   ],
+   "intermediate": "Italy",
+   "base_acc": 1.0,
+   "base_samples": [
+    " Rome.\nQuestion: The Colosseum is located in",
+    " Rome.\nQuestion: The Colosseum is in which",
+    " Rome.\nQuestion: The Colosseum is in which"
+   ],
+   "abl": {
+    "rlens|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Rome.\nQuestion: The Colosseum is in what"
+    },
+    "rlens|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Rome.  \nQuestion: If the statement \u201cA man in"
+    },
+    "rlens|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Rome. Question: The colosseum is in what country"
+    },
+    "rlens|all|(-2, -1)": {
+     "acc": 0.25,
+     "sample": " Rome.\n\n**What is the capital of the country that"
+    },
+    "jlens|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Rome.  \nQuestion: In which country is the Colosse"
+    },
+    "jlens|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Rome.\nQuestion: Where is the Colosseum located"
+    },
+    "jlens|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Rome.\nQuestion: The Colosseum is located in"
+    },
+    "jlens|all|(-2, -1)": {
+     "acc": 0.25,
+     "sample": " the city of Rome.\nQuestion: If someone is visiting"
+    },
+    "logit|first_half|(-2,)": {
+     "acc": 0.875,
+     "sample": " also the capital of the country where the Louvre Museum stands"
+    },
+    "logit|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Rome.\nQuestion: The capital of the country where the"
+    },
+    "logit|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Rome.  \nQuestion: In which country is the Colosse"
+    },
+    "logit|all|(-2, -1)": {
+     "acc": 0.25,
+     "sample": " the same as the capital of the country where the Eiffel"
+    },
+    "random|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Rome.\nQuestion: The Colosseum is in which"
+    },
+    "random|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Rome.\nQuestion: The Colosseum is in what"
+    },
+    "random|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Rome.\nRule: If a city is a capital,"
+    },
+    "random|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Rome.\n\nQuestion: The colosseum is in what"
+    }
+   }
+  },
+  {
+   "prompt": "Fact: The currency of the country where Big Ben is located is",
+   "answer": [
+    "pound",
+    "sterling"
+   ],
+   "intermediate": "Britain",
+   "base_acc": 1.0,
+   "base_samples": [
+    " the pound sterling.\nQuestion: Big Ben is located in",
+    " the pound sterling.\nQuestion: Big Ben is located in",
+    " the pound sterling.\nQuestion: Does Big Ben ring in"
+   ],
+   "abl": {
+    "rlens|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " the pound sterling.\nQuestion: Big Ben is in a"
+    },
+    "rlens|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the pound sterling.\nQuestion: In what country is Big"
+    },
+    "rlens|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " the pound sterling.  \nQuestion: Which country's currency is"
+    },
+    "rlens|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the pound.\nQuestion: The currency of the country where"
+    },
+    "jlens|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " the pound sterling.\nQuestion: Big Ben has a currency"
+    },
+    "jlens|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the British pound.\nQuestion: Big Ben is located in"
+    },
+    "jlens|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " the pound.\nQuestion: The following is the answer to"
+    },
+    "jlens|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the Pound Sterling.\nQuestion: Where was the big ben"
+    },
+    "logit|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " the British pound.\nQuestion: Big Ben is in a"
+    },
+    "logit|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the Pound.\nQuestion: Where is Big Ben located?"
+    },
+    "logit|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " the Pound sterling.\nQuestion: Big Ben is in a"
+    },
+    "logit|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the pound.\nQuestion: What is the name of the"
+    },
+    "random|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " the Pound Sterling.\nQuestion: Where is Big Ben located"
+    },
+    "random|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the pound sterling.\nQuestion: Big Ben is located in"
+    },
+    "random|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " the pound sterling.\nQuestion: The Big Ben is located"
+    },
+    "random|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the pound.\n\nQuestion: Can you hear Big Ben from"
+    }
+   }
+  },
+  {
+   "prompt": "Fact: The largest city of the country whose capital is Canberra is",
+   "answer": [
+    "Sydney"
+   ],
+   "intermediate": "Australia",
+   "base_acc": 1.0,
+   "base_samples": [
+    " Sydney.\n\nQuestion: Which city is the largest in Australia",
+    " Sydney. Question: What city is the largest in Australia?",
+    " Sydney.\nQuestion: The largest city in Australia is not"
+   ],
+   "abl": {
+    "rlens|first_half|(-2,)": {
+     "acc": 0.0,
+     "sample": " the city with the largest population in the country whose capital is"
+    },
+    "rlens|first_half|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " Washington, D.C.\nQuestion: What is the largest"
+    },
+    "rlens|all|(-2,)": {
+     "acc": 0.0,
+     "sample": " Washington.\nQuestion: Which of the following statements is likely"
+    },
+    "rlens|all|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " Washington, D.C.\nQuestion: Which city has a"
+    },
+    "jlens|first_half|(-2,)": {
+     "acc": 0.0,
+     "sample": " named after a nearby river.\nQuestion: What is the"
+    },
+    "jlens|first_half|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " Washington, DC.\nQuestion: Which country is the capital"
+    },
+    "jlens|all|(-2,)": {
+     "acc": 0.0,
+     "sample": " called Washington, D.C.\nQuestion: Which of the"
+    },
+    "jlens|all|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " called Washington, D.C.\nQuestion: Which city is"
+    },
+    "logit|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Sydney.\nQuestion: Where is Sydney?\nA."
+    },
+    "logit|first_half|(-2, -1)": {
+     "acc": 0.875,
+     "sample": " Sydney, Australia.\nQuestion: The largest city of the"
+    },
+    "logit|all|(-2,)": {
+     "acc": 0.875,
+     "sample": " Sydney. Question: What is the capital of the country whose"
+    },
+    "logit|all|(-2, -1)": {
+     "acc": 0.625,
+     "sample": " Greater Sydney.\nQuestion: Which city is the largest in"
+    },
+    "random|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Sydney.\nQuestion: Is it true that Sydney is the"
+    },
+    "random|first_half|(-2, -1)": {
+     "acc": 0.875,
+     "sample": " Sydney.\nQuestion: Sydney has the most population of all"
+    },
+    "random|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Sydney.\nQuestion: Where is the capital of the country"
+    },
+    "random|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Sydney.\nQuestion: Sydney is the largest city in which"
+    }
+   }
+  },
+  {
+   "prompt": "Fact: The capital of the country that produces the most maple syrup is",
+   "answer": [
+    "Ottawa"
+   ],
+   "intermediate": "Canada",
+   "base_acc": 0.125,
+   "base_samples": [
+    " the most populous city in a state that borders the Great Lakes",
+    " the capital of the province that produces the most maple syrup.",
+    " also the capital of the country that produces the most cheese."
+   ],
+   "abl": {
+    "rlens|first_half|(-2,)": {
+     "acc": 0.0,
+     "sample": " located in New England.\nQuestion: Which of the following"
+    },
+    "rlens|first_half|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " Boston.\nQuestion: The capital of the country that produces"
+    },
+    "rlens|all|(-2,)": {
+     "acc": 0.125,
+     "sample": " Augusta, Maine.\nQuestion: What state produces the most"
+    },
+    "rlens|all|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " located in the northeastern part of the United States.\n\nQuestion"
+    },
+    "jlens|first_half|(-2,)": {
+     "acc": 0.125,
+     "sample": " a city in the U.S. state of Vermont.  \n"
+    },
+    "jlens|first_half|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " Boston.\nQuestion: Which country is the leader in the"
+    },
+    "jlens|all|(-2,)": {
+     "acc": 0.0,
+     "sample": " also the capital of the state that produces the most maple syrup"
+    },
+    "jlens|all|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " Concord.\nQuestion: Which country produces the most maple syrup"
+    },
+    "logit|first_half|(-2,)": {
+     "acc": 0.0,
+     "sample": " Quebec City.\n\nQuestion: Which country produces the most maple"
+    },
+    "logit|first_half|(-2, -1)": {
+     "acc": 0.125,
+     "sample": " Montreal.\nQuestion: Where is Montreal?\nA."
+    },
+    "logit|all|(-2,)": {
+     "acc": 0.125,
+     "sample": " Quebec.\nAnswer: True\nQuestion: What is the"
+    },
+    "logit|all|(-2, -1)": {
+     "acc": 0.125,
+     "sample": " a city that is the capital of a province which shares a"
+    },
+    "random|first_half|(-2,)": {
+     "acc": 0.375,
+     "sample": " Quebec City.\nQuestion: Where does the most maple syrup"
+    },
+    "random|first_half|(-2, -1)": {
+     "acc": 0.125,
+     "sample": " in the U.S. state of Vermont.\n\n**Question"
+    },
+    "random|all|(-2,)": {
+     "acc": 0.25,
+     "sample": " Ottawa.\n\nQuestion: Is \"The capital of the country"
+    },
+    "random|all|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " Qu\u00e9bec City, Quebec.\n\nQuestion: Which capital city is"
+    }
+   }
+  },
+  {
+   "prompt": "Fact: The capital of the country whose flag is a red circle on a white field is",
+   "answer": [
+    "Tokyo"
+   ],
+   "intermediate": "Japan",
+   "base_acc": 1.0,
+   "base_samples": [
+    " Tokyo.\n\nQuestion: Tokyo is the capital of what country",
+    " Tokyo.  \nQuestion: Which country's flag consists of a",
+    " Tokyo.  \n\nQuestion: What is the capital of Japan?"
+   ],
+   "abl": {
+    "rlens|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Tokyo.  \nQuestion: What is the capital of the country"
+    },
+    "rlens|first_half|(-2, -1)": {
+     "acc": 0.875,
+     "sample": " Tokyo. \nQuestion: The capital of the country whose flag"
+    },
+    "rlens|all|(-2,)": {
+     "acc": 0.875,
+     "sample": " Tokyo.\n\nQuestion: The capital of the country whose flag"
+    },
+    "rlens|all|(-2, -1)": {
+     "acc": 0.25,
+     "sample": " located on an island in the Pacific Ocean.\nAnswer:"
+    },
+    "jlens|first_half|(-2,)": {
+     "acc": 0.875,
+     "sample": " Tokyo.  \nAnswer: Japan\n\nFact: The flag of"
+    },
+    "jlens|first_half|(-2, -1)": {
+     "acc": 0.375,
+     "sample": " Tokyo.  \nQuestion: What is the capital of Japan?"
+    },
+    "jlens|all|(-2,)": {
+     "acc": 0.875,
+     "sample": " Tokyo.\n\nQuestion: Which country's capital is Tokyo?"
+    },
+    "jlens|all|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " located on the island of Kyushu.\n\nQuestion:"
+    },
+    "logit|first_half|(-2,)": {
+     "acc": 0.875,
+     "sample": " Tokyo.  \nQuestion: Which country has Tokyo as its capital"
+    },
+    "logit|first_half|(-2, -1)": {
+     "acc": 0.875,
+     "sample": " Tokyo. \nQuestion: If a country's flag is a"
+    },
+    "logit|all|(-2,)": {
+     "acc": 0.75,
+     "sample": " Tokyo.  \nQuestion: Tokyo is the capital of which country"
+    },
+    "logit|all|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " Seoul.\nQuestion: The capital of the country with a"
+    },
+    "random|first_half|(-2,)": {
+     "acc": 0.875,
+     "sample": " Tokyo.\nQuestion: What is the capital of the country"
+    },
+    "random|first_half|(-2, -1)": {
+     "acc": 0.75,
+     "sample": " Seoul.\n\nQuestion: In which country is the capital city"
+    },
+    "random|all|(-2,)": {
+     "acc": 0.75,
+     "sample": " Seoul.  \nQuestion: Which country\u2019s flag features a red"
+    },
+    "random|all|(-2, -1)": {
+     "acc": 0.875,
+     "sample": " Tokyo.\n\nQuestion: The country with a red circle on"
+    }
+   }
+  },
+  {
+   "prompt": "Fact: The currency of the country where the Acropolis stands is",
+   "answer": [
+    "euro",
+    "drachma"
+   ],
+   "intermediate": "Greece",
+   "base_acc": 1.0,
+   "base_samples": [
+    " the euro.  \nQuestion: The Acropolis is located in",
+    " the euro.\n\nQuestion: Which currency is used in the",
+    " the euro.  \nQuestion: Which of the following statements is"
+   ],
+   "abl": {
+    "rlens|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " the Euro.\nQuestion: Where is the Acropolis?"
+    },
+    "rlens|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the euro.\nQuestion: The Acropolis is in which"
+    },
+    "rlens|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " the Euro.  \nQuestion: In which country can the Ac"
+    },
+    "rlens|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the euro.\nQuestion: Who built the Acropolis?"
+    },
+    "jlens|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " the euro.  \nQuestion: Which of the following statements is"
+    },
+    "jlens|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the euro.  \nQuestion: In which country can the Ac"
+    },
+    "jlens|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " the euro.\nQuestion: Where is the Acropolis located"
+    },
+    "jlens|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the Euro.\nQuestion: In which country does the Ac"
+    },
+    "logit|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " the euro.\nQuestion: Where is the Acropolis located"
+    },
+    "logit|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the Euro.\nQuestion: The Acropolis stands in a"
+    },
+    "logit|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " called the euro.\nQuestion: The Acropolis is in"
+    },
+    "logit|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the euro.\nQuestion: The Acropolis is located in"
+    },
+    "random|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " the euro.  \nQuestion: Which of the following sentences is"
+    },
+    "random|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the euro.\nQuestion: The Acropolis is located in"
+    },
+    "random|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " the euro.\n\nQuestion: Which city is the Acropolis"
+    },
+    "random|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the euro.\n\nQuestion: Which country does the Acropolis"
+    }
+   }
+  },
+  {
+   "prompt": "Fact: The capital of the country where Machu Picchu is located is",
+   "answer": [
+    "Lima"
+   ],
+   "intermediate": "Peru",
+   "base_acc": 1.0,
+   "base_samples": [
+    " Lima.\nQuestion: Which of the following sentences is most",
+    " Lima. Question: Machu Picchu is located in?",
+    " Lima.\nQuestion: The capital of the country where Mach"
+   ],
+   "abl": {
+    "rlens|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Lima.\n\n### Understanding the Question\nThe multiple\u2011choice"
+    },
+    "rlens|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Lima. Question: Where is Machu Picchu located?"
+    },
+    "rlens|all|(-2,)": {
+     "acc": 0.875,
+     "sample": " Lima.  \nQuestion: Which country is home to Machu"
+    },
+    "rlens|all|(-2, -1)": {
+     "acc": 0.25,
+     "sample": " __________.\n\n<think>\nFirst, the question is:"
+    },
+    "jlens|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Lima.\nQuestion: Where is Machu Picchu located"
+    },
+    "jlens|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Lima.\nQuestion: Where is Machu Picchu located"
+    },
+    "jlens|all|(-2,)": {
+     "acc": 0.875,
+     "sample": " Lima.\nQuestion: Where is Machu Picchu located"
+    },
+    "jlens|all|(-2, -1)": {
+     "acc": 0.25,
+     "sample": " located in the Southern Hemisphere.\nQuestion: Which of the"
+    },
+    "logit|first_half|(-2,)": {
+     "acc": 0.875,
+     "sample": " Lima.  \nQuestion: Which country does the capital Lima belong"
+    },
+    "logit|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Lima.\nQuestion: Which of the following sentences is most"
+    },
+    "logit|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Lima.\nQuestion: Machu Picchu is a famous"
+    },
+    "logit|all|(-2, -1)": {
+     "acc": 0.125,
+     "sample": " Quito.\nQuestion: Where is Machu Picchu"
+    },
+    "random|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Lima. Question: Why would a person not want to visit"
+    },
+    "random|first_half|(-2, -1)": {
+     "acc": 0.875,
+     "sample": " Lima.  \nQuestion: What is the capital of the country"
+    },
+    "random|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Lima.\nQuestion: What is the capital of Peru?"
+    },
+    "random|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Lima.\n\nQuestion: Which capital city is located near Mach"
+    }
+   }
+  },
+  {
+   "prompt": "Fact: The capital of the country where the Sydney Opera House stands is",
+   "answer": [
+    "Canberra"
+   ],
+   "intermediate": "Australia",
+   "base_acc": 0.75,
+   "base_samples": [
+    " Canberra.  \nQuestion: Where is the capital of the country",
+    " Canberra.  \nQuestion: Which city serves as the capital of",
+    " Sydney.\nQuestion: The capital of Australia is located in"
+   ],
+   "abl": {
+    "rlens|first_half|(-2,)": {
+     "acc": 0.875,
+     "sample": " also the capital of Australia.  \nQuestion: The capital of"
+    },
+    "rlens|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Canberra.\nQuestion: Sydney Opera House is in what country"
+    },
+    "rlens|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Canberra.\n\nQuestion: Where is the Sydney Opera House?"
+    },
+    "rlens|all|(-2, -1)": {
+     "acc": 0.125,
+     "sample": " located at 33\u00b0\u202f52\u2032\ufffd"
+    },
+    "jlens|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Canberra.  \nQuestion: What is the capital of the country"
+    },
+    "jlens|first_half|(-2, -1)": {
+     "acc": 0.75,
+     "sample": " Canberra.\n\nQuestion: Which city serves as the capital of"
+    },
+    "jlens|all|(-2,)": {
+     "acc": 0.875,
+     "sample": " Canberra.\n\nWhat is the question and answer?\n\n<think>"
+    },
+    "jlens|all|(-2, -1)": {
+     "acc": 0.375,
+     "sample": " Canberra. Question: Which country has the capital of Canberra?"
+    },
+    "logit|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Canberra.  \nQuestion: Which city is the capital of Australia"
+    },
+    "logit|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Canberra.\n\nQuestion: If I tell you 'The Sydney"
+    },
+    "logit|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Canberra.\n\nQuestion: Which city serves as the capital of"
+    },
+    "logit|all|(-2, -1)": {
+     "acc": 0.5,
+     "sample": " located in the same country.\n\nQuestion: Which of the"
+    },
+    "random|first_half|(-2,)": {
+     "acc": 0.875,
+     "sample": " Canberra.  \nQuestion: What is the capital of Australia?"
+    },
+    "random|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Canberra.\nQuestion: The Sydney Opera House is in what"
+    },
+    "random|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Canberra.\nQuestion: Sydney Opera House is in what country"
+    },
+    "random|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Canberra.\n\nQuestion: The capital of Australia is Canberra,"
+    }
+   }
+  },
+  {
+   "prompt": "Fact: The official language of the country whose capital is Lisbon is",
+   "answer": [
+    "Portuguese"
+   ],
+   "intermediate": "Portugal",
+   "base_acc": 1.0,
+   "base_samples": [
+    " Portuguese.\n\nQuestion: What is the official language of the",
+    " Portuguese.  \nQuestion: Which capital city belongs to a country",
+    " Portuguese.\n\nQuestion: What is the official language of the"
+   ],
+   "abl": {
+    "rlens|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Portuguese.  \nQuestion: Which country\u2019s capital is Lisbon,"
+    },
+    "rlens|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Portuguese.  \nQuestion: Which country has Portuguese as its official"
+    },
+    "rlens|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Portuguese.\nQuestion: The official language of which country is"
+    },
+    "rlens|all|(-2, -1)": {
+     "acc": 0.125,
+     "sample": " Spanish.\nQuestion: (All assumptions are true)\n\n"
+    },
+    "jlens|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Portuguese.\nQuestion: If you're in Portugal, what"
+    },
+    "jlens|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Portuguese.  \nQuestion: What is the official language of Portugal"
+    },
+    "jlens|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Portuguese.  \nQuestion: The official language of the country whose"
+    },
+    "jlens|all|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " Spanish.\nQuestion: Where is the capital of Spain?"
+    },
+    "logit|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Portuguese.  \nQuestion: Which country has Lisbon as its capital"
+    },
+    "logit|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Portuguese.\n\nQuestion: In which country is the official language"
+    },
+    "logit|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Portuguese.\n\nQuestion: Which country's official language is Portuguese"
+    },
+    "logit|all|(-2, -1)": {
+     "acc": 0.625,
+     "sample": " _____.\nQuestion: Which language is official in Portugal?"
+    },
+    "random|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Portuguese.  \nQuestion: Which country has Portuguese as its official"
+    },
+    "random|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Portuguese.  \nQuestion: Which country's official language is Portuguese"
+    },
+    "random|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Portuguese.\n\n**Question:** What is the name of the"
+    },
+    "random|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Portuguese.  \nQuestion: Which country has Lisbon as its capital"
+    }
+   }
+  },
+  {
+   "prompt": "Fact: The capital of the country where the Sphinx of Giza is located is",
+   "answer": [
+    "Cairo"
+   ],
+   "intermediate": "Egypt",
+   "base_acc": 1.0,
+   "base_samples": [
+    " Cairo.\nQuestion: The Sphinx is located in what country",
+    " Cairo.\nQuestion: What is the name of the city",
+    " Cairo.\nQuestion: Where is the Sphinx located?\n"
+   ],
+   "abl": {
+    "rlens|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Cairo.\nQuestion: The Sphinx of Giza is located"
+    },
+    "rlens|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Cairo.\nQuestion: The Sphinx of Giza is located"
+    },
+    "rlens|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Cairo.\nQuestion: If a tourist was in the capital"
+    },
+    "rlens|all|(-2, -1)": {
+     "acc": 0.375,
+     "sample": " Paris.\nQuestion: The Sphinx of Giza is located"
+    },
+    "jlens|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Cairo.\nQuestion: Which country has a capital city called"
+    },
+    "jlens|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Cairo.\nQuestion: The Sphinx is found in which of"
+    },
+    "jlens|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Cairo.\nQuestion: The Sphinx of Giza is located"
+    },
+    "jlens|all|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " in the same country as the ancient city of Alexandria.\n"
+    },
+    "logit|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Cairo.\nQuestion: The Sphinx of Giza is located"
+    },
+    "logit|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Cairo.  \nQuestion: Which city serves as the capital of"
+    },
+    "logit|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Cairo.\nQuestion: What is the capital of Egypt?"
+    },
+    "logit|all|(-2, -1)": {
+     "acc": 0.375,
+     "sample": " the city of Cairo.\n\nQuestion: The Sphinx of G"
+    },
+    "random|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Cairo.\nQuestion: The Sphinx of Giza is located"
+    },
+    "random|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Cairo.\nQuestion: What city is the capital of the"
+    },
+    "random|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Cairo.\nQuestion: The Sphinx of Giza is located"
+    },
+    "random|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Cairo.\nQuestion: The Sphinx of Giza is located"
+    }
+   }
+  },
+  {
+   "prompt": "Fact: The currency of the country whose capital is Bern is",
+   "answer": [
+    "franc"
+   ],
+   "intermediate": "Switzerland",
+   "base_acc": 1.0,
+   "base_samples": [
+    " the Swiss franc.\n\nQuestion: The currency of the country",
+    " the Swiss franc.\nQuestion: Which country's currency is",
+    " the Swiss franc.  \nQuestion: Which currency is used in"
+   ],
+   "abl": {
+    "rlens|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " the Swiss franc.  \nQuestion: The currency of the country"
+    },
+    "rlens|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the Swiss Franc.\nQuestion: The country whose capital is"
+    },
+    "rlens|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " the Swiss franc. Bern is the capital city of Switzerland."
+    },
+    "rlens|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the Swiss franc.\n\nQuestion: Which country has Bern as"
+    },
+    "jlens|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " the Swiss franc.  \nQuestion: Which country uses the Swiss"
+    },
+    "jlens|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the Swiss franc.  \nQuestion: Which currency is used in"
+    },
+    "jlens|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " the Swiss Franc.\nQuestion: Which country's currency is"
+    },
+    "jlens|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the franc.  \nQuestion: Which country has the capital city"
+    },
+    "logit|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " the Swiss franc.\nQuestion: Which country's capital is"
+    },
+    "logit|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the Swiss franc.  \nQuestion: Which of the following statements"
+    },
+    "logit|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " the Swiss franc.\n\nQuestion: Which country\u2019s currency is"
+    },
+    "logit|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the Swiss franc.  \nQuestion: Which country has Bern as"
+    },
+    "random|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " the Swiss franc.  \nQuestion: Which country uses the Swiss"
+    },
+    "random|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the Swiss franc. Bern is the capital of Switzerland.  \n\n"
+    },
+    "random|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " the Swiss franc.  \nQuestion: If we are told that"
+    },
+    "random|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the Swiss franc.\nHypothesis: The currency of"
+    }
+   }
+  },
+  {
+   "prompt": "Fact: The largest city in the state that borders both New York and Ohio is",
+   "answer": [
+    "Philadelphia"
+   ],
+   "intermediate": "Pennsylvania",
+   "base_acc": 0.0,
+   "base_samples": [
+    " Cleveland.  \nQuestion: Which city lies on the borders of",
+    " Columbus.\nQuestion: What is the capital of the state",
+    " Cleveland.\nQuestion: What is the largest city in the"
+   ],
+   "abl": {
+    "rlens|first_half|(-2,)": {
+     "acc": 0.0,
+     "sample": " Cleveland.\nQuestion: Which city is the largest in a"
+    },
+    "rlens|first_half|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " Cleveland.\nQuestion: Does Cleveland have the largest population in"
+    },
+    "rlens|all|(-2,)": {
+     "acc": 0.0,
+     "sample": " Cleveland.\nQuestion: Which state is bordered by New York"
+    },
+    "rlens|all|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " Cleveland.\nQuestion: What is the largest city in the"
+    },
+    "jlens|first_half|(-2,)": {
+     "acc": 0.0,
+     "sample": " Columbus.\nQuestion: Which state is Columbus in?\n"
+    },
+    "jlens|first_half|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " Cleveland.\nQuestion: What is the largest city in the"
+    },
+    "jlens|all|(-2,)": {
+     "acc": 0.0,
+     "sample": " Columbus.\n\n**Question:** Which of the following statements is"
+    },
+    "jlens|all|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " Columbus.\nQuestion: What was the largest city in the"
+    },
+    "logit|first_half|(-2,)": {
+     "acc": 0.0,
+     "sample": " Columbus.\nQuestion: Where is the largest city in the"
+    },
+    "logit|first_half|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " Cleveland.\nQuestion: Cleveland is the largest city in the"
+    },
+    "logit|all|(-2,)": {
+     "acc": 0.0,
+     "sample": " Cleveland.\nQuestion: Where is the city that is the"
+    },
+    "logit|all|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " Columbus, Ohio.  \nQuestion: In which state is the"
+    },
+    "random|first_half|(-2,)": {
+     "acc": 0.0,
+     "sample": " the state capital.\nQuestion: In which city would you"
+    },
+    "random|first_half|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " Cleveland.\nQuestion: Where is the largest city in the"
+    },
+    "random|all|(-2,)": {
+     "acc": 0.0,
+     "sample": " Columbus.\nQuestion: Which city is the largest in the"
+    },
+    "random|all|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " Cleveland, with a population of 435,4"
+    }
+   }
+  },
+  {
+   "prompt": "Fact: The capital of the state where Disney World is located is",
+   "answer": [
+    "Tallahassee"
+   ],
+   "intermediate": "Florida",
+   "base_acc": 0.625,
+   "base_samples": [
+    " Tallahassee.\nQuestion: The capital of the state",
+    " Tallahassee.\nQuestion: The capital of the state",
+    " Tallahassee.\nQuestion: Where is Disney World located"
+   ],
+   "abl": {
+    "rlens|first_half|(-2,)": {
+     "acc": 0.875,
+     "sample": " Tallahassee.\nQuestion: Where is Disney World located"
+    },
+    "rlens|first_half|(-2, -1)": {
+     "acc": 0.75,
+     "sample": " Tallahassee.\nQuestion: Tallahassee is the"
+    },
+    "rlens|all|(-2,)": {
+     "acc": 0.5,
+     "sample": " Orlando.\nQuestion: Where is Disney World located?\n"
+    },
+    "rlens|all|(-2, -1)": {
+     "acc": 0.25,
+     "sample": " Tallahassee.\nQuestion: Where is the capital of"
+    },
+    "jlens|first_half|(-2,)": {
+     "acc": 0.875,
+     "sample": " Tallahassee.  \nQuestion: Which state has Tallahas"
+    },
+    "jlens|first_half|(-2, -1)": {
+     "acc": 0.75,
+     "sample": " Orlando.\nQuestion: The capital of the state where Disney"
+    },
+    "jlens|all|(-2,)": {
+     "acc": 0.625,
+     "sample": " Orlando.\nClaim: Disney World is in the state of"
+    },
+    "jlens|all|(-2, -1)": {
+     "acc": 0.125,
+     "sample": " Tallahassee.\nQuestion: Where is disney world"
+    },
+    "logit|first_half|(-2,)": {
+     "acc": 0.625,
+     "sample": " Tallahassee.\n\nGiven the question \"What is the"
+    },
+    "logit|first_half|(-2, -1)": {
+     "acc": 0.625,
+     "sample": " Tallahassee.\nQuestion: Where is Disney World located"
+    },
+    "logit|all|(-2,)": {
+     "acc": 0.875,
+     "sample": " Tallahassee.\nQuestion: Which of the following could"
+    },
+    "logit|all|(-2, -1)": {
+     "acc": 0.75,
+     "sample": " Tallahassee.\nQuestion: Disney World is located in"
+    },
+    "random|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Tallahassee.\nClaim: The capital of the state"
+    },
+    "random|first_half|(-2, -1)": {
+     "acc": 0.625,
+     "sample": " Tallahassee.\nQuestion: Which state is Disney World"
+    },
+    "random|all|(-2,)": {
+     "acc": 0.75,
+     "sample": " Tallahassee.\nQuestion: Which state is Disney World"
+    },
+    "random|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Tallahassee.\nQuestion: Where is Disney World located"
+    }
+   }
+  },
+  {
+   "prompt": "Fact: The capital of the state where the Golden Gate Bridge is located is",
+   "answer": [
+    "Sacramento"
+   ],
+   "intermediate": "California",
+   "base_acc": 0.75,
+   "base_samples": [
+    " San Francisco.\nQuestion: Where is the Golden Gate Bridge",
+    " Sacramento.\nQuestion: Which of the following sentences is most",
+    " San Francisco.\nQuestion: Which of the following would be"
+   ],
+   "abl": {
+    "rlens|first_half|(-2,)": {
+     "acc": 0.875,
+     "sample": " Sacramento.\nQuestion: Which of the following options is likely"
+    },
+    "rlens|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Sacramento.\nQuestion: Which of the following sentences is not"
+    },
+    "rlens|all|(-2,)": {
+     "acc": 0.875,
+     "sample": " Sacramento.\nQuestion: Which of these two sentences is most"
+    },
+    "rlens|all|(-2, -1)": {
+     "acc": 0.375,
+     "sample": " Sacramento.\nQuestion: The Golden Gate Bridge is located in"
+    },
+    "jlens|first_half|(-2,)": {
+     "acc": 0.875,
+     "sample": " San Francisco.\nQuestion: The Golden Gate Bridge is in"
+    },
+    "jlens|first_half|(-2, -1)": {
+     "acc": 0.75,
+     "sample": " San Francisco.\nQuestion: Which state has the bridge in"
+    },
+    "jlens|all|(-2,)": {
+     "acc": 0.875,
+     "sample": " Sacramento.  \nQuestion: If you are standing on the Golden"
+    },
+    "jlens|all|(-2, -1)": {
+     "acc": 0.5,
+     "sample": " also the capital of the nation.\nQuestion: The Golden"
+    },
+    "logit|first_half|(-2,)": {
+     "acc": 0.875,
+     "sample": " Sacramento.\nQuestion: The Golden Gate Bridge is in what"
+    },
+    "logit|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Sacramento.\n\nQuestion: Which of the following sentences is not"
+    },
+    "logit|all|(-2,)": {
+     "acc": 0.625,
+     "sample": " Sacramento.\nQuestion: Which of the following options is most"
+    },
+    "logit|all|(-2, -1)": {
+     "acc": 0.5,
+     "sample": " the same as the capital of the state where the Empire State"
+    },
+    "random|first_half|(-2,)": {
+     "acc": 0.875,
+     "sample": " Sacramento.\nQuestion: The Golden Gate Bridge is located in"
+    },
+    "random|first_half|(-2, -1)": {
+     "acc": 0.875,
+     "sample": " Sacramento.\nQuestion: Which bridge is in California?\n"
+    },
+    "random|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Sacramento.\nQuestion: Which of the following statements is true"
+    },
+    "random|all|(-2, -1)": {
+     "acc": 0.875,
+     "sample": " Sacramento.\nQuestion: Which state has the Golden Gate Bridge"
+    }
+   }
+  },
+  {
+   "prompt": "Fact: The capital of the state whose largest city is Chicago is",
+   "answer": [
+    "Springfield"
+   ],
+   "intermediate": "Illinois",
+   "base_acc": 1.0,
+   "base_samples": [
+    " Springfield. Question: What is the capital of Illinois?\n\n",
+    " Springfield.\nQuestion: The capital of the state whose largest",
+    " Springfield.  \nQuestion: What city serves as the capital of"
+   ],
+   "abl": {
+    "rlens|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Springfield.\n\nQuestion: The capital of the state of Illinois"
+    },
+    "rlens|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Springfield.  \nQuestion: The capital of the state whose largest"
+    },
+    "rlens|all|(-2,)": {
+     "acc": 0.25,
+     "sample": " Springfield.  \nQuestion: Which state has Chicago as its largest"
+    },
+    "rlens|all|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " Toronto.\nQuestion: What is the largest city in Ontario"
+    },
+    "jlens|first_half|(-2,)": {
+     "acc": 0.875,
+     "sample": " Springfield.\nQuestion: Springfield is the capital of what state"
+    },
+    "jlens|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Springfield.  \nQuestion: The capital of which state, whose"
+    },
+    "jlens|all|(-2,)": {
+     "acc": 0.625,
+     "sample": " Indianapolis. \nQuestion: Indianapolis is the capital of which state"
+    },
+    "jlens|all|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " Denver.\nQuestion: What is the capital of the state"
+    },
+    "logit|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Springfield.\nQuestion: Which state has the capital city of"
+    },
+    "logit|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Springfield.\nQuestion: What is the capital of the state"
+    },
+    "logit|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Springfield.  \nQuestion: Which state has a capital city named"
+    },
+    "logit|all|(-2, -1)": {
+     "acc": 0.75,
+     "sample": " Springfield.\nQuestion: What is the capital of the state"
+    },
+    "random|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Springfield.\nQuestion: Which state has Springfield as the capital"
+    },
+    "random|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Springfield.  \nQuestion: The capital of the state whose largest"
+    },
+    "random|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Springfield.\nQuestion: What is the capital of the state"
+    },
+    "random|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Springfield.  \nQuestion: What is the capital of the state"
+    }
+   }
+  },
+  {
+   "prompt": "Fact: The capital of the state where Mount Rushmore is located is",
+   "answer": [
+    "Pierre"
+   ],
+   "intermediate": "South",
+   "base_acc": 1.0,
+   "base_samples": [
+    " Pierre.\n\nQuestion: Which of the following sentences is not",
+    " Pierre, South Dakota.\nQuestion: Which of the following",
+    " Pierre.\nQuestion: What is the capital of the state"
+   ],
+   "abl": {
+    "rlens|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Pierre.\nQuestion: Where is the capital of South Dakota"
+    },
+    "rlens|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Pierre, South Dakota.\n\nQuestion: Which state contains Mount"
+    },
+    "rlens|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Pierre. Question: Mount Rushmore is not in South Dakota"
+    },
+    "rlens|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Pierre.  \nQuestion: If Mount Rushmore is located in"
+    },
+    "jlens|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Pierre.  \nQuestion: Which state contains Mount Rushmore?"
+    },
+    "jlens|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Pierre.  \nQuestion: Which state capital lies in the same"
+    },
+    "jlens|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Pierre.  \nQuestion: Which state's capital is Pierre?"
+    },
+    "jlens|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Pierre.\n\n**Question:** Which of the following statements is"
+    },
+    "logit|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Pierre.\n\n**Question:** Which of the following statements is"
+    },
+    "logit|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Pierre.  \nQuestion: Which state is the location of Mount"
+    },
+    "logit|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Pierre.  \nQuestion: Which state has a capital called Pierre"
+    },
+    "logit|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Pierre.  \nQuestion: Which state's capital is Pierre?"
+    },
+    "random|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Pierre.\nQuestion: What is the capital of the state"
+    },
+    "random|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Pierre, South Dakota.\n\nQuestion: Which of the following"
+    },
+    "random|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Pierre, South Dakota.  \nQuestion: In which state is"
+    },
+    "random|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Pierre.\nQuestion: Which of the following sentences is most"
+    }
+   }
+  },
+  {
+   "prompt": "Fact: The capital of the country where the Brandenburg Gate stands is",
+   "answer": [
+    "Berlin"
+   ],
+   "intermediate": "Germany",
+   "base_acc": 1.0,
+   "base_samples": [
+    " Berlin.\nClaim: The Brandenburg Gate is located in the",
+    " Berlin.\nQuestion: The Brandenburg Gate is located in the",
+    " Berlin.\nQuestion: Which country is the Brandenburg Gate located"
+   ],
+   "abl": {
+    "rlens|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Berlin.\nQuestion: Which country does the Brandenburg Gate stand"
+    },
+    "rlens|first_half|(-2, -1)": {
+     "acc": 0.875,
+     "sample": " Berlin.\nQuestion: Where is the Brandenburg Gate?\n"
+    },
+    "rlens|all|(-2,)": {
+     "acc": 0.875,
+     "sample": " also the capital of the state of Brandenburg.\nQuestion:"
+    },
+    "rlens|all|(-2, -1)": {
+     "acc": 0.125,
+     "sample": " also the capital of Germany.  \nQuestion: Which city holds"
+    },
+    "jlens|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Berlin.  \n\nQuestion: Which of the following sentences is not"
+    },
+    "jlens|first_half|(-2, -1)": {
+     "acc": 0.875,
+     "sample": " Berlin.\n\nQuestion: Is the capital city of Germany Berlin"
+    },
+    "jlens|all|(-2,)": {
+     "acc": 0.875,
+     "sample": " Berlin.\nQuestion: Who is the current Chancellor of Germany"
+    },
+    "jlens|all|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " the same as the capital of the country where the Reichstag"
+    },
+    "logit|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " also the capital of the state where the Berlin Wall was located"
+    },
+    "logit|first_half|(-2, -1)": {
+     "acc": 0.875,
+     "sample": " Berlin.  \nQuestion: What is the capital of the country"
+    },
+    "logit|all|(-2,)": {
+     "acc": 0.75,
+     "sample": " also the capital of the country where the Brandenburg Gate stands."
+    },
+    "logit|all|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " also the capital of a German state.\n\nQuestion: The"
+    },
+    "random|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Berlin.\nQuestion: The Brandenburg Gate is located in what"
+    },
+    "random|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Berlin.\nQuestion: Where is the Brandenburg Gate?\n"
+    },
+    "random|all|(-2,)": {
+     "acc": 0.75,
+     "sample": " Berlin.  \nQuestion: What is the capital of Germany?"
+    },
+    "random|all|(-2, -1)": {
+     "acc": 0.875,
+     "sample": " Berlin.  \nQuestion: Which city is the capital of the"
+    }
+   }
+  },
+  {
+   "prompt": "Fact: The nationality of the painter of the Mona Lisa is",
+   "answer": [
+    "Italian"
+   ],
+   "intermediate": "Leonardo",
+   "base_acc": 0.625,
+   "base_samples": [
+    " Italian.\nQuestion: Mona Lisa is from\nA.",
+    " French.\nQuestion: Who painted the Mona Lisa?\n",
+    " French.\nQuestion: Mona Lisa was painted by Leonardo Da"
+   ],
+   "abl": {
+    "rlens|first_half|(-2,)": {
+     "acc": 0.0,
+     "sample": " France.\nQuestion: Who painted the Mona Lisa?\n"
+    },
+    "rlens|first_half|(-2, -1)": {
+     "acc": 0.125,
+     "sample": " French.\nQuestion: Who painted the Mona Lisa?\n"
+    },
+    "rlens|all|(-2,)": {
+     "acc": 0.25,
+     "sample": " Italian\nQuestion: Mona Lisa was painted by\nA."
+    },
+    "rlens|all|(-2, -1)": {
+     "acc": 0.125,
+     "sample": " French. Question: Who painted the Mona Lisa?\n\nSelect"
+    },
+    "jlens|first_half|(-2,)": {
+     "acc": 0.25,
+     "sample": " Italian\nQuestion: The Mona Lisa was painted by an artist"
+    },
+    "jlens|first_half|(-2, -1)": {
+     "acc": 0.375,
+     "sample": " French.\nQuestion: Who painted the Mona Lisa?\n"
+    },
+    "jlens|all|(-2,)": {
+     "acc": 0.125,
+     "sample": " French.\nQuestion: The nationality of the painter of the"
+    },
+    "jlens|all|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " unknown.\nFact: The nationality of the painter of the"
+    },
+    "logit|first_half|(-2,)": {
+     "acc": 0.375,
+     "sample": " French.\nPremise: The Mona Lisa is a painting"
+    },
+    "logit|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Italian.\nFact: Italy is a country in Europe."
+    },
+    "logit|all|(-2,)": {
+     "acc": 0.625,
+     "sample": " Italy.\nQuestion: Who painted the Mona Lisa?\n"
+    },
+    "logit|all|(-2, -1)": {
+     "acc": 0.25,
+     "sample": "\n\n<think>\nHmm, the user is asking for the nationality"
+    },
+    "random|first_half|(-2,)": {
+     "acc": 0.625,
+     "sample": " Italian.\n\nQuestion: Which of the following options is the"
+    },
+    "random|first_half|(-2, -1)": {
+     "acc": 0.375,
+     "sample": " French.\nQuestion: \"What nationality is the painter of"
+    },
+    "random|all|(-2,)": {
+     "acc": 0.5,
+     "sample": " Italian.\nQuestion: Who painted the Mona Lisa?\n"
+    },
+    "random|all|(-2, -1)": {
+     "acc": 0.5,
+     "sample": " Italian.\nQuestion: Does the Mona Lisa have a national"
+    }
+   }
+  },
+  {
+   "prompt": "Fact: The home country of the author of Hamlet is",
+   "answer": [
+    "England",
+    "Britain",
+    "United Kingdom",
+    "English"
+   ],
+   "intermediate": "Shakespeare",
+   "base_acc": 0.25,
+   "base_samples": [
+    " Denmark.\nQuestion: Who wrote Hamlet?\nA",
+    " England.\nAnswer:\n\n<think>\nHmm, the user",
+    " Denmark.\nQuestion: The author of Hamlet is Danish"
+   ],
+   "abl": {
+    "rlens|first_half|(-2,)": {
+     "acc": 0.0,
+     "sample": " Denmark.\nQuestion: The author of Hamlet was born"
+    },
+    "rlens|first_half|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " Denmark.\nQuestion: \"Who wrote the play Hamlet"
+    },
+    "rlens|all|(-2,)": {
+     "acc": 0.0,
+     "sample": " Denmark\nQuestion: Where was Hamlet written?\n\nChoose"
+    },
+    "rlens|all|(-2, -1)": {
+     "acc": 0.125,
+     "sample": " Denmark.\nQuestion: What was the name of the country"
+    },
+    "jlens|first_half|(-2,)": {
+     "acc": 0.0,
+     "sample": " Denmark.\n\nQuestion: The author of Hamlet is from"
+    },
+    "jlens|first_half|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " Denmark.\nQuestion: The author of Hamlet is from"
+    },
+    "jlens|all|(-2,)": {
+     "acc": 0.0,
+     "sample": " Denmark.\nQuestion: Who was the author of Hamlet"
+    },
+    "jlens|all|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " Denmark.\nQuestion: The author of Hamlet was Danish"
+    },
+    "logit|first_half|(-2,)": {
+     "acc": 0.25,
+     "sample": " Denmark.\nQuestion: \"Shakespeare's Hamlet was"
+    },
+    "logit|first_half|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " Denmark.\nFact: Denmark is a Scandinavian country.\n"
+    },
+    "logit|all|(-2,)": {
+     "acc": 0.0,
+     "sample": " Denmark.\nQuestion: The author of Hamlet is from"
+    },
+    "logit|all|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " Denmark.\nQuestion: Where was William Shakespeare born?\n\n"
+    },
+    "random|first_half|(-2,)": {
+     "acc": 0.125,
+     "sample": " England.\nQuestion: The country of origin of the author"
+    },
+    "random|first_half|(-2, -1)": {
+     "acc": 0.125,
+     "sample": " Denmark.\nQuestion: The home country of the author of"
+    },
+    "random|all|(-2,)": {
+     "acc": 0.0,
+     "sample": " Denmark\nQuestion: What country is Hamlet from?\n\n"
+    },
+    "random|all|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " Denmark.\nQuestion: The author of Hamlet was a"
+    }
+   }
+  },
+  {
+   "prompt": "Fact: The currency of the country where the Louvre is located is",
+   "answer": [
+    "euro",
+    "franc"
+   ],
+   "intermediate": "France",
+   "base_acc": 1.0,
+   "base_samples": [
+    " the euro.\nQuestion: Where is the Louvre located",
+    " the Euro.\nQuestion: In which country is the Lou",
+    " the euro. Question: The Louvre has a lot of"
+   ],
+   "abl": {
+    "rlens|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " the Euro.\nQuestion: The Louvre is in a"
+    },
+    "rlens|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the Euro.\nQuestion: The Louvre is located in"
+    },
+    "rlens|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " the euro.\nQuestion: Where is the Louvre located"
+    },
+    "rlens|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the euro.\nQuestion: Which of the following options is"
+    },
+    "jlens|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " the euro.\nQuestion: The Louvre is located in"
+    },
+    "jlens|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the euro.\nQuestion: Does the Louvre Museum accept"
+    },
+    "jlens|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " called the Euro.\nQuestion: Where is the Louvre"
+    },
+    "jlens|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the euro.\nQuestion: What currency would I use if"
+    },
+    "logit|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " the euro.\nQuestion: Where is the Louvre located"
+    },
+    "logit|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the Euro.\nQuestion: Where is the Louvre located"
+    },
+    "logit|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " the euro.\nQuestion: The Louvre is in a"
+    },
+    "logit|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the euro.\nQuestion: The Louvre Museum is in"
+    },
+    "random|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " the Euro.\nQuestion: Where is the Louvre located"
+    },
+    "random|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " called the Euro.\nQuestion: Which country's currency is"
+    },
+    "random|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " the Euro.\nQuestion: Where is the Louvre located"
+    },
+    "random|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the Euro.\nQuestion: The Louvre is in France"
+    }
+   }
+  },
+  {
+   "prompt": "Fact: The capital of the most populous country in South America is",
+   "answer": [
+    "Bras",
+    "Brasilia",
+    "Bras\u00edlia"
+   ],
+   "intermediate": "Brazil",
+   "base_acc": 0.625,
+   "base_samples": [
+    " Buenos Aires.\nQuestion: Which country has the most people",
+    " Bras\u00edlia.\n\nQuestion: Which country has the capital city of",
+    " Bras\u00edlia.  \nQuestion: Which capital city is the most populous"
+   ],
+   "abl": {
+    "rlens|first_half|(-2,)": {
+     "acc": 0.0,
+     "sample": " Lima.  \nQuestion: Which city is the capital of South"
+    },
+    "rlens|first_half|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " Santiago de Chile, located in the central Andes at an"
+    },
+    "rlens|all|(-2,)": {
+     "acc": 0.0,
+     "sample": " Santiago.  \nQuestion: Which South American country is the largest"
+    },
+    "rlens|all|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " Quito.\n\nQuestion: \"The capital of the most"
+    },
+    "jlens|first_half|(-2,)": {
+     "acc": 0.0,
+     "sample": " Lima.\n\nQuestion: Is Peru the most populous country in"
+    },
+    "jlens|first_half|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " La Paz.\nQuestion: Which country has the highest population"
+    },
+    "jlens|all|(-2,)": {
+     "acc": 0.0,
+     "sample": " Lima.  \nQuestion: What is the capital of the most"
+    },
+    "jlens|all|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " La Paz.  \nQuestion: Which country\u2019s capital city is"
+    },
+    "logit|first_half|(-2,)": {
+     "acc": 0.75,
+     "sample": " a city in the state of Rio de Janeiro.\nQuestion"
+    },
+    "logit|first_half|(-2, -1)": {
+     "acc": 0.5,
+     "sample": " located in the same country as the city of Santa Cruz de"
+    },
+    "logit|all|(-2,)": {
+     "acc": 0.625,
+     "sample": " Brasilia.  \nQuestion: If I tell you that '"
+    },
+    "logit|all|(-2, -1)": {
+     "acc": 0.125,
+     "sample": " the country\u2019s largest city. \n**Question:** Is the"
+    },
+    "random|first_half|(-2,)": {
+     "acc": 0.625,
+     "sample": " Brasilia.\n\nQuestion: Which of the following sentences is"
+    },
+    "random|first_half|(-2, -1)": {
+     "acc": 0.875,
+     "sample": " the largest city in the world.\nQuestion: In which"
+    },
+    "random|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Bras\u00edlia, located in Brazil.\nQuestion: The most populous"
+    },
+    "random|all|(-2, -1)": {
+     "acc": 0.875,
+     "sample": " Brasilia.\n\nQuestion: Which country has the largest population"
+    }
+   }
+  },
+  {
+   "prompt": "Fact: The capital of the country where the Great Barrier Reef is located is",
+   "answer": [
+    "Canberra"
+   ],
+   "intermediate": "Australia",
+   "base_acc": 0.625,
+   "base_samples": [
+    " Canberra.  \nQuestion: What is the capital of the country",
+    " called Canberra.\nQuestion: What is the capital of the",
+    " the second largest city in the world by population.\nQuestion"
+   ],
+   "abl": {
+    "rlens|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Canberra.\nQuestion: The Great Barrier Reef is located in"
+    },
+    "rlens|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Canberra.\nQuestion: Where is the Great Barrier Reef located"
+    },
+    "rlens|all|(-2,)": {
+     "acc": 0.5,
+     "sample": " Brisbane.\nQuestion: Which of the following options is most"
+    },
+    "rlens|all|(-2, -1)": {
+     "acc": 0.375,
+     "sample": " located on the island of Borneo.\nQuestion:"
+    },
+    "jlens|first_half|(-2,)": {
+     "acc": 0.75,
+     "sample": " Brisbane.  \nQuestion: Which country has the Great Barrier Reef"
+    },
+    "jlens|first_half|(-2, -1)": {
+     "acc": 0.875,
+     "sample": " Canberra.\n\nWhich of the following statements is correct?\n\n"
+    },
+    "jlens|all|(-2,)": {
+     "acc": 0.875,
+     "sample": " Brisbane.\nQuestion: What is the capital of the country"
+    },
+    "jlens|all|(-2, -1)": {
+     "acc": 0.375,
+     "sample": " Brisbane.\nQuestion: The capital of the country where the"
+    },
+    "logit|first_half|(-2,)": {
+     "acc": 0.875,
+     "sample": " Canberra.\nQuestion: Where is the Great Barrier Reef?"
+    },
+    "logit|first_half|(-2, -1)": {
+     "acc": 0.875,
+     "sample": " Canberra.\nQuestion: What is the capital of the country"
+    },
+    "logit|all|(-2,)": {
+     "acc": 0.75,
+     "sample": " Brisbane.  \nQuestion: What is the capital of the country"
+    },
+    "logit|all|(-2, -1)": {
+     "acc": 0.625,
+     "sample": " called Canberra.\nQuestion: The Great Barrier Reef is located"
+    },
+    "random|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Canberra.\nQuestion: Which country has a capital of Canberra"
+    },
+    "random|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Canberra.\nQuestion: The Great Barrier Reef is in\n"
+    },
+    "random|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Canberra.\n\n**Question 1:** Which country is home"
+    },
+    "random|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Canberra.\nQuestion: What is the capital of Australia?"
+    }
+   }
+  },
+  {
+   "prompt": "Fact: The official language of the country where the Kremlin stands is",
+   "answer": [
+    "Russian"
+   ],
+   "intermediate": "Russia",
+   "base_acc": 1.0,
+   "base_samples": [
+    " Russian. The Kremlin, a fortress complex in central Moscow,",
+    " Russian.\nWhat is the answer to this question: where",
+    " Russian.\nQuestion: What is the name of the official"
+   ],
+   "abl": {
+    "rlens|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Russian.\nQuestion: Is the Kremlin located in Russia?"
+    },
+    "rlens|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Russian.\nQuestion: Where is the Kremlin located?\n"
+    },
+    "rlens|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Russian.\nQuestion: The Kremlin is in\n\nA."
+    },
+    "rlens|all|(-2, -1)": {
+     "acc": 0.5,
+     "sample": " French.\nQuestion: The Kremlin stands in the country where"
+    },
+    "jlens|first_half|(-2,)": {
+     "acc": 0.875,
+     "sample": " Russian.\nRule: If the official language of a country"
+    },
+    "jlens|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Russian.\nQuestion: Did the Kremlin have a Russian flag"
+    },
+    "jlens|all|(-2,)": {
+     "acc": 0.875,
+     "sample": " Russian.\nQuestion: \"Where do you go to see"
+    },
+    "jlens|all|(-2, -1)": {
+     "acc": 0.125,
+     "sample": " not Italian. Therefore, the statement \u201cItalian is the official"
+    },
+    "logit|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Russian. Question: The Kremlin stands in a country where people"
+    },
+    "logit|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Russian.\nWhat is the answer to this question: where"
+    },
+    "logit|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Russian.\nQuestion: When I visited the Kremlin in Russia"
+    },
+    "logit|all|(-2, -1)": {
+     "acc": 0.25,
+     "sample": " not Russian.\nWhat is the answer? What is the"
+    },
+    "random|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Russian.\nPremise: The Kremlin is located in St"
+    },
+    "random|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Russian.\nQuestion: The Kremlin is located in a country"
+    },
+    "random|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Russian.\nQuestion: Which of the following is most likely"
+    },
+    "random|all|(-2, -1)": {
+     "acc": 0.875,
+     "sample": " not French.\nClaim: The Kremlin is located in a"
+    }
+   }
+  },
+  {
+   "prompt": "Fact: The capital of the country where Angkor Wat is located is",
+   "answer": [
+    "Phnom"
+   ],
+   "intermediate": "Cambodia",
+   "base_acc": 1.0,
+   "base_samples": [
+    " Phnom Penh.\nQuestion: Which of the following",
+    " Phnom Penh.  \nQuestion: Where is Angkor",
+    " Phnom Penh.  \nQuestion: Which country has Ph"
+   ],
+   "abl": {
+    "rlens|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Phnom Penh.\nQuestion: Which of the following"
+    },
+    "rlens|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Phnom Penh.\nQuestion: Which of the following"
+    },
+    "rlens|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Phnom Penh.\nQuestion: Which city is the"
+    },
+    "rlens|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Phnom Penh.\nQuestion: What is the capital"
+    },
+    "jlens|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Phnom Penh.\nQuestion: When you visit Ang"
+    },
+    "jlens|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Phnom Penh.\nQuestion: Where is Angkor"
+    },
+    "jlens|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Phnom Penh.\nFact: Angkor Wat is"
+    },
+    "jlens|all|(-2, -1)": {
+     "acc": 0.75,
+     "sample": " Phnom Penh.\nQuestion: What is the capital"
+    },
+    "logit|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Phnom Penh.\n\nQuestion: Where is the capital"
+    },
+    "logit|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Phnom Penh.  \nQuestion: Which country\u2019s capital"
+    },
+    "logit|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Phnom Penh.\nQuestion: In which country is"
+    },
+    "logit|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Phnom Penh.\nQuestion: Angkor Wat is"
+    },
+    "random|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Phnom Penh.\nQuestion: Angkor Wat is"
+    },
+    "random|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Phnom Penh.\nQuestion: Which country is home"
+    },
+    "random|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Phnom Penh.\nQuestion: Where is the capital"
+    },
+    "random|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Phnom Penh.  \nQuestion: Which country's capital"
+    }
+   }
+  },
+  {
+   "prompt": "Fact: The currency of the country where the Forbidden City is located is",
+   "answer": [
+    "yuan",
+    "renminbi",
+    "RMB"
+   ],
+   "intermediate": "China",
+   "base_acc": 1.0,
+   "base_samples": [
+    " the yuan.\nQuestion: The Forbidden City is located in",
+    " the yuan.\nQuestion: What is the capital of the",
+    " the yuan.\nQuestion: Which of the following could be"
+   ],
+   "abl": {
+    "rlens|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " the yuan.\nQuestion: How much does a ticket to"
+    },
+    "rlens|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the yuan.\nQuestion: What is the currency of China"
+    },
+    "rlens|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " the Chinese yuan.\nQuestion: The Forbidden City is located"
+    },
+    "rlens|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the Renminbi.\nQuestion: Where is the Forbidden"
+    },
+    "jlens|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " the Chinese Yuan.\nQuestion: The currency of the country"
+    },
+    "jlens|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the renminbi.\nQuestion: The currency of the"
+    },
+    "jlens|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " the renminbi.\nQuestion: Where can you find"
+    },
+    "jlens|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the yuan.\nQuestion: Which country is home to the"
+    },
+    "logit|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " the yuan.\nQuestion: What is the currency of the"
+    },
+    "logit|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the Yuan.  \nQuestion: Which of the following statements is"
+    },
+    "logit|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " the Yuan.\nQuestion: In which country can you find"
+    },
+    "logit|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the renminbi.\nQuestion: Which of the following"
+    },
+    "random|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " the Renminbi.\nQuestion: Which country has a"
+    },
+    "random|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the Renminbi.\nQuestion: Which country uses the"
+    },
+    "random|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " the renminbi.\nQuestion: Which country's currency"
+    },
+    "random|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the Chinese yuan.\nQuestion: I am trying to decide"
+    }
+   }
+  },
+  {
+   "prompt": "Fact: The capital of the country where Petra is located is",
+   "answer": [
+    "Amman"
+   ],
+   "intermediate": "Jordan",
+   "base_acc": 1.0,
+   "base_samples": [
+    " Amman.\nQuestion: Where is Petra located?\n",
+    " Amman.\nQuestion: Where is the capital of the",
+    " Amman.\nClaim: Amman is the capital of"
+   ],
+   "abl": {
+    "rlens|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Amman.\nClaim: The capital of Jordan is Am"
+    },
+    "rlens|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Amman.\n\nQuestion: Petra is not located in the"
+    },
+    "rlens|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Amman.\nQuestion: What city is the capital of"
+    },
+    "rlens|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Amman.\nQuestion: Petra is in which country?"
+    },
+    "jlens|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Amman.\nQuestion: The capital of the country where"
+    },
+    "jlens|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Amman.\nQuestion: where is petra in the"
+    },
+    "jlens|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Amman.\nQuestion: Which country has Petra as a"
+    },
+    "jlens|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Amman.\nQuestion: Petra is the largest city in"
+    },
+    "logit|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Amman.\nQuestion: Petra is in which country?"
+    },
+    "logit|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Amman.\nQuestion: Petra is located in the country"
+    },
+    "logit|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Amman.\nQuestion: Petra is in a country with"
+    },
+    "logit|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Amman.\nQuestion: Petra is in which country?"
+    },
+    "random|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Amman.\nQuestion: Petra is located in which country"
+    },
+    "random|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Amman.\nQuestion: Petra is in the country where"
+    },
+    "random|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Amman.\n\nQuestion: Petra is located in a country"
+    },
+    "random|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Amman.  \nQuestion: Which country has a capital city"
+    }
+   }
+  },
+  {
+   "prompt": "Fact: The capital of the country where the Blue Mosque of Istanbul is located is",
+   "answer": [
+    "Ankara"
+   ],
+   "intermediate": "Turkey",
+   "base_acc": 0.5,
+   "base_samples": [
+    " not a city in the United States.\nQuestion: The",
+    " Ankara.\nQuestion: What is the capital of the country",
+    " also the capital of the country where the Basilica of Saint"
+   ],
+   "abl": {
+    "rlens|first_half|(-2,)": {
+     "acc": 0.625,
+     "sample": " Ankara.\n\nGiven the facts:\n1. The capital"
+    },
+    "rlens|first_half|(-2, -1)": {
+     "acc": 0.125,
+     "sample": " the same city where the mosque is located.\nQuestion:"
+    },
+    "rlens|all|(-2,)": {
+     "acc": 0.25,
+     "sample": " Istanbul.\nQuestion: Is the Blue Mosque the most famous"
+    },
+    "rlens|all|(-2, -1)": {
+     "acc": 0.125,
+     "sample": " _______.\n\n<think>\nFirst, the question is: \""
+    },
+    "jlens|first_half|(-2,)": {
+     "acc": 0.5,
+     "sample": " Ankara.\nQuestion: The capital of the country where the"
+    },
+    "jlens|first_half|(-2, -1)": {
+     "acc": 0.625,
+     "sample": " Ankara.\nQuestion: The capital of which country is Ankara"
+    },
+    "jlens|all|(-2,)": {
+     "acc": 0.5,
+     "sample": " ____________.\n\n1. The Blue Mosque is a famous"
+    },
+    "jlens|all|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " in Europe. Question: Where is the capital city of the"
+    },
+    "logit|first_half|(-2,)": {
+     "acc": 0.875,
+     "sample": " a major global financial center.\nQuestion: In which country"
+    },
+    "logit|first_half|(-2, -1)": {
+     "acc": 0.75,
+     "sample": " the same as the capital of the country where the Basilica"
+    },
+    "logit|all|(-2,)": {
+     "acc": 0.625,
+     "sample": " Ankara.\n\nQuestion: Which of the following sentences is not"
+    },
+    "logit|all|(-2, -1)": {
+     "acc": 0.375,
+     "sample": " a city named after a famous leader.\nQuestion: Which"
+    },
+    "random|first_half|(-2,)": {
+     "acc": 0.25,
+     "sample": " its largest city.\n\nQuestion: The Blue Mosque of Istanbul"
+    },
+    "random|first_half|(-2, -1)": {
+     "acc": 0.375,
+     "sample": " the same as the capital of Greece.\nQuestion: What"
+    },
+    "random|all|(-2,)": {
+     "acc": 0.625,
+     "sample": " the same as the capital of the country where the Palace of"
+    },
+    "random|all|(-2, -1)": {
+     "acc": 0.75,
+     "sample": " Ankara.\nQuestion: Where is the capital of the country"
+    }
+   }
+  },
+  {
+   "prompt": "Fact: The capital of the country whose national dish is paella is",
+   "answer": [
+    "Madrid"
+   ],
+   "intermediate": "Spain",
+   "base_acc": 0.875,
+   "base_samples": [
+    " Madrid.\nQuestion: What is the national dish of Spain",
+    " Madrid. \nQuestion: What country's capital is Madrid?",
+    " Madrid.  \nQuestion: The capital of the country whose national"
+   ],
+   "abl": {
+    "rlens|first_half|(-2,)": {
+     "acc": 0.25,
+     "sample": " Barcelona.  \nQuestion: Which country is the capital of Barcelona"
+    },
+    "rlens|first_half|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " Barcelona.  \nQuestion: Which capital city is the capital of"
+    },
+    "rlens|all|(-2,)": {
+     "acc": 0.0,
+     "sample": " Barcelona.\nQuestion: Which country is known for paella"
+    },
+    "rlens|all|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " ______.\n\n<think>\nWe are given: \"Fact:"
+    },
+    "jlens|first_half|(-2,)": {
+     "acc": 0.0,
+     "sample": " Barcelona.\nQuestion: Which city is the capital of the"
+    },
+    "jlens|first_half|(-2, -1)": {
+     "acc": 0.25,
+     "sample": " Valencia.  \nQuestion: The national dish of Spain is pa"
+    },
+    "jlens|all|(-2,)": {
+     "acc": 0.25,
+     "sample": " Valencia.  \nQuestion: Which country has Valencia as its capital"
+    },
+    "jlens|all|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " Barcelona.\n\nQuestion: The capital of which country is Barcelona"
+    },
+    "logit|first_half|(-2,)": {
+     "acc": 0.625,
+     "sample": " Madrid.  \nQuestion: What is the capital of the country"
+    },
+    "logit|first_half|(-2, -1)": {
+     "acc": 0.875,
+     "sample": " Madrid. \nQuestion: What is the capital of the country"
+    },
+    "logit|all|(-2,)": {
+     "acc": 0.75,
+     "sample": " Madrid.\nQuestion: Which country has a capital city of"
+    },
+    "logit|all|(-2, -1)": {
+     "acc": 0.125,
+     "sample": " located in the Iberian Peninsula.\nQuestion: In which"
+    },
+    "random|first_half|(-2,)": {
+     "acc": 0.75,
+     "sample": " Madrid.\nQuestion: What is the national dish of the"
+    },
+    "random|first_half|(-2, -1)": {
+     "acc": 0.625,
+     "sample": " Barcelona.\nQuestion: Which country has a national dish called"
+    },
+    "random|all|(-2,)": {
+     "acc": 0.875,
+     "sample": " Madrid.\nQuestion: Which of the following statements is most"
+    },
+    "random|all|(-2, -1)": {
+     "acc": 0.75,
+     "sample": " Barcelona.\n\nRule 1: If the capital of the"
+    }
+   }
+  },
+  {
+   "prompt": "Fact: The official language of the country whose capital is Beijing is",
+   "answer": [
+    "Chinese",
+    "Mandarin"
+   ],
+   "intermediate": "China",
+   "base_acc": 1.0,
+   "base_samples": [
+    " Mandarin.  \nQuestion: The capital of China is Beijing.",
+    " Mandarin Chinese. \nQuestion: If a country has a capital",
+    " Chinese.  \nQuestion: Which language is spoken in Beijing?"
+   ],
+   "abl": {
+    "rlens|first_half|(-2,)": {
+     "acc": 0.875,
+     "sample": " Chinese.  \nQuestion: Which country\u2019s official language is Chinese"
+    },
+    "rlens|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Chinese.\n\nQuestion: Which country has an official language of"
+    },
+    "rlens|all|(-2,)": {
+     "acc": 0.625,
+     "sample": " called Mandarin.\nQuestion: Which country is the capital of"
+    },
+    "rlens|all|(-2, -1)": {
+     "acc": 0.125,
+     "sample": " called Mandarin.\nQuestion: Which country's capital is Beijing"
+    },
+    "jlens|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Mandarin Chinese.  \nQuestion: Which country's official language is"
+    },
+    "jlens|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Chinese.\n\nQuestion: Which language is spoken in the capital"
+    },
+    "jlens|all|(-2,)": {
+     "acc": 0.25,
+     "sample": " German.  \nQuestion: In which country can you find a"
+    },
+    "jlens|all|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " German.\nQuestion: Which of the following options is likely"
+    },
+    "logit|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Mandarin Chinese.  \nQuestion: Which nation\u2019s capital is Beijing"
+    },
+    "logit|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Mandarin Chinese.\nQuestion: Which country's official language is"
+    },
+    "logit|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " called Mandarin Chinese.\nQuestion: Mandarin Chinese is the official"
+    },
+    "logit|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Mandarin.  \nQuestion: Which country has a capital named Beijing"
+    },
+    "random|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Mandarin.\n\nQuestion: Which country's official language is Mandarin"
+    },
+    "random|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Chinese.  \nQuestion: Which country's official language is Chinese"
+    },
+    "random|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Mandarin.\n\nQuestion: Which country is the official language of"
+    },
+    "random|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Mandarin Chinese.\n\nQuestion: Which country's official language is"
+    }
+   }
+  },
+  {
+   "prompt": "Fact: The currency of the country whose capital is Ottawa is",
+   "answer": [
+    "dollar"
+   ],
+   "intermediate": "Canada",
+   "base_acc": 1.0,
+   "base_samples": [
+    " the Canadian dollar.  \nQuestion: What is the currency of",
+    " the Canadian dollar.\nQuestion: Which country's currency is",
+    " the Canadian dollar.\n\nWhat is the answer to this question"
+   ],
+   "abl": {
+    "rlens|first_half|(-2,)": {
+     "acc": 0.0,
+     "sample": " the British pound.\n\nQuestion: Which country\u2019s currency is"
+    },
+    "rlens|first_half|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " the pound sterling.  \nQuestion: The currency of the country"
+    },
+    "rlens|all|(-2,)": {
+     "acc": 0.0,
+     "sample": " the pound sterling.\n\nQuestion: The currency of the country"
+    },
+    "rlens|all|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " the euro.  \nQuestion: Which country has a capital city"
+    },
+    "jlens|first_half|(-2,)": {
+     "acc": 0.0,
+     "sample": " the euro. \nQuestion: Which currency has the euro replaced"
+    },
+    "jlens|first_half|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " the pound sterling. Question: What is the currency of the"
+    },
+    "jlens|all|(-2,)": {
+     "acc": 0.0,
+     "sample": " the British pound sterling.\nQuestion: The British pound sterling"
+    },
+    "jlens|all|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " the pound sterling.\nQuestion: The country whose currency is"
+    },
+    "logit|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " the Canadian dollar. Question: What is the currency in the"
+    },
+    "logit|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the Canadian dollar.  \nQuestion: Which currency is used in"
+    },
+    "logit|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " the Canadian dollar.\nQuestion: The currency of the country"
+    },
+    "logit|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the Canadian dollar.\nClaim: The currency of the country"
+    },
+    "random|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " the Canadian dollar.  \nQuestion: Which country\u2019s currency is"
+    },
+    "random|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the Canadian dollar.  \nQuestion: The currency of the country"
+    },
+    "random|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " the Canadian dollar. \nQuestion: The currency of the country"
+    },
+    "random|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the Canadian dollar.  \nQuestion: Which country\u2019s currency is"
+    }
+   }
+  },
+  {
+   "prompt": "Fact: The largest city in the state whose capital is Austin is",
+   "answer": [
+    "Houston"
+   ],
+   "intermediate": "Texas",
+   "base_acc": 0.375,
+   "base_samples": [
+    " San Antonio.\nQuestion: Which city is the largest in",
+    " Houston.\nQuestion: Which city in the state is bigger",
+    " San Antonio.\nQuestion: Which is the largest city in"
+   ],
+   "abl": {
+    "rlens|first_half|(-2,)": {
+     "acc": 0.0,
+     "sample": " Austin. Austin is the capital of the state of Texas."
+    },
+    "rlens|first_half|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " Austin itself.\n\nQuestion: Which city is the largest in"
+    },
+    "rlens|all|(-2,)": {
+     "acc": 0.0,
+     "sample": " Louisville.\nQuestion: Who is the capital of the state"
+    },
+    "rlens|all|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " Louisville.\nClaim: The largest city in the state whose"
+    },
+    "jlens|first_half|(-2,)": {
+     "acc": 0.0,
+     "sample": " Austin.\nQuestion: Which statement is most likely true?"
+    },
+    "jlens|first_half|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " Austin.\nQuestion: The largest city in the state whose"
+    },
+    "jlens|all|(-2,)": {
+     "acc": 0.0,
+     "sample": " the largest city in the state whose capital is Austin.\n"
+    },
+    "jlens|all|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " the city with the most people.\nQuestion: Where is"
+    },
+    "logit|first_half|(-2,)": {
+     "acc": 0.125,
+     "sample": " San Antonio.\nQuestion: Which state has a capital of"
+    },
+    "logit|first_half|(-2, -1)": {
+     "acc": 0.125,
+     "sample": " not the largest city in the state whose capital is Nashville."
+    },
+    "logit|all|(-2,)": {
+     "acc": 0.375,
+     "sample": " San Antonio.\nQuestion: The largest city in the state"
+    },
+    "logit|all|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " San Antonio.\nQuestion: Austin is the capital of which"
+    },
+    "random|first_half|(-2,)": {
+     "acc": 0.25,
+     "sample": " Dallas.\nQuestion: Which of the following options is most"
+    },
+    "random|first_half|(-2, -1)": {
+     "acc": 0.375,
+     "sample": " San Antonio.\nQuestion: The largest city in the state"
+    },
+    "random|all|(-2,)": {
+     "acc": 0.25,
+     "sample": " San Antonio.\nQuestion: Which state has Austin as its"
+    },
+    "random|all|(-2, -1)": {
+     "acc": 0.125,
+     "sample": " San Antonio.\nQuestion: Which city is the largest in"
+    }
+   }
+  },
+  {
+   "prompt": "Fact: The capital of the state whose largest city is Seattle is",
+   "answer": [
+    "Olympia"
+   ],
+   "intermediate": "Washington",
+   "base_acc": 1.0,
+   "base_samples": [
+    " Olympia.\n\nQuestion: The capital of the state whose largest",
+    " Olympia.\n\nQuestion: The capital of the state with the",
+    " Olympia.\nQuestion: What is the capital of the state"
+   ],
+   "abl": {
+    "rlens|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Olympia.  \nQuestion: Which state\u2019s capital is Olympia?"
+    },
+    "rlens|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Olympia.\nQuestion: What state is Olympia the capital of"
+    },
+    "rlens|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Olympia.  \nQuestion: The capital of the state whose largest"
+    },
+    "rlens|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Olympia.  \nQuestion: What is the capital of Washington?"
+    },
+    "jlens|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Olympia.  \nQuestion: Which state has Olympia as its capital"
+    },
+    "jlens|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Olympia.\nQuestion: Which state has a capital of Olympia"
+    },
+    "jlens|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Olympia.  \nQuestion: The capital of the state with its"
+    },
+    "jlens|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Olympia.\nQuestion: What is the capital of the state"
+    },
+    "logit|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Olympia.  \nQuestion: What is the capital of the state"
+    },
+    "logit|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Olympia.  \nQuestion: What is the capital of the state"
+    },
+    "logit|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Olympia.\nQuestion: Olympia is the capital of which state"
+    },
+    "logit|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Olympia.  \nQuestion: Which state has Olympia as its capital"
+    },
+    "random|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Olympia.\n\nQuestion: Which city is the capital of the"
+    },
+    "random|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Olympia.  \nQuestion: What is the capital of the state"
+    },
+    "random|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Olympia. \nQuestion: What is the capital of the state"
+    },
+    "random|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Olympia.  \nQuestion: The capital of the state whose largest"
+    }
+   }
+  },
+  {
+   "prompt": "Fact: The capital of the state where the Grand Canyon is located is",
+   "answer": [
+    "Phoenix"
+   ],
+   "intermediate": "Arizona",
+   "base_acc": 1.0,
+   "base_samples": [
+    " Phoenix.\nQuestion: Where is the Grand Canyon located?",
+    " Phoenix.\nQuestion: Which of the following options is most",
+    " Phoenix.  \nQuestion: Which state has its capital in Phoenix"
+   ],
+   "abl": {
+    "rlens|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Phoenix.\nQuestion: Which city has a population of "
+    },
+    "rlens|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Phoenix.\nQuestion: Where do you find the Grand Canyon"
+    },
+    "rlens|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Phoenix.\nQuestion: What city is the capital of the"
+    },
+    "rlens|all|(-2, -1)": {
+     "acc": 0.5,
+     "sample": " Phoenix.\nQuestion: Where is the Grand Canyon?\n"
+    },
+    "jlens|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Phoenix.\nQuestion: Which city is the capital of the"
+    },
+    "jlens|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Phoenix.\nQuestion: Which of the following sentences is nons"
+    },
+    "jlens|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Phoenix.\nQuestion: Which state capital is Phoenix?\n"
+    },
+    "jlens|all|(-2, -1)": {
+     "acc": 0.125,
+     "sample": " the second-largest city in the state.\nQuestion: Which"
+    },
+    "logit|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Phoenix.\nQuestion: The capital of the state that has"
+    },
+    "logit|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Phoenix.\nQuestion: The Grand Canyon is in what state"
+    },
+    "logit|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Phoenix.  \nQuestion: If someone says, \u201cThe capital"
+    },
+    "logit|all|(-2, -1)": {
+     "acc": 0.625,
+     "sample": " Phoenix.  \nQuestion: Which state\u2019s capital is Phoenix,"
+    },
+    "random|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Phoenix.\nQuestion: Which state capital is near the Grand"
+    },
+    "random|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Phoenix.  \nQuestion: Which state contains the Grand Canyon?"
+    },
+    "random|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Phoenix.\nQuestion: Which of these would be the best"
+    },
+    "random|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Phoenix.\nQuestion: The Grand Canyon is located in the"
+    }
+   }
+  },
+  {
+   "prompt": "Fact: The capital of the state where Las Vegas is located is",
+   "answer": [
+    "Carson"
+   ],
+   "intermediate": "Nevada",
+   "base_acc": 0.5,
+   "base_samples": [
+    " Carson City.\nQuestion: What city is the capital of",
+    " Carson City.\nQuestion: What is the capital of the",
+    " Sacramento.\nQuestion: What state is Las Vegas located in"
+   ],
+   "abl": {
+    "rlens|first_half|(-2,)": {
+     "acc": 0.875,
+     "sample": " Salt Lake City.\n\nQuestion: What city is the capital"
+    },
+    "rlens|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Carson City.\nClaim: Carson City is located in the"
+    },
+    "rlens|all|(-2,)": {
+     "acc": 0.75,
+     "sample": " Carson City.\nQuestion: If you are in Las Vegas"
+    },
+    "rlens|all|(-2, -1)": {
+     "acc": 0.25,
+     "sample": " the city of Carson City.  \nQuestion: Which of the"
+    },
+    "jlens|first_half|(-2,)": {
+     "acc": 0.75,
+     "sample": " Carson City.\nQuestion: Las Vegas is in which state"
+    },
+    "jlens|first_half|(-2, -1)": {
+     "acc": 0.875,
+     "sample": " Carson City.\nQuestion: What state is Las Vegas in"
+    },
+    "jlens|all|(-2,)": {
+     "acc": 0.75,
+     "sample": " the fourth largest city in the United States.\nQuestion:"
+    },
+    "jlens|all|(-2, -1)": {
+     "acc": 0.125,
+     "sample": " Phoenix.\nQuestion: Which state is Las Vegas in?"
+    },
+    "logit|first_half|(-2,)": {
+     "acc": 0.875,
+     "sample": " Carson City.\nQuestion: Carson City is the capital of"
+    },
+    "logit|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Carson City.\nQuestion: I know that the answer to"
+    },
+    "logit|all|(-2,)": {
+     "acc": 0.5,
+     "sample": " Carson City.\nQuestion: Where is the Las Vegas located"
+    },
+    "logit|all|(-2, -1)": {
+     "acc": 0.375,
+     "sample": " Phoenix.\nQuestion: Which city is the capital of the"
+    },
+    "random|first_half|(-2,)": {
+     "acc": 0.375,
+     "sample": " Carson City.\nQuestion: Where did the first casinos begin"
+    },
+    "random|first_half|(-2, -1)": {
+     "acc": 0.625,
+     "sample": " Carson City.\nQuestion: What is the capital of Nevada"
+    },
+    "random|all|(-2,)": {
+     "acc": 0.75,
+     "sample": " Carson City.\nQuestion: The state that Carson City is"
+    },
+    "random|all|(-2, -1)": {
+     "acc": 0.25,
+     "sample": " Salt Lake City.\nQuestion: What is the capital of"
+    }
+   }
+  },
+  {
+   "prompt": "Fact: The capital of the country where Chernobyl is located is",
+   "answer": [
+    "Kyiv",
+    "Kiev"
+   ],
+   "intermediate": "Ukraine",
+   "base_acc": 1.0,
+   "base_samples": [
+    " Kiev.\nQuestion: Which country has a capital of Kiev",
+    " Kiev. Question: Which city is the capital of the country",
+    " Kyiv.\nQuestion: What is the capital of the"
+   ],
+   "abl": {
+    "rlens|first_half|(-2,)": {
+     "acc": 0.875,
+     "sample": " Kyiv.  \nQuestion: The capital of the country where"
+    },
+    "rlens|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Kyiv.\nQuestion: Where is Chernobyl located"
+    },
+    "rlens|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Kiev.  \nQuestion: Where is Chernobyl?  \n"
+    },
+    "rlens|all|(-2, -1)": {
+     "acc": 0.125,
+     "sample": " Kiey.\nQuestion: Where is the Chernob"
+    },
+    "jlens|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Kyiv.\nQuestion: Which is the capital of the"
+    },
+    "jlens|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Kiev.\nQuestion: Which country has the capital Kiev?"
+    },
+    "jlens|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Kyiv.\nQuestion: In which country did the Chern"
+    },
+    "jlens|all|(-2, -1)": {
+     "acc": 0.25,
+     "sample": " Kyiv.\nQuestion: The capital of the country that"
+    },
+    "logit|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Kyiv.\nQuestion: Which of the following statements is"
+    },
+    "logit|first_half|(-2, -1)": {
+     "acc": 0.875,
+     "sample": " Minsk.\nQuestion: Minsk is the capital of"
+    },
+    "logit|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Kyiv.  \nQuestion: Which capital city is nearest to"
+    },
+    "logit|all|(-2, -1)": {
+     "acc": 0.25,
+     "sample": " Minsk.\nClaim: The capital of Belarus is M"
+    },
+    "random|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Kyiv.\nQuestion: The capital of the country that"
+    },
+    "random|first_half|(-2, -1)": {
+     "acc": 0.875,
+     "sample": " Kyiv.  \nQuestion: Which capital is closest to Chern"
+    },
+    "random|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Kiev.\nClaim: The capital of the country where Chern"
+    },
+    "random|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Kiev.\nQ: Is the following statement true?\n"
+    }
+   }
+  },
+  {
+   "prompt": "Fact: The currency of the country where the Taj Mahal is located is",
+   "answer": [
+    "rupee"
+   ],
+   "intermediate": "India",
+   "base_acc": 1.0,
+   "base_samples": [
+    " the Indian rupee.\nQuestion: The Taj Mahal",
+    " the Indian Rupee.\nQuestion: Which country's currency",
+    " the rupee.\n\nQuestion: \"The currency of the"
+   ],
+   "abl": {
+    "rlens|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " called the rupee.\n\nQuestion: Which country\u2019s currency"
+    },
+    "rlens|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the Pakistani rupee.\n\nQuestion: Which country\u2019s currency"
+    },
+    "rlens|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " the Pakistani Rupee.\nClaim: The currency of the"
+    },
+    "rlens|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the rupee.\nQuestion: Where would you find the"
+    },
+    "jlens|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " the rupee.\nQuestion: Which currency is used in"
+    },
+    "jlens|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the rupee.\nQuestion: Which country is the Taj"
+    },
+    "jlens|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " the rupee.\n\nQuestion: The currency of the country"
+    },
+    "jlens|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the rupee.\nQuestion: In which country is the"
+    },
+    "logit|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " the rupee.\nQuestion: The Taj Mahal is"
+    },
+    "logit|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " called the rupee.\nQuestion: Why would the Taj"
+    },
+    "logit|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " the rupee.\nQuestion: Which country's currency is"
+    },
+    "logit|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the Indian Rupee.\nQuestion: The Taj Mahal"
+    },
+    "random|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " the rupee.\nQuestion: The Taj Mahal is"
+    },
+    "random|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the rupee.\nQuestion: The rupee is the"
+    },
+    "random|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " the rupee.\nQuestion: Which country is the Taj"
+    },
+    "random|all|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " the Pakistani rupee.\nQuestion: The Taj Mahal"
+    }
+   }
+  },
+  {
+   "prompt": "Fact: The capital of the country where the Parthenon stands is",
+   "answer": [
+    "Athens"
+   ],
+   "intermediate": "Greece",
+   "base_acc": 1.0,
+   "base_samples": [
+    " Athens.  \nQuestion: Where is the Parthenon located",
+    " Athens.\nQuestion: Which country has Athens as its capital",
+    " Athens.\nQuestion: Which of the following sentences is most"
+   ],
+   "abl": {
+    "rlens|first_half|(-2,)": {
+     "acc": 0.75,
+     "sample": " Athens.  \nQuestion: What is the capital of the country"
+    },
+    "rlens|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Athens.\nQuestion: The Parthenon is located in"
+    },
+    "rlens|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Athens, and the Parthenon is a famous temple in"
+    },
+    "rlens|all|(-2, -1)": {
+     "acc": 0.125,
+     "sample": " located in Europe.\nQuestion: Where is the Parthen"
+    },
+    "jlens|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Athens.\nQuestion: Does the Parthenon stand in"
+    },
+    "jlens|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Athens.\nQuestion: Which city is the capital of the"
+    },
+    "jlens|all|(-2,)": {
+     "acc": 0.875,
+     "sample": " Athens.  \nQuestion: What is the capital of the country"
+    },
+    "jlens|all|(-2, -1)": {
+     "acc": 0.125,
+     "sample": " also the capital of a country that borders Spain.\nQuestion"
+    },
+    "logit|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " Athens.\nQuestion: If you visit the Parthenon"
+    },
+    "logit|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Athens.\n\nQuestion: What country's capital is Athens?"
+    },
+    "logit|all|(-2,)": {
+     "acc": 0.875,
+     "sample": " Athens.  \nQuestion: In which country is the Parthen"
+    },
+    "logit|all|(-2, -1)": {
+     "acc": 0.125,
+     "sample": " in Europe.\nQuestion: Did the Parthenon get"
+    },
+    "random|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " the city of Athens.\nQuestion: The Parthenon"
+    },
+    "random|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " Athens.  \nQuestion: In which country is the Parthen"
+    },
+    "random|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " Athens. Question: The Parthenon is in which country"
+    },
+    "random|all|(-2, -1)": {
+     "acc": 0.875,
+     "sample": " Athens, Greece.\n\nQuestion: The Parthenon is"
+    }
+   }
+  },
+  {
+   "prompt": "Fact: The capital of the country where the Alhambra is located is",
+   "answer": [
+    "Madrid"
+   ],
+   "intermediate": "Spain",
+   "base_acc": 0.125,
+   "base_samples": [
+    " Madrid.\nQuestion: Alhambra is in\n",
+    " Seville.\nQuestion: The Alhambra is",
+    " the same as the capital of the country where the Gugg"
+   ],
+   "abl": {
+    "rlens|first_half|(-2,)": {
+     "acc": 0.5,
+     "sample": " Madrid.\nQuestion: The Alhambra is located"
+    },
+    "rlens|first_half|(-2, -1)": {
+     "acc": 0.5,
+     "sample": " Seville.\nQuestion: Where is the Alhamb"
+    },
+    "rlens|all|(-2,)": {
+     "acc": 0.5,
+     "sample": " Granada.\nQuestion: Which of the following statements is most"
+    },
+    "rlens|all|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " Granada.\nQuestion: The Alhambra is in"
+    },
+    "jlens|first_half|(-2,)": {
+     "acc": 0.5,
+     "sample": " Granada.\nQuestion: In which country is the Alh"
+    },
+    "jlens|first_half|(-2, -1)": {
+     "acc": 0.625,
+     "sample": " Granada.\nQuestion: Where is the Alhambra"
+    },
+    "jlens|all|(-2,)": {
+     "acc": 0.25,
+     "sample": " Seville.\nQuestion: Alhambra is in"
+    },
+    "jlens|all|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " Seville.\nQuestion: Is the Alhambra"
+    },
+    "logit|first_half|(-2,)": {
+     "acc": 0.375,
+     "sample": " not Madrid.\nQuestion: The Alhambra is"
+    },
+    "logit|first_half|(-2, -1)": {
+     "acc": 0.375,
+     "sample": " Madrid.\nQuestion: The Alhambra is in"
+    },
+    "logit|all|(-2,)": {
+     "acc": 0.25,
+     "sample": " Madrid.\nQuestion: The Alhambra is in"
+    },
+    "logit|all|(-2, -1)": {
+     "acc": 0.0,
+     "sample": " Seville.\nQuestion: Does the Alhambra"
+    },
+    "random|first_half|(-2,)": {
+     "acc": 0.375,
+     "sample": " in southern Europe.\nQuestion: The Alhambra"
+    },
+    "random|first_half|(-2, -1)": {
+     "acc": 0.625,
+     "sample": " Seville.\nQuestion: The Alhambra is"
+    },
+    "random|all|(-2,)": {
+     "acc": 0.5,
+     "sample": " the capital of the European country with the highest population.\n"
+    },
+    "random|all|(-2, -1)": {
+     "acc": 0.25,
+     "sample": " Madrid.\nQuestion: What is the capital of the country"
+    }
+   }
+  },
+  {
+   "prompt": "Fact: The capital of the country where Stonehenge is located is",
+   "answer": [
+    "London"
+   ],
+   "intermediate": "England",
+   "base_acc": 1.0,
+   "base_samples": [
+    " London.\nQuestion: Where is Stonehenge located?",
+    " London.\nQuestion: Where is Stonehenge located?",
+    " London.\nQuestion: London is the capital of which country"
+   ],
+   "abl": {
+    "rlens|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " London.\nClaim: Stonehenge is in London."
+    },
+    "rlens|first_half|(-2, -1)": {
+     "acc": 1.0,
+     "sample": " London.\nQuestion: Which of the following is true?"
+    },
+    "rlens|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " London.\nQuestion: Where is Stonehenge located?"
+    },
+    "rlens|all|(-2, -1)": {
+     "acc": 0.25,
+     "sample": " also the capital of an island nation in the Atlantic Ocean."
+    },
+    "jlens|first_half|(-2,)": {
+     "acc": 0.875,
+     "sample": " London.\nQuestion: Which country has the capital London?"
+    },
+    "jlens|first_half|(-2, -1)": {
+     "acc": 0.875,
+     "sample": " London.\nQuestion: Which country has London as its capital"
+    },
+    "jlens|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " London.\nQuestion: Which country is Stonehenge in"
+    },
+    "jlens|all|(-2, -1)": {
+     "acc": 0.25,
+     "sample": " the same as the capital of the country where the British Museum"
+    },
+    "logit|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " London.\nQuestion: The capital of the country where Stone"
+    },
+    "logit|first_half|(-2, -1)": {
+     "acc": 0.875,
+     "sample": " London.\nClaim: Stonehenge is located in London"
+    },
+    "logit|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " London.\nQuestion: The capital of the country where Stone"
+    },
+    "logit|all|(-2, -1)": {
+     "acc": 0.75,
+     "sample": " in the same country as the country whose capital is London."
+    },
+    "random|first_half|(-2,)": {
+     "acc": 1.0,
+     "sample": " London.\n\nQuestion: The capital of the country where Stone"
+    },
+    "random|first_half|(-2, -1)": {
+     "acc": 0.875,
+     "sample": " London.\nQuestion: London is the capital of what country"
+    },
+    "random|all|(-2,)": {
+     "acc": 1.0,
+     "sample": " London.\nQuestion: In which country is Stonehenge"
+    },
+    "random|all|(-2, -1)": {
+     "acc": 0.875,
+     "sample": " London.\nQuestion: Stonehenge is located in\n\n"
+    }
+   }
+  }
+ ],
+ "pass10": {
+  "rlens": {
+   "-2": [
+    0.0,
+    0.0,
+    0.0,
+    0.14,
+    0.14,
+    0.28,
+    0.32,
+    0.34,
+    0.36,
+    0.44,
+    0.4,
+    0.38,
+    0.34,
+    0.4,
+    0.32,
+    0.36,
+    0.34,
+    0.34,
+    0.34,
+    0.38,
+    0.38,
+    0.3,
+    0.28,
+    0.32,
+    0.64,
+    0.7,
+    0.78,
+    0.74,
+    0.72,
+    0.34,
+    0.1,
+    0.0
+   ],
+   "-1": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.04,
+    0.04,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.06,
+    0.02,
+    0.0,
+    0.14,
+    0.06,
+    0.02,
+    0.08,
+    0.6,
+    0.6,
+    0.5,
+    0.56,
+    0.64,
+    0.16,
+    0.12,
+    0.26
+   ]
+  },
+  "jlens": {
+   "-2": [
+    0.0,
+    0.0,
+    0.0,
+    0.02,
+    0.06,
+    0.16,
+    0.26,
+    0.3,
+    0.36,
+    0.46,
+    0.36,
+    0.36,
+    0.36,
+    0.38,
+    0.36,
+    0.34,
+    0.36,
+    0.38,
+    0.3,
+    0.34,
+    0.34,
+    0.26,
+    0.18,
+    0.26,
+    0.56,
+    0.68,
+    0.68,
+    0.72,
+    0.72,
+    0.34,
+    0.1,
+    0.0
+   ],
+   "-1": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.04,
+    0.06,
+    0.02,
+    0.02,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.02,
+    0.0,
+    0.0,
+    0.06,
+    0.02,
+    0.02,
+    0.06,
+    0.6,
+    0.52,
+    0.42,
+    0.48,
+    0.6,
+    0.18,
+    0.12,
+    0.26
+   ]
+  },
+  "logit": {
+   "-2": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.08,
+    0.04,
+    0.04,
+    0.08,
+    0.08,
+    0.04,
+    0.02,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.04,
+    0.08,
+    0.06,
+    0.04,
+    0.18,
+    0.44,
+    0.48,
+    0.46,
+    0.42,
+    0.44,
+    0.36,
+    0.1,
+    0.0
+   ],
+   "-1": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.06,
+    0.46,
+    0.36,
+    0.3,
+    0.18,
+    0.18,
+    0.2,
+    0.12,
+    0.26
+   ]
+  }
+ },
+ "conditions": [
+  "rlens|first_half|(-2,)",
+  "rlens|first_half|(-2, -1)",
+  "rlens|all|(-2,)",
+  "rlens|all|(-2, -1)",
+  "jlens|first_half|(-2,)",
+  "jlens|first_half|(-2, -1)",
+  "jlens|all|(-2,)",
+  "jlens|all|(-2, -1)",
+  "logit|first_half|(-2,)",
+  "logit|first_half|(-2, -1)",
+  "logit|all|(-2,)",
+  "logit|all|(-2, -1)",
+  "random|first_half|(-2,)",
+  "random|first_half|(-2, -1)",
+  "random|all|(-2,)",
+  "random|all|(-2, -1)"
+ ],
+ "summary": {
+  "n_questions": 50,
+  "n_baseline_correct": 43,
+  "mean_base_acc_all": 0.8025,
+  "rlens|first_half|(-2,)": {
+   "mean_acc_after": 0.811046511627907,
+   "mean_acc_before": 0.9069767441860465,
+   "relative_loss": 0.10576923076923073,
+   "per_q_relative_loss_mean": 0.09548726467331119
+  },
+  "rlens|first_half|(-2, -1)": {
+   "mean_acc_after": 0.8226744186046512,
+   "mean_acc_before": 0.9069767441860465,
+   "relative_loss": 0.09294871794871784,
+   "per_q_relative_loss_mean": 0.07693798449612403
+  },
+  "rlens|all|(-2,)": {
+   "mean_acc_after": 0.7587209302325582,
+   "mean_acc_before": 0.9069767441860465,
+   "relative_loss": 0.16346153846153844,
+   "per_q_relative_loss_mean": 0.16627906976744186
+  },
+  "rlens|all|(-2, -1)": {
+   "mean_acc_after": 0.4476744186046512,
+   "mean_acc_before": 0.9069767441860465,
+   "relative_loss": 0.5064102564102564,
+   "per_q_relative_loss_mean": 0.5205426356589147
+  },
+  "jlens|first_half|(-2,)": {
+   "mean_acc_after": 0.8052325581395349,
+   "mean_acc_before": 0.9069767441860465,
+   "relative_loss": 0.11217948717948711,
+   "per_q_relative_loss_mean": 0.10406976744186046
+  },
+  "jlens|first_half|(-2, -1)": {
+   "mean_acc_after": 0.7965116279069767,
+   "mean_acc_before": 0.9069767441860465,
+   "relative_loss": 0.1217948717948718,
+   "per_q_relative_loss_mean": 0.11021594684385382
+  },
+  "jlens|all|(-2,)": {
+   "mean_acc_after": 0.7790697674418605,
+   "mean_acc_before": 0.9069767441860465,
+   "relative_loss": 0.14102564102564097,
+   "per_q_relative_loss_mean": 0.12920819490586932
+  },
+  "jlens|all|(-2, -1)": {
+   "mean_acc_after": 0.39825581395348836,
+   "mean_acc_before": 0.9069767441860465,
+   "relative_loss": 0.5608974358974359,
+   "per_q_relative_loss_mean": 0.5751937984496124
+  },
+  "logit|first_half|(-2,)": {
+   "mean_acc_after": 0.9244186046511628,
+   "mean_acc_before": 0.9069767441860465,
+   "relative_loss": -0.019230769230769162,
+   "per_q_relative_loss_mean": -0.0404485049833887
+  },
+  "logit|first_half|(-2, -1)": {
+   "mean_acc_after": 0.9418604651162791,
+   "mean_acc_before": 0.9069767441860465,
+   "relative_loss": -0.03846153846153855,
+   "per_q_relative_loss_mean": -0.0695736434108527
+  },
+  "logit|all|(-2,)": {
+   "mean_acc_after": 0.9098837209302325,
+   "mean_acc_before": 0.9069767441860465,
+   "relative_loss": -0.0032051282051281937,
+   "per_q_relative_loss_mean": -0.01799557032115171
+  },
+  "logit|all|(-2, -1)": {
+   "mean_acc_after": 0.6046511627906976,
+   "mean_acc_before": 0.9069767441860465,
+   "relative_loss": 0.33333333333333337,
+   "per_q_relative_loss_mean": 0.3348560354374308
+  },
+  "random|first_half|(-2,)": {
+   "mean_acc_after": 0.9186046511627907,
+   "mean_acc_before": 0.9069767441860465,
+   "relative_loss": -0.012820512820512775,
+   "per_q_relative_loss_mean": -0.014313399778516067
+  },
+  "random|first_half|(-2, -1)": {
+   "mean_acc_after": 0.9040697674418605,
+   "mean_acc_before": 0.9069767441860465,
+   "relative_loss": 0.0032051282051280827,
+   "per_q_relative_loss_mean": -0.00382059800664452
+  },
+  "random|all|(-2,)": {
+   "mean_acc_after": 0.938953488372093,
+   "mean_acc_before": 0.9069767441860465,
+   "relative_loss": -0.03525641025641035,
+   "per_q_relative_loss_mean": -0.05852713178294573
+  },
+  "random|all|(-2, -1)": {
+   "mean_acc_after": 0.9273255813953488,
+   "mean_acc_before": 0.9069767441860465,
+   "relative_loss": -0.022435897435897578,
+   "per_q_relative_loss_mean": -0.04318936877076412
+  }
+ }
+}
