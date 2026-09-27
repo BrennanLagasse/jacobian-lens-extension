@@ -1,0 +1,31 @@
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{Sibling separation, the eight hardest and the eight easiest phrases across the English axes (AUROC and TPR at FPR $10^{-2}$ of the phrase logit at its own pre-phrase positions against its siblings' pre-phrase positions).}
+\label{tab:gen_siblings}
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{lllrr}
+\toprule
+phrase & siblings & axis & AUROC & TPR@$10^{-2}$ \\
+\midrule
+1984 & 1989 & events, dates, years & 0.576 & 0.02 \\
+1989 & 1984 & events, dates, years & 0.627 & 0.02 \\
+health care & health insurance & compositional nouns & 0.685 & 0.07 \\
+stock market & stock price, stock exchange & compositional nouns & 0.732 & 0.09 \\
+July 20, 1969 & July 4, 1776 & events, dates, years & 0.738 & 0.51 \\
+climate change & climate crisis & compositional nouns & 0.751 & 0.26 \\
+hard disk & hard drive, hard work & compositional nouns & 0.763 & 0.05 \\
+at least & at the end of the day, at the same time & verb phrases / idioms & 0.773 & 0.23 \\
+\midrule
+take place & take into account, take advantage, take care & verb phrases / idioms & 0.976 & 0.83 \\
+photosynthesis & evolution, gravity, entropy, recursion & abstract concepts & 0.977 & 0.84 \\
+middle east & middle class, middle school & compositional nouns & 0.979 & 0.83 \\
+civil engineering & civil war, civil rights & compositional nouns & 0.981 & 0.73 \\
+machine learning & machine gun & compositional nouns & 0.981 & 0.92 \\
+high court & high school, high speed & compositional nouns & 0.984 & 0.90 \\
+inflation & bankruptcy, negotiation, democracy & abstract concepts & 0.985 & 0.80 \\
+black pepper & black hole, black market & compositional nouns & 0.994 & 0.93 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}

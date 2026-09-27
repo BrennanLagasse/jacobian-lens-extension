@@ -1,0 +1,18 @@
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{Cross-lingual transfer of the bias-free rows, 12 concepts. A row fitted on language $a$ is scored at language $b$'s pre-phrase positions of the same concept against $b$'s pre-phrase positions of the other eleven concepts (language-matched negatives): AUROC / TPR at FPR $10^{-2}$, mean over concepts. The diagonal (own language, other concepts as negatives) is in Table~\ref{tab:gen_headline}.}
+\label{tab:gen_xling}
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{lrrrr}
+\toprule
+row fitted on & scored in English & scored in Spanish & scored in French & scored in Chinese \\
+\midrule
+English row & --- & 0.896 / 0.38 & 0.912 / 0.49 & 0.871 / 0.36 \\
+Spanish row & 0.881 / 0.35 & --- & 0.941 / 0.54 & 0.820 / 0.24 \\
+French row & 0.885 / 0.42 & 0.941 / 0.62 & --- & 0.825 / 0.25 \\
+Chinese row & 0.873 / 0.33 & 0.836 / 0.29 & 0.837 / 0.24 & --- \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}

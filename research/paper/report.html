@@ -1,0 +1,398 @@
+<title>Multi-token Readouts for the Jacobian Lens</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+  :root { --paper: #f7f6f1; --ink: #1c2028; --muted: #676d78; --rule: #d8d5cc; --soft: #ebe9e2; --good: #0f766e; --good-bg: #e2f1ee; --bad: #b45309; --warn: #a16207; --blue: #1d4ed8;
+    --serif: "Fraunces", "Iowan Old Style", Georgia, serif; --sans: "Source Sans 3", "Helvetica Neue", Arial, sans-serif; --mono: "JetBrains Mono", "SFMono-Regular", Menlo, Consolas, monospace; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --paper: #15171c; --ink: #e8e6df; --muted: #9aa0ab; --rule: #33373f; --soft: #1f2228; --good: #5fd1c3; --good-bg: #123a36; --bad: #f2a45a; --warn: #e0b04a; --blue: #8ab4ff; } }
+  :root[data-theme="dark"] { --paper: #15171c; --ink: #e8e6df; --muted: #9aa0ab; --rule: #33373f; --soft: #1f2228; --good: #5fd1c3; --good-bg: #123a36; --bad: #f2a45a; --warn: #e0b04a; --blue: #8ab4ff; }
+  body { background: var(--paper); color: var(--ink); font-family: var(--sans); font-size: 16.5px; line-height: 1.5; padding-inline: 16px; padding-block: 0; }
+  main { max-width: 80ch; margin: 0 auto; padding-block: 40px 64px; }
+  h1 { font-family: var(--serif); font-weight: 500; font-size: 2.2rem; line-height: 1.1; margin: 0 0 8px; text-wrap: balance; }
+  h2 { font-family: var(--serif); font-weight: 600; font-size: 1.45rem; margin: 44px 0 10px; text-wrap: balance; }
+  h3 { font-family: var(--serif); font-weight: 600; font-size: 1.12rem; margin: 26px 0 8px; }
+  .kicker { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
+  .lede { font-size: 1.1rem; max-width: 68ch; } p { max-width: 68ch; margin: 0 0 12px; }
+  .abstract { background: var(--soft); padding: 14px 18px; max-width: 68ch; font-size: 0.97rem; margin: 18px 0; }
+  .verdict { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin: 22px 0 8px; }
+  .verdict div { border-top: 3px solid var(--rule); padding-top: 8px; } .verdict .good { border-color: var(--good); } .verdict .bad { border-color: var(--bad); } .verdict .warn { border-color: var(--warn); }
+  .verdict b { display: block; font-family: var(--serif); font-size: 1.05rem; font-weight: 600; margin-bottom: 2px; } .verdict span { font-size: 0.93rem; color: var(--muted); }
+  .tbl { overflow-x: auto; margin: 8px 0 18px; } table { border-collapse: collapse; font-size: 0.84rem; font-variant-numeric: tabular-nums; }
+  th, td { padding: 5px 9px; text-align: left; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  th { font-weight: 600; font-size: 0.72rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+  td.num, th.num { font-family: var(--mono); font-size: 0.78rem; text-align: right; white-space: nowrap; }
+  .cap { font-size: 0.88rem; color: var(--muted); max-width: 70ch; margin: 18px 0 4px; } .cap b { color: var(--ink); }
+  svg { width: 100%; max-width: 100%; height: auto; display: block; } .ax { font-family: var(--mono); font-size: 11px; fill: var(--muted); }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 0.8rem; margin: 6px 0 4px; } .lg i { display: inline-block; width: 22px; margin-right: 6px; vertical-align: middle; }
+  code { font-family: var(--mono); font-size: 0.84em; background: var(--soft); padding: 0 4px; } ul, ol { max-width: 68ch; padding-left: 20px; } li { margin-bottom: 6px; }
+  .eq { font-family: var(--mono); font-size: 0.86rem; background: var(--soft); padding: 8px 12px; margin: 8px 0 12px; max-width: 68ch; white-space: pre-wrap; }
+  .foot { margin-top: 40px; border-top: 1px solid var(--rule); padding-top: 12px; font-size: 0.86rem; color: var(--muted); }
+</style>
+<main>
+<div class="kicker">Internal report · Ryan &amp; Brennan Lagasse · Qwen3.5-9B-Base · September 12–13, 2026 · companion to main.pdf</div>
+<h1>Multi-token readouts for the Jacobian lens: a calibration study, a benchmark, and the R-lens</h1>
+<p class="lede">This page tells the story; the LaTeX paper (<code>paper/main.pdf</code>) carries every definition, every table and every caveat. Both are generated from the same result files by the same script, so the numbers agree.</p>
+
+<div class="abstract">Brennan's <code>multi_token</code> extension adds rows to the unembedding matrix so the Jacobian lens can name phrases. In his notebook those rows fill the top-10 of every readout. On the correct model that turns out to be a calibration failure that data cannot fix: the rows are mean-difference directions with ten times a real row's logit spread, identical at 150, 600 and 2,400 contexts. Whitening removes the false positives but is over-confident and bleeds within categories. A logistic regression over the extended softmax is calibrated; without a bias term it behaves like a real unembedding row at every lens layer. A benchmark with confusable phrases shows Brennan's rows detect the phrase's <em>first token</em>, that the state before it nevertheless carries phrase identity which fitted heads read, and that John Adams and John Quincy Adams are not separable there. The R-lens, a matched pair fitted on the base model, reads two-hop intermediates slightly earlier, removes the early-layer phrase hits the benchmark flagged, and is as causally load-bearing as the J-lens but not more so.</div>
+
+<div class="verdict">
+  <div class="bad"><b>Brennan's rows</b><span>logit std 18 vs 1.8 · in the top-10 at 20% of random text · unchanged from 150 to 2,400 contexts · fire at 97% of positions before “New York”</span></div>
+  <div><b>LDA / whitening</b><span>false positives gone · rank 1 at 70% of own positions · 74× prior mass · category bleed</span></div>
+  <div class="warn"><b>LR with bias</b><span>best final-layer calibration · but +8 logit bias fires at 49% of contexts at layer 8 under the lens</span></div>
+  <div class="good"><b>LR, no bias</b><span>AUROC 0.981 · mass 1.0× prior · sibling AUROC 0.73 · rank within 1.25× of the model's first-token rank · clean early layers</span></div>
+  <div class="good"><b>R-lens</b><span>pass@10 0.34 vs 0.31 (J) vs 0.11 (logit) · ablation +0.16 vs +0.14 (J), controls ≈ 0 · early phrase hits 8% vs 17%</span></div>
+</div>
+
+<h2>1. Setup</h2>
+<p>Model: <code>Qwen/Qwen3.5-9B-Base</code> (32 blocks, d = 4096, vocabulary 248k), matched to a Base-model lens (Brennan's notebook had applied a Base lens to the post-trained checkpoint). The Jacobian lens reads layer ℓ as W<sub>U</sub>·norm(J<sub>ℓ</sub>h<sub>ℓ</sub>); a phrase head is a matrix W and bias b applied to the same post-norm state, and the extended softmax runs over the real vocabulary plus the new rows.</p>
+<p>Contexts come from Brennan's miner run over the whole FineWeb 10BT sample (14,868,862 documents): matching sentence plus two preceding sentences, case-insensitive; the state is taken at the token <em>before</em> the phrase. Held-out contexts and nested training subsets of 150 / 600 / 2,400 per phrase. Baseline mean and covariance come from 2,000 generic FineWeb documents (712k positions), which also serve as negatives for the fitted heads; further held-out documents give the generic evaluation positions. Each phrase's prior π<sub>p</sub> is its occurrence rate per token in the scanned corpus.</p>
+<p class="cap"><b>The 15 phrases. Unique mined contexts (FineWeb 10BT sample, 14.9M documents), training contexts available at the 2{,}400 scale after holding out 200, and the estimated per-token prior \pi_p (occurrences per token in the scanned corpus).</b> Phrases 11--15 (New York, New Jersey, John Quincy Adams, Massachusetts, Vermont) were added for the benchmark as confusables; the first ten are Brennan's.</p><div class="tbl"><table><thead><tr><th class="">phrase</th><th class="">single token</th><th class="">unique contexts</th><th class="num">train @2400</th><th class="">\pi_p</th></tr></thead><tbody>
+<tr><td class="">blackmail</td><td class="">yes</td><td class="num">4391</td><td class="num">2400</td><td class="num">1.9e-6</td></tr>
+<tr><td class="">plagiarism</td><td class="">yes</td><td class="num">4322</td><td class="num">2400</td><td class="num">6.0e-6</td></tr>
+<tr><td class="">cheating</td><td class="">yes</td><td class="num">4494</td><td class="num">2400</td><td class="num">1.0e-5</td></tr>
+<tr><td class="">forgery</td><td class="">no</td><td class="num">4273</td><td class="num">2400</td><td class="num">1.5e-6</td></tr>
+<tr><td class="">Connecticut</td><td class="">yes</td><td class="num">4498</td><td class="num">2400</td><td class="num">2.1e-5</td></tr>
+<tr><td class="">Rhode Island</td><td class="">no</td><td class="num">4496</td><td class="num">2400</td><td class="num">8.7e-6</td></tr>
+<tr><td class="">New Hampshire</td><td class="">no</td><td class="num">4499</td><td class="num">2400</td><td class="num">1.2e-5</td></tr>
+<tr><td class="">George Washington</td><td class="">no</td><td class="num">4497</td><td class="num">2400</td><td class="num">5.0e-6</td></tr>
+<tr><td class="">Abraham Lincoln</td><td class="">no</td><td class="num">4413</td><td class="num">2400</td><td class="num">3.0e-6</td></tr>
+<tr><td class="">John Adams</td><td class="">no</td><td class="num">4239</td><td class="num">2400</td><td class="num">1.1e-6</td></tr>
+<tr><td class="">New York</td><td class="">no</td><td class="num">4500</td><td class="num">2400</td><td class="num">2.7e-4</td></tr>
+<tr><td class="">New Jersey</td><td class="">no</td><td class="num">4498</td><td class="num">2400</td><td class="num">3.8e-5</td></tr>
+<tr><td class="">John Quincy Adams</td><td class="">no</td><td class="num">1317</td><td class="num">1117</td><td class="num">2.6e-7</td></tr>
+<tr><td class="">Massachusetts</td><td class="">yes</td><td class="num">4499</td><td class="num">2400</td><td class="num">3.2e-5</td></tr>
+<tr><td class="">Vermont</td><td class="">yes</td><td class="num">4495</td><td class="num">2400</td><td class="num">1.4e-5</td></tr>
+</tbody></table></div>
+
+<h2>2. Heads</h2>
+<ul>
+<li><b>Brennan (proj):</b> unit-normalised phrase mean with the baseline mean projected out; no bias.</li>
+<li><b>Average rows:</b> mean of the phrase's real W<sub>U</sub> rows; for the six single-token phrases this is the real row, i.e. the ceiling.</li>
+<li><b>LDA:</b> Σ<sup>−1</sup>(μ<sub>p</sub> − h̄) with the Gaussian log-odds bias, log prior and mean log-sum-exp; a W<sub>U</sub>-scaled variant rescales the logit spread.</li>
+<li><b>LR with bias:</b> rows and biases fitted by full-batch L-BFGS on the extended softmax with W<sub>U</sub> frozen (positives: pre-phrase positions → phrase token; negatives: in-context and generic positions → real next token), then bias-shifted from the training prior to the corpus prior; L2 chosen on held-out likelihood.</li>
+<li><b>LR, no bias:</b> the same without biases, positives weighted to the corpus prior inside the objective, L2 swept down to 10<sup>−8</sup>.</li>
+<li><b>Controls:</b> a random unit row (floor).</li>
+</ul>
+
+<h2>3. Experiment 1: calibration against training scale</h2>
+<p>Brennan's ten phrases, 100 held-out contexts each, 71,012 generic positions. The symptom reproduces on the correct model: each row enters the model's top-10 at 19% of random positions, the ten together carry 32% of the softmax mass on ordinary text against a prior of 7.1e-05, and their logit spread over generic text is 18 against a real row's 1.80. The rows are numerically identical at 150, 600 and 2,400 contexts, so “undertrained” is ruled out for this construction.</p>
+<p class="cap"><b>Experiment 1 (Brennan's ten phrases): calibration of each head against the number of training contexts per phrase. Means over phrases on held-out data. The avg. W<sub>U</sub> row head does not depend on the training set.</b> Own = held-out pre-phrase positions (100 per phrase). Generic = 71,012 held-out FineWeb positions; true prior mass of the ten phrases together is 7.1e-05. A real W<sub>U</sub> row has generic logit mean -1.7, std 1.80.</p><div class="tbl"><table><thead><tr><th class="">contexts</th><th class="">head</th><th class="num">own top-10</th><th class="">own rank</th><th class="num">generic top-10</th><th class="">new-token mass</th><th class="">AUROC</th><th class="">generic logit \mu±\sigma</th></tr></thead><tbody>
+<tr><td class="num">150</td><td class="">Brennan (proj + unit)</td><td class="num">0.98</td><td class="num">1</td><td class="num">0.1881</td><td class="num">3.2e-1</td><td class="num">0.974</td><td class="num">-0.6 ± 18.1</td></tr>
+<tr><td class=""></td><td class="">avg. W<sub>U</sub> rows</td><td class="num">0.34</td><td class="num">37</td><td class="num">0.0000</td><td class="num">3.4e-5</td><td class="num">0.971</td><td class="num">2.1 ± 2.3</td></tr>
+<tr><td class=""></td><td class="">LDA</td><td class="num">0.68</td><td class="num">1</td><td class="num">0.0006</td><td class="num">4.0e-3</td><td class="num">0.978</td><td class="num">-172.5 ± 20.5</td></tr>
+<tr><td class=""></td><td class="">LDA, W<sub>U</sub>-scaled</td><td class="num">0.70</td><td class="num">1</td><td class="num">0.0007</td><td class="num">2.2e-3</td><td class="num">0.978</td><td class="num">-1.7 ± 2.0</td></tr>
+<tr><td class=""></td><td class="">LR (bias, val. pick)</td><td class="num">0.47</td><td class="num">16</td><td class="num">0.0001</td><td class="num">2.5e-5</td><td class="num">0.977</td><td class="num">1.6 ± 2.5</td></tr>
+<tr><td class="num">600</td><td class="">Brennan (proj + unit)</td><td class="num">0.98</td><td class="num">1</td><td class="num">0.1877</td><td class="num">3.2e-1</td><td class="num">0.974</td><td class="num">-0.6 ± 18.1</td></tr>
+<tr><td class=""></td><td class="">LDA</td><td class="num">0.69</td><td class="num">1</td><td class="num">0.0007</td><td class="num">4.8e-3</td><td class="num">0.979</td><td class="num">-171.9 ± 20.3</td></tr>
+<tr><td class=""></td><td class="">LDA, W<sub>U</sub>-scaled</td><td class="num">0.70</td><td class="num">1</td><td class="num">0.0008</td><td class="num">2.6e-3</td><td class="num">0.979</td><td class="num">-1.7 ± 2.0</td></tr>
+<tr><td class=""></td><td class="">LR (bias, val. pick)</td><td class="num">0.47</td><td class="num">16</td><td class="num">0.0001</td><td class="num">2.5e-5</td><td class="num">0.985</td><td class="num">-0.1 ± 3.1</td></tr>
+<tr><td class="num">2400</td><td class="">Brennan (proj + unit)</td><td class="num">0.98</td><td class="num">1</td><td class="num">0.1880</td><td class="num">3.2e-1</td><td class="num">0.973</td><td class="num">-0.6 ± 18.2</td></tr>
+<tr><td class=""></td><td class="">LDA</td><td class="num">0.70</td><td class="num">1</td><td class="num">0.0008</td><td class="num">5.2e-3</td><td class="num">0.979</td><td class="num">-165.2 ± 20.0</td></tr>
+<tr><td class=""></td><td class="">LDA, W<sub>U</sub>-scaled</td><td class="num">0.71</td><td class="num">1</td><td class="num">0.0008</td><td class="num">2.8e-3</td><td class="num">0.979</td><td class="num">-1.7 ± 2.0</td></tr>
+<tr><td class=""></td><td class="">LR (bias, val. pick)</td><td class="num">0.39</td><td class="num">24</td><td class="num">0.0001</td><td class="num">2.7e-5</td><td class="num">0.985</td><td class="num">-0.6 ± 3.5</td></tr>
+</tbody></table></div>
+<p>Whitening cuts the generic top-10 rate to 0.07% and puts the phrase at rank 1 on 60–70% of its own positions, but its log-odds are ten times too wide, so 60–70× the prior mass remains and category neighbours bleed in. The logistic head lands in the model's own units (mass 2.7e-5 against a prior of 7e-5, confusion below 0.10) at the cost of honest ranks: median rank 7–85 at its own positions, the same range as the model's own first token there.</p>
+<p class="cap"><b>Experiment 1, 2{,}400 contexts: cross-phrase confusion. Entry (p,q) is the fraction of held-out positions before phrase p at which the token for phrase q enters the top-10; shown as the diagonal mean, the mean over same-category pairs (crime / state / president) and the mean over cross-category pairs.</b> </p><div class="tbl"><table><thead><tr><th class="">head</th><th class="">diagonal</th><th class="">same category</th><th class="">cross category</th></tr></thead><tbody>
+<tr><td class="">Brennan (proj + unit)</td><td class="num">0.98</td><td class="num">0.90</td><td class="num">0.44</td></tr>
+<tr><td class="">LDA</td><td class="num">0.70</td><td class="num">0.34</td><td class="num">0.00</td></tr>
+<tr><td class="">LR (bias, val. pick)</td><td class="num">0.39</td><td class="num">0.02</td><td class="num">0.00</td></tr>
+</tbody></table></div>
+<p class="cap"><b>Experiment 1: the logistic head depends on the optimiser and on the number of negative documents. Three passes over the same states.</b> </p><div class="tbl"><table><thead><tr><th class="">fit</th><th class="">contexts</th><th class="">AUROC</th><th class="num">own top-10</th><th class="">new-token mass</th><th class="num">generic top-10</th></tr></thead><tbody>
+<tr><td class="">minibatch Adam, 60 epochs, 400 generic docs</td><td class="num">150</td><td class="num">0.965</td><td class="num">0.39</td><td class="num">2.8e-5</td><td class="num">0.0001</td></tr>
+<tr><td class=""></td><td class="num">600</td><td class="num">0.971</td><td class="num">0.31</td><td class="num">2.2e-5</td><td class="num">0.0000</td></tr>
+<tr><td class=""></td><td class="num">2400</td><td class="num">0.970</td><td class="num">0.25</td><td class="num">1.9e-5</td><td class="num">0.0000</td></tr>
+<tr><td class="">L-BFGS, 400 generic docs, λ=10e-6</td><td class="num">150</td><td class="num">0.979</td><td class="num">0.46</td><td class="num">1.8e-4</td><td class="num">0.0001</td></tr>
+<tr><td class=""></td><td class="num">600</td><td class="num">0.982</td><td class="num">0.49</td><td class="num">1.4e-3</td><td class="num">0.0005</td></tr>
+<tr><td class=""></td><td class="num">2400</td><td class="num">0.977</td><td class="num">0.48</td><td class="num">3.7e-3</td><td class="num">0.0013</td></tr>
+<tr><td class="">L-BFGS, 2{,000 generic docs, \lambda by held-out NLL</td><td class="num">150</td><td class="num">0.977</td><td class="num">0.47</td><td class="num">2.5e-5</td><td class="num">0.0001</td></tr>
+<tr><td class=""></td><td class="num">600</td><td class="num">0.985</td><td class="num">0.47</td><td class="num">2.5e-5</td><td class="num">0.0001</td></tr>
+<tr><td class=""></td><td class="num">2400</td><td class="num">0.985</td><td class="num">0.39</td><td class="num">2.7e-5</td><td class="num">0.0001</td></tr>
+</tbody></table></div>
+
+<h2>4. The benchmark</h2>
+<p>Five confusables were added (New York, New Jersey, John Quincy Adams, Massachusetts, Vermont), giving 2,942 held-out positions (84% single-occurrence), 176,763 generic positions, lens states at 11 layers for every held-out context, three disjoint refits for stability, and the floor and ceiling controls. Every AUROC difference above 0.002 in the tables below is real; the refit spread is 0.0008.</p>
+<p class="cap"><b>Benchmark, 2{,}400 contexts per phrase, means over the 15 phrases. The random row and the avg. W<sub>U</sub> row do not depend on the training scale. The validation-loss picks were λ{=}10^{-4} (bias) and 10^{-6} (no bias).</b> Sibling AUROC: phrase logit at own positions vs positions of phrases sharing the first token (defined for New Hampshire, New York, New Jersey, John Adams, John Quincy Adams). Rank ratio: median over own positions of \log(\mathrm{rank}_{\mathrm{phrase}}/\mathrm{rank}_{\mathrm{first token}}); 0 means the row is exactly as confident as the model is about the phrase's first token. mass/prior: mean extended-softmax mass on the phrase token over generic text divided by \pi_p. ECE is prior-weighted.</p><div class="tbl"><table><thead><tr><th class="">head</th><th class="">AUROC vs generic</th><th class="num">vs 1st-tok. sibling</th><th class="">vs category</th><th class="num">own top-10</th><th class="">own rank</th><th class="">\log(\mathrm{rank/\mathrm{rank_{\mathrm{first)</th><th class="num">generic top-10</th><th class="">mass/prior</th><th class="">ECE</th></tr></thead><tbody>
+<tr><td class="">random unit row</td><td class="num">0.508</td><td class="num">0.514</td><td class="num">0.508</td><td class="num">0.00</td><td class="num">29835</td><td class="num">+7.45</td><td class="num">0.0003</td><td class="num">4.8</td><td class="num">4.7e-5</td></tr>
+<tr><td class="">Brennan (proj + unit)</td><td class="num">0.969</td><td class="num">0.582</td><td class="num">0.642</td><td class="num">0.95</td><td class="num">1</td><td class="num">-2.70</td><td class="num">0.2031</td><td class="num">7686.7</td><td class="num">2.2e-2</td></tr>
+<tr><td class="">avg. W<sub>U</sub> rows</td><td class="num">0.966</td><td class="num">0.575</td><td class="num">0.734</td><td class="num">0.30</td><td class="num">43</td><td class="num">+1.17</td><td class="num">0.0001</td><td class="num">1.2</td><td class="num">2.4e-5</td></tr>
+<tr><td class="">LDA</td><td class="num">0.980</td><td class="num">0.663</td><td class="num">0.714</td><td class="num">0.69</td><td class="num">1</td><td class="num">-1.43</td><td class="num">0.0008</td><td class="num">73.6</td><td class="num">4.8e-4</td></tr>
+<tr><td class="">LDA, W<sub>U</sub>-scaled</td><td class="num">0.980</td><td class="num">0.663</td><td class="num">0.714</td><td class="num">0.69</td><td class="num">2</td><td class="num">-1.30</td><td class="num">0.0007</td><td class="num">68.0</td><td class="num">2.2e-4</td></tr>
+<tr><td class="num">LR bias, λ=10e-5</td><td class="num">0.982</td><td class="num">0.750</td><td class="num">0.826</td><td class="num">0.42</td><td class="num">21</td><td class="num">+0.81</td><td class="num">0.0004</td><td class="num">2.7</td><td class="num">3.4e-5</td></tr>
+<tr><td class="num">LR bias, λ=10e-4</td><td class="num">0.980</td><td class="num">0.736</td><td class="num">0.819</td><td class="num">0.37</td><td class="num">25</td><td class="num">+0.88</td><td class="num">0.0003</td><td class="num">0.4</td><td class="num">1.3e-5</td></tr>
+<tr><td class="num">LR bias, λ=10e-3</td><td class="num">0.972</td><td class="num">0.710</td><td class="num">0.794</td><td class="num">0.32</td><td class="num">31</td><td class="num">+1.03</td><td class="num">0.0002</td><td class="num">0.3</td><td class="num">1.4e-5</td></tr>
+<tr><td class="num">LR no bias, λ=10e-6</td><td class="num">0.981</td><td class="num">0.731</td><td class="num">0.813</td><td class="num">0.45</td><td class="num">14</td><td class="num">+0.22</td><td class="num">0.0003</td><td class="num">1.0</td><td class="num">4.6e-5</td></tr>
+<tr><td class="num">LR no bias, λ=10e-7</td><td class="num">0.982</td><td class="num">0.741</td><td class="num">0.823</td><td class="num">0.48</td><td class="num">10</td><td class="num">+0.09</td><td class="num">0.0004</td><td class="num">2.1</td><td class="num">8.4e-5</td></tr>
+<tr><td class="num">LR no bias, λ=10e-8</td><td class="num">0.982</td><td class="num">0.741</td><td class="num">0.824</td><td class="num">0.48</td><td class="num">10</td><td class="num">+0.09</td><td class="num">0.0004</td><td class="num">2.7</td><td class="num">9.7e-5</td></tr>
+</tbody></table></div>
+<p class="cap"><b>Benchmark: the four main heads across training scale (means over 15 phrases).</b> </p><div class="tbl"><table><thead><tr><th class="">head</th><th class="">contexts</th><th class="">AUROC vs generic</th><th class="num">vs 1st-tok. sibling</th><th class="num">own top-10</th><th class="num">generic top-10</th><th class="">mass/prior</th><th class="">\lambda picked</th></tr></thead><tbody>
+<tr><td class="">Brennan (proj + unit)</td><td class="num">150</td><td class="num">0.970</td><td class="num">0.589</td><td class="num">0.95</td><td class="num">0.2019</td><td class="num">8544.6</td><td class="">---</td></tr>
+<tr><td class=""></td><td class="num">600</td><td class="num">0.970</td><td class="num">0.583</td><td class="num">0.95</td><td class="num">0.2035</td><td class="num">8075.1</td><td class="">---</td></tr>
+<tr><td class=""></td><td class="num">2400</td><td class="num">0.969</td><td class="num">0.582</td><td class="num">0.95</td><td class="num">0.2031</td><td class="num">7686.7</td><td class="">---</td></tr>
+<tr><td class="">LDA</td><td class="num">150</td><td class="num">0.976</td><td class="num">0.666</td><td class="num">0.66</td><td class="num">0.0007</td><td class="num">60.3</td><td class="">---</td></tr>
+<tr><td class=""></td><td class="num">600</td><td class="num">0.979</td><td class="num">0.664</td><td class="num">0.68</td><td class="num">0.0008</td><td class="num">72.9</td><td class="">---</td></tr>
+<tr><td class=""></td><td class="num">2400</td><td class="num">0.980</td><td class="num">0.663</td><td class="num">0.69</td><td class="num">0.0008</td><td class="num">73.6</td><td class="">---</td></tr>
+<tr><td class="">LR (bias, val. pick)</td><td class="num">150</td><td class="num">0.968</td><td class="num">0.662</td><td class="num">0.41</td><td class="num">0.0003</td><td class="num">0.5</td><td class="num">10e-3</td></tr>
+<tr><td class=""></td><td class="num">600</td><td class="num">0.977</td><td class="num">0.690</td><td class="num">0.38</td><td class="num">0.0002</td><td class="num">0.3</td><td class="num">10e-3</td></tr>
+<tr><td class=""></td><td class="num">2400</td><td class="num">0.980</td><td class="num">0.736</td><td class="num">0.37</td><td class="num">0.0003</td><td class="num">0.4</td><td class="num">10e-4</td></tr>
+<tr><td class="">LR no bias (val. pick)</td><td class="num">150</td><td class="num">0.980</td><td class="num">0.705</td><td class="num">0.46</td><td class="num">0.0001</td><td class="num">1.2</td><td class="num">10e-6</td></tr>
+<tr><td class=""></td><td class="num">600</td><td class="num">0.983</td><td class="num">0.725</td><td class="num">0.51</td><td class="num">0.0003</td><td class="num">2.5</td><td class="num">10e-6</td></tr>
+<tr><td class=""></td><td class="num">2400</td><td class="num">0.981</td><td class="num">0.731</td><td class="num">0.45</td><td class="num">0.0003</td><td class="num">1.0</td><td class="num">10e-6</td></tr>
+</tbody></table></div>
+<h3>The first-token confound</h3>
+<p>Heads fitted on Brennan's ten phrases only, never shown the confusables, scored at the confusables' positions. Brennan's New Hampshire row fires at 97% of positions before “New York” or “New Jersey” (AUROC 0.59); his John Adams row at 98% of positions before “John Quincy Adams” (AUROC 0.48). A logistic head fitted on the same ten phrases separates New Hampshire from its siblings at 0.85, so the state before “ New” does carry which “New …” is coming and a mean-difference row discards it. John Adams versus John Quincy Adams is at chance for every head.</p>
+<p class="cap"><b>The first-token confound. Heads fitted on Brennan's ten phrases only (never shown New York, New Jersey or John Quincy Adams), scored at those phrases' pre-phrase positions.</b> </p><div class="tbl"><table><thead><tr><th class="">head</th><th class="">phrase</th><th class="">AUROC own vs 1st-tok. sibling</th><th class="">top-10 rate at sibling positions</th><th class="">AUROC own vs category</th><th class="num">own top-10</th></tr></thead><tbody>
+<tr><td class="">Brennan (proj + unit)</td><td class="">New Hampshire</td><td class="num">0.589</td><td class="num">0.974</td><td class="num">0.548</td><td class="num">0.99</td></tr>
+<tr><td class=""></td><td class="">John Adams</td><td class="num">0.483</td><td class="num">0.980</td><td class="num">0.580</td><td class="num">0.99</td></tr>
+<tr><td class="">LDA</td><td class="">New Hampshire</td><td class="num">0.818</td><td class="num">0.244</td><td class="num">0.729</td><td class="num">0.73</td></tr>
+<tr><td class=""></td><td class="">John Adams</td><td class="num">0.451</td><td class="num">0.765</td><td class="num">0.576</td><td class="num">0.63</td></tr>
+<tr><td class="">LR with bias</td><td class="">New Hampshire</td><td class="num">0.849</td><td class="num">0.021</td><td class="num">0.805</td><td class="num">0.39</td></tr>
+<tr><td class=""></td><td class="">John Adams</td><td class="num">0.568</td><td class="num">0.031</td><td class="num">0.702</td><td class="num">0.16</td></tr>
+<tr><td class="">LR, no bias</td><td class="">New Hampshire</td><td class="num">0.855</td><td class="num">0.067</td><td class="num">0.815</td><td class="num">0.57</td></tr>
+<tr><td class=""></td><td class="">John Adams</td><td class="num">0.546</td><td class="num">0.077</td><td class="num">0.665</td><td class="num">0.27</td></tr>
+</tbody></table></div>
+<h3>A bias term is a lens hazard</h3>
+<p>The biased head is best calibrated at the final layer, but its +7 to +10 logit constant does not shrink when the lens transports an early-layer residual with compressed real logits: under the J-lens it puts the phrase in the top-10 at 49% of contexts at layer 8, where the real first token is at 0%. The bias-free head is at 14% there and tracks the real first token's curve.</p>
+<div class="legend"><span class="lg"><i style="border-top:2px solid var(--ink)"></i>real first token, J-lens</span><span class="lg"><i style="border-top:2px dashed var(--ink)"></i>real first token, logit lens</span><span class="lg"><i style="border-top:2px solid var(--bad)"></i>phrase, Brennan</span><span class="lg"><i style="border-top:2px solid var(--warn)"></i>phrase, LR with bias</span><span class="lg"><i style="border-top:2px solid var(--blue)"></i>phrase, LDA</span><span class="lg"><i style="border-top:2px solid var(--good)"></i>phrase, LR no bias</span><span class="lg"><i style="border-top:2px dashed var(--good)"></i>phrase in top-10, first token not</span></div><svg viewBox="0 0 680 300" role="img" aria-label="fraction in top-10">
+<line x1="46" y1="260.0" x2="664" y2="260.0" stroke="var(--rule)"/><text x="40" y="264.0" text-anchor="end" class="ax">0.00</text>
+<line x1="46" y1="198.5" x2="664" y2="198.5" stroke="var(--rule)"/><text x="40" y="202.5" text-anchor="end" class="ax">0.25</text>
+<line x1="46" y1="137.0" x2="664" y2="137.0" stroke="var(--rule)"/><text x="40" y="141.0" text-anchor="end" class="ax">0.50</text>
+<line x1="46" y1="75.5" x2="664" y2="75.5" stroke="var(--rule)"/><text x="40" y="79.5" text-anchor="end" class="ax">0.75</text>
+<line x1="46" y1="14.0" x2="664" y2="14.0" stroke="var(--rule)"/><text x="40" y="18.0" text-anchor="end" class="ax">1.00</text>
+<text x="46.0" y="276" text-anchor="middle" class="ax">L4</text>
+<text x="107.8" y="276" text-anchor="middle" class="ax">L8</text>
+<text x="169.6" y="276" text-anchor="middle" class="ax">L12</text>
+<text x="231.4" y="276" text-anchor="middle" class="ax">L16</text>
+<text x="293.2" y="276" text-anchor="middle" class="ax">L18</text>
+<text x="355.0" y="276" text-anchor="middle" class="ax">L20</text>
+<text x="416.8" y="276" text-anchor="middle" class="ax">L22</text>
+<text x="478.6" y="276" text-anchor="middle" class="ax">L24</text>
+<text x="540.4" y="276" text-anchor="middle" class="ax">L26</text>
+<text x="602.2" y="276" text-anchor="middle" class="ax">L28</text>
+<text x="664.0" y="276" text-anchor="middle" class="ax">L30</text>
+<text x="355" y="294" text-anchor="middle" class="ax">layer</text>
+<polyline points="46.0,260.0 107.8,258.3 169.6,250.5 231.4,246.4 293.2,234.5 355.0,214.1 416.8,214.4 478.6,197.0 540.4,184.5 602.2,154.8 664.0,131.0" fill="none" stroke="var(--ink)" stroke-width="2" stroke-dasharray=""/>
+<polyline points="46.0,259.9 107.8,259.5 169.6,259.4 231.4,258.1 293.2,255.4 355.0,248.9 416.8,247.1 478.6,214.1 540.4,194.6 602.2,171.9 664.0,149.8" fill="none" stroke="var(--ink)" stroke-width="2" stroke-dasharray="4 3"/>
+<polyline points="46.0,189.6 107.8,93.7 169.6,35.8 231.4,31.3 293.2,29.6 355.0,27.3 416.8,26.5 478.6,24.1 540.4,24.5 602.2,24.5 664.0,24.5" fill="none" stroke="var(--bad)" stroke-width="2" stroke-dasharray=""/>
+<polyline points="46.0,209.7 107.8,139.1 169.6,122.5 231.4,124.9 293.2,81.3 355.0,68.9 416.8,61.7 478.6,54.1 540.4,67.6 602.2,88.8 664.0,110.3" fill="none" stroke="var(--warn)" stroke-width="2" stroke-dasharray=""/>
+<polyline points="46.0,259.9 107.8,256.9 169.6,258.0 231.4,258.0 293.2,251.1 355.0,230.7 416.8,207.3 478.6,134.4 540.4,107.9 602.2,101.2 664.0,95.6" fill="none" stroke="var(--blue)" stroke-width="2" stroke-dasharray=""/>
+<polyline points="46.0,244.3 107.8,225.7 169.6,226.1 231.4,224.0 293.2,201.6 355.0,179.3 416.8,174.7 478.6,156.2 540.4,151.9 602.2,143.9 664.0,151.8" fill="none" stroke="var(--good)" stroke-width="2" stroke-dasharray=""/>
+<polyline points="46.0,244.3 107.8,226.6 169.6,229.2 231.4,227.9 293.2,213.7 355.0,203.2 416.8,199.5 478.6,205.0 540.4,212.3 602.2,227.5 664.0,246.8" fill="none" stroke="var(--good)" stroke-width="2" stroke-dasharray="4 3"/>
+</svg>
+<p class="cap"><b>Layer profiles over all 2,942 held-out contexts under the Hub J-lens (target layer 31): fraction of contexts in which the token is in the extended top-10 at each layer.</b> </p><div class="tbl"><table><thead><tr><th class="">token</th><th class="num">L4</th><th class="num">L8</th><th class="num">L12</th><th class="num">L16</th><th class="num">L20</th><th class="num">L24</th><th class="num">L26</th><th class="num">L28</th><th class="num">L30</th></tr></thead><tbody>
+<tr><td class="">real first token</td><td class="num">0.00</td><td class="num">0.01</td><td class="num">0.04</td><td class="num">0.06</td><td class="num">0.19</td><td class="num">0.26</td><td class="num">0.31</td><td class="num">0.43</td><td class="num">0.52</td></tr>
+<tr><td class="">phrase token, Brennan (proj + unit)</td><td class="num">0.29</td><td class="num">0.68</td><td class="num">0.91</td><td class="num">0.93</td><td class="num">0.95</td><td class="num">0.96</td><td class="num">0.96</td><td class="num">0.96</td><td class="num">0.96</td></tr>
+<tr><td class="">phrase token, LDA</td><td class="num">0.00</td><td class="num">0.01</td><td class="num">0.01</td><td class="num">0.01</td><td class="num">0.12</td><td class="num">0.51</td><td class="num">0.62</td><td class="num">0.65</td><td class="num">0.67</td></tr>
+<tr><td class="">phrase token, LR (bias, val. pick)</td><td class="num">0.20</td><td class="num">0.49</td><td class="num">0.56</td><td class="num">0.55</td><td class="num">0.78</td><td class="num">0.84</td><td class="num">0.78</td><td class="num">0.70</td><td class="num">0.61</td></tr>
+<tr><td class="">phrase token, LR no bias (val. pick)</td><td class="num">0.06</td><td class="num">0.14</td><td class="num">0.14</td><td class="num">0.15</td><td class="num">0.33</td><td class="num">0.42</td><td class="num">0.44</td><td class="num">0.47</td><td class="num">0.44</td></tr>
+<tr><td class="">phrase in top-10, first token not (LR no bias)</td><td class="num">0.06</td><td class="num">0.14</td><td class="num">0.13</td><td class="num">0.13</td><td class="num">0.23</td><td class="num">0.22</td><td class="num">0.19</td><td class="num">0.13</td><td class="num">0.05</td></tr>
+<tr><td class="">real first token (logit lens)</td><td class="num">0.00</td><td class="num">0.00</td><td class="num">0.00</td><td class="num">0.01</td><td class="num">0.05</td><td class="num">0.19</td><td class="num">0.27</td><td class="num">0.36</td><td class="num">0.45</td></tr>
+<tr><td class="">phrase token, LR no bias (logit lens)</td><td class="num">0.01</td><td class="num">0.05</td><td class="num">0.06</td><td class="num">0.10</td><td class="num">0.17</td><td class="num">0.37</td><td class="num">0.46</td><td class="num">0.49</td><td class="num">0.45</td></tr>
+</tbody></table></div>
+<h3>The bias-free head</h3>
+<p>Best or joint-best direction, mass at prior, and a rank at its own positions within a factor 1.25 of the model's own first-token rank (LDA is four times more confident than the model about “ New”; Brennan's is fifteen times). Copy contexts are easier for every fitted head, but single-occurrence performance stays high. The dashed line in the figure, the phrase in the top-10 while its first token is not, is the population where a multi-token row shows something the single-token readout does not: 13–25% of contexts through layers 8–24.</p>
+<p class="cap"><b>Benchmark, bias-free logistic head at 2{,}400 contexts, per phrase. Earliest layer: median over the phrase's held-out contexts of the first layer at which the phrase token is in the J-lens top-10 (99 = never in more than half of them).</b> </p><div class="tbl"><table><thead><tr><th class="">phrase</th><th class="">AUROC vs generic</th><th class="num">vs 1st-tok. sibling</th><th class="">own rank</th><th class="num">1st-token rank</th><th class="num">own top-10</th><th class="">mass/prior</th><th class="num">earliest top-10 layer</th><th class="">never</th></tr></thead><tbody>
+<tr><td class="">blackmail</td><td class="num">0.976</td><td class="">---</td><td class="num">79</td><td class="num">77</td><td class="num">0.33</td><td class="num">0.8</td><td class="num">99</td><td class="num">0.69</td></tr>
+<tr><td class="">plagiarism</td><td class="num">0.980</td><td class="">---</td><td class="num">8</td><td class="num">4</td><td class="num">0.53</td><td class="num">0.3</td><td class="num">24</td><td class="num">0.32</td></tr>
+<tr><td class="">cheating</td><td class="num">0.977</td><td class="">---</td><td class="num">14</td><td class="num">37</td><td class="num">0.46</td><td class="num">1.9</td><td class="num">20</td><td class="num">0.35</td></tr>
+<tr><td class="">forgery</td><td class="num">0.986</td><td class="">---</td><td class="num">19</td><td class="num">12</td><td class="num">0.41</td><td class="num">0.8</td><td class="num">99</td><td class="num">0.67</td></tr>
+<tr><td class="">Connecticut</td><td class="num">0.984</td><td class="">---</td><td class="num">11</td><td class="num">13</td><td class="num">0.49</td><td class="num">1.8</td><td class="num">20</td><td class="num">0.21</td></tr>
+<tr><td class="">Rhode Island</td><td class="num">0.983</td><td class="">---</td><td class="num">11</td><td class="num">8</td><td class="num">0.50</td><td class="num">0.4</td><td class="num">28</td><td class="num">0.45</td></tr>
+<tr><td class="">New Hampshire</td><td class="num">0.991</td><td class="num">0.855</td><td class="num">8</td><td class="num">4</td><td class="num">0.54</td><td class="num">0.5</td><td class="num">24</td><td class="num">0.34</td></tr>
+<tr><td class="">George Washington</td><td class="num">0.976</td><td class="">---</td><td class="num">19</td><td class="num">11</td><td class="num">0.44</td><td class="num">0.9</td><td class="num">99</td><td class="num">0.54</td></tr>
+<tr><td class="">Abraham Lincoln</td><td class="num">0.975</td><td class="">---</td><td class="num">18</td><td class="num">16</td><td class="num">0.44</td><td class="num">1.6</td><td class="num">26</td><td class="num">0.42</td></tr>
+<tr><td class="">John Adams</td><td class="num">0.985</td><td class="num">0.540</td><td class="num">148</td><td class="num">8</td><td class="num">0.25</td><td class="num">0.2</td><td class="num">99</td><td class="num">0.76</td></tr>
+<tr><td class="">New York</td><td class="num">0.975</td><td class="num">0.733</td><td class="num">5</td><td class="num">4</td><td class="num">0.56</td><td class="num">1.8</td><td class="num">4</td><td class="num">0.00</td></tr>
+<tr><td class="">New Jersey</td><td class="num">0.983</td><td class="num">0.817</td><td class="num">5</td><td class="num">4</td><td class="num">0.60</td><td class="num">2.0</td><td class="num">12</td><td class="num">0.07</td></tr>
+<tr><td class="">John Quincy Adams</td><td class="num">0.982</td><td class="num">0.708</td><td class="num">214</td><td class="num">4</td><td class="num">0.16</td><td class="num">0.1</td><td class="num">99</td><td class="num">0.81</td></tr>
+<tr><td class="">Massachusetts</td><td class="num">0.988</td><td class="">---</td><td class="num">4</td><td class="num">5</td><td class="num">0.63</td><td class="num">1.3</td><td class="num">20</td><td class="num">0.10</td></tr>
+<tr><td class="">Vermont</td><td class="num">0.979</td><td class="">---</td><td class="num">15</td><td class="num">24</td><td class="num">0.46</td><td class="num">1.0</td><td class="num">20</td><td class="num">0.27</td></tr>
+</tbody></table></div>
+<p class="cap"><b>Copy sensitivity at 2{,}400 contexts: held-out contexts in which the phrase occurs once (84% of them) vs contexts in which it already appeared earlier.</b> </p><div class="tbl"><table><thead><tr><th class="">head</th><th class="">AUROC single</th><th class="">AUROC copy</th><th class="num">own top-10 single</th><th class="num">own top-10 copy</th></tr></thead><tbody>
+<tr><td class="">Brennan (proj + unit)</td><td class="num">0.971</td><td class="num">0.961</td><td class="num">0.95</td><td class="num">0.95</td></tr>
+<tr><td class="">LDA</td><td class="num">0.976</td><td class="num">0.999</td><td class="num">0.66</td><td class="num">0.82</td></tr>
+<tr><td class="">LR (bias, val. pick)</td><td class="num">0.977</td><td class="num">0.994</td><td class="num">0.34</td><td class="num">0.53</td></tr>
+<tr><td class="">LR no bias (val. pick)</td><td class="num">0.979</td><td class="num">0.995</td><td class="num">0.42</td><td class="num">0.61</td></tr>
+</tbody></table></div>
+<p class="cap"><b>Stability: mean \pm std over three disjoint 150-context refits.</b> </p><div class="tbl"><table><thead><tr><th class="">head</th><th class="">AUROC</th><th class="num">own top-10</th><th class="num">generic top-10</th><th class="">new-token mass</th></tr></thead><tbody>
+<tr><td class="">Brennan (proj + unit)</td><td class="num">0.9694 ± 0.0008</td><td class="num">0.949 ± 0.002</td><td class="num">0.2026 ± 0.0005</td><td class="num">0.3393 ± 0.0031</td></tr>
+<tr><td class="">LDA</td><td class="num">0.9770 ± 0.0008</td><td class="num">0.658 ± 0.004</td><td class="num">0.0007 ± 0.0000</td><td class="num">0.0056 ± 0.0001</td></tr>
+<tr><td class="">LR (bias, val. pick)</td><td class="num">0.9682 ± 0.0006</td><td class="num">0.405 ± 0.003</td><td class="num">0.0003 ± 0.0000</td><td class="num">0.0003 ± 0.0000</td></tr>
+<tr><td class="">LR no bias (val. pick)</td><td class="num">0.9796 ± 0.0007</td><td class="num">0.464 ± 0.006</td><td class="num">0.0001 ± 0.0000</td><td class="num">0.0002 ± 0.0000</td></tr>
+</tbody></table></div>
+
+<h2>5. The R-lens</h2>
+<p>The R-lens is the same estimator with three LRP rules in the backward pass: the RMSNorm scale is a constant, SiLU's sigmoid factor is detached, and the SwiGLU product's gradient is split evenly (β = 0.5). The configuration, target layer 30, 25 pile-10k prompts and skip-4 are copied from the provenance inside the authors' Qwen3.5-9B lens. The rules are grafted onto the standard forward so the forward pass is bit-identical, and a matched J-lens / R-lens pair was fitted on the base model (21 minutes each).</p>
+<h3>pass@10 on 50 two-hop questions</h3>
+<p>Whether the intermediate entity's first token (e.g. France for “the country where the Eiffel Tower stands”) is in the lens top-10 at the penultimate token. Both lenses read it from layer 6, where the logit lens shows nothing until layer 24; the R-lens leads at layers 4–6 and 22–26.</p>
+<div class="legend"><span class="lg"><i style="border-top:2px solid var(--good)"></i>R-lens</span><span class="lg"><i style="border-top:2px solid var(--ink)"></i>J-lens</span><span class="lg"><i style="border-top:2px dashed var(--muted)"></i>logit lens</span></div><svg viewBox="0 0 680 300" role="img" aria-label="pass@10">
+<line x1="46" y1="260.0" x2="664" y2="260.0" stroke="var(--rule)"/><text x="40" y="264.0" text-anchor="end" class="ax">0.00</text>
+<line x1="46" y1="198.5" x2="664" y2="198.5" stroke="var(--rule)"/><text x="40" y="202.5" text-anchor="end" class="ax">0.25</text>
+<line x1="46" y1="137.0" x2="664" y2="137.0" stroke="var(--rule)"/><text x="40" y="141.0" text-anchor="end" class="ax">0.50</text>
+<line x1="46" y1="75.5" x2="664" y2="75.5" stroke="var(--rule)"/><text x="40" y="79.5" text-anchor="end" class="ax">0.75</text>
+<line x1="46" y1="14.0" x2="664" y2="14.0" stroke="var(--rule)"/><text x="40" y="18.0" text-anchor="end" class="ax">1.00</text>
+<text x="46.0" y="276" text-anchor="middle" class="ax">L0</text>
+<text x="85.9" y="276" text-anchor="middle" class="ax">L2</text>
+<text x="125.7" y="276" text-anchor="middle" class="ax">L4</text>
+<text x="165.6" y="276" text-anchor="middle" class="ax">L6</text>
+<text x="205.5" y="276" text-anchor="middle" class="ax">L8</text>
+<text x="245.4" y="276" text-anchor="middle" class="ax">L10</text>
+<text x="285.2" y="276" text-anchor="middle" class="ax">L12</text>
+<text x="325.1" y="276" text-anchor="middle" class="ax">L14</text>
+<text x="365.0" y="276" text-anchor="middle" class="ax">L16</text>
+<text x="404.8" y="276" text-anchor="middle" class="ax">L18</text>
+<text x="444.7" y="276" text-anchor="middle" class="ax">L20</text>
+<text x="484.6" y="276" text-anchor="middle" class="ax">L22</text>
+<text x="524.5" y="276" text-anchor="middle" class="ax">L24</text>
+<text x="564.3" y="276" text-anchor="middle" class="ax">L26</text>
+<text x="604.2" y="276" text-anchor="middle" class="ax">L28</text>
+<text x="644.1" y="276" text-anchor="middle" class="ax">L30</text>
+<text x="664.0" y="276" text-anchor="middle" class="ax">L31</text>
+<text x="355" y="294" text-anchor="middle" class="ax">layer</text>
+<polyline points="46.0,260.0 65.9,260.0 85.9,260.0 105.8,225.6 125.7,225.6 145.7,191.1 165.6,181.3 185.5,176.4 205.5,171.4 225.4,151.8 245.4,161.6 265.3,166.5 285.2,176.4 305.2,161.6 325.1,181.3 345.0,171.4 365.0,176.4 384.9,176.4 404.8,176.4 424.8,166.5 444.7,166.5 464.6,186.2 484.6,191.1 504.5,181.3 524.5,102.6 544.4,87.8 564.3,68.1 584.3,78.0 604.2,82.9 624.1,176.4 644.1,235.4 664.0,260.0" fill="none" stroke="var(--good)" stroke-width="2" stroke-dasharray=""/>
+<polyline points="46.0,260.0 65.9,260.0 85.9,260.0 105.8,255.1 125.7,245.2 145.7,220.6 165.6,196.0 185.5,186.2 205.5,171.4 225.4,146.8 245.4,171.4 265.3,171.4 285.2,171.4 305.2,166.5 325.1,171.4 345.0,176.4 365.0,171.4 384.9,166.5 404.8,186.2 424.8,176.4 444.7,176.4 464.6,196.0 484.6,215.7 504.5,196.0 524.5,122.2 544.4,92.7 564.3,92.7 584.3,82.9 604.2,82.9 624.1,176.4 644.1,235.4 664.0,260.0" fill="none" stroke="var(--ink)" stroke-width="2" stroke-dasharray=""/>
+<polyline points="46.0,260.0 65.9,260.0 85.9,260.0 105.8,260.0 125.7,260.0 145.7,260.0 165.6,240.3 185.5,250.2 205.5,250.2 225.4,240.3 245.4,240.3 265.3,250.2 285.2,255.1 305.2,260.0 325.1,260.0 345.0,260.0 365.0,260.0 384.9,260.0 404.8,260.0 424.8,250.2 444.7,240.3 464.6,245.2 484.6,250.2 504.5,215.7 524.5,151.8 544.4,141.9 564.3,146.8 584.3,156.7 604.2,151.8 624.1,171.4 644.1,235.4 664.0,260.0" fill="none" stroke="var(--muted)" stroke-width="2" stroke-dasharray="4 3"/>
+</svg>
+<p class="cap"><b>pass@10 on 50 two-hop questions: fraction in which the intermediate entity's first token is in the lens top-10, read at the penultimate token (-2) and the last token (-1).</b> </p><div class="tbl"><table><thead><tr><th class="">layer</th><th class="num">R-lens -2</th><th class="num">J-lens -2</th><th class="num">logit -2</th><th class="num">R-lens -1</th><th class="num">J-lens -1</th><th class="num">logit -1</th></tr></thead><tbody>
+<tr><td class="num">L0</td><td class="num">0.00</td><td class="num">0.00</td><td class="num">0.00</td><td class="num">0.00</td><td class="num">0.00</td><td class="num">0.00</td></tr>
+<tr><td class="num">L2</td><td class="num">0.00</td><td class="num">0.00</td><td class="num">0.00</td><td class="num">0.00</td><td class="num">0.00</td><td class="num">0.00</td></tr>
+<tr><td class="num">L4</td><td class="num">0.14</td><td class="num">0.06</td><td class="num">0.00</td><td class="num">0.00</td><td class="num">0.00</td><td class="num">0.00</td></tr>
+<tr><td class="num">L6</td><td class="num">0.32</td><td class="num">0.26</td><td class="num">0.08</td><td class="num">0.00</td><td class="num">0.00</td><td class="num">0.00</td></tr>
+<tr><td class="num">L8</td><td class="num">0.36</td><td class="num">0.36</td><td class="num">0.04</td><td class="num">0.04</td><td class="num">0.06</td><td class="num">0.00</td></tr>
+<tr><td class="num">L10</td><td class="num">0.40</td><td class="num">0.36</td><td class="num">0.08</td><td class="num">0.00</td><td class="num">0.02</td><td class="num">0.00</td></tr>
+<tr><td class="num">L12</td><td class="num">0.34</td><td class="num">0.36</td><td class="num">0.02</td><td class="num">0.00</td><td class="num">0.00</td><td class="num">0.00</td></tr>
+<tr><td class="num">L14</td><td class="num">0.32</td><td class="num">0.36</td><td class="num">0.00</td><td class="num">0.00</td><td class="num">0.00</td><td class="num">0.00</td></tr>
+<tr><td class="num">L16</td><td class="num">0.34</td><td class="num">0.36</td><td class="num">0.00</td><td class="num">0.00</td><td class="num">0.00</td><td class="num">0.00</td></tr>
+<tr><td class="num">L18</td><td class="num">0.34</td><td class="num">0.30</td><td class="num">0.00</td><td class="num">0.02</td><td class="num">0.00</td><td class="num">0.00</td></tr>
+<tr><td class="num">L20</td><td class="num">0.38</td><td class="num">0.34</td><td class="num">0.08</td><td class="num">0.14</td><td class="num">0.06</td><td class="num">0.00</td></tr>
+<tr><td class="num">L22</td><td class="num">0.28</td><td class="num">0.18</td><td class="num">0.04</td><td class="num">0.02</td><td class="num">0.02</td><td class="num">0.00</td></tr>
+<tr><td class="num">L24</td><td class="num">0.64</td><td class="num">0.56</td><td class="num">0.44</td><td class="num">0.60</td><td class="num">0.60</td><td class="num">0.46</td></tr>
+<tr><td class="num">L26</td><td class="num">0.78</td><td class="num">0.68</td><td class="num">0.46</td><td class="num">0.50</td><td class="num">0.42</td><td class="num">0.30</td></tr>
+<tr><td class="num">L28</td><td class="num">0.72</td><td class="num">0.72</td><td class="num">0.44</td><td class="num">0.64</td><td class="num">0.60</td><td class="num">0.18</td></tr>
+<tr><td class="num">L30</td><td class="num">0.10</td><td class="num">0.10</td><td class="num">0.10</td><td class="num">0.12</td><td class="num">0.12</td><td class="num">0.12</td></tr>
+<tr><td class="">mean, all layers</td><td class="num">0.341</td><td class="num">0.312</td><td class="num">0.109</td><td class="num">0.122</td><td class="num">0.109</td><td class="num">0.066</td></tr>
+<tr><td class="num">mean, layers 0--15</td><td class="num">0.264</td><td class="num">0.236</td><td class="num">0.024</td><td class="num">0.005</td><td class="num">0.009</td><td class="num">0.000</td></tr>
+</tbody></table></div>
+<h3>Direction ablation</h3>
+<p>The unit direction of the intermediate's first token, pulled back through each lens, is projected out of the residual at the penultimate token during the prompt pass, at layers 0–15 or all layers; eight samples per prompt; a random direction is the control. 43 of 50 questions with baseline accuracy ≥ 0.5 (mean 0.907) enter the summary.</p>
+<svg viewBox="0 0 680 280" role="img" aria-label="ablation">
+<line x1="46" y1="216.0" x2="664" y2="216.0" stroke="var(--rule)"/><text x="40" y="220.0" text-anchor="end" class="ax">-0.1</text>
+<line x1="46" y1="171.1" x2="664" y2="171.1" stroke="var(--rule)"/><text x="40" y="175.1" text-anchor="end" class="ax">+0.0</text>
+<line x1="46" y1="126.2" x2="664" y2="126.2" stroke="var(--rule)"/><text x="40" y="130.2" text-anchor="end" class="ax">+0.1</text>
+<line x1="46" y1="81.3" x2="664" y2="81.3" stroke="var(--rule)"/><text x="40" y="85.3" text-anchor="end" class="ax">+0.2</text>
+<line x1="46" y1="36.4" x2="664" y2="36.4" stroke="var(--rule)"/><text x="40" y="40.4" text-anchor="end" class="ax">+0.3</text>
+<rect x="65.3" y="123.6" width="38.6" height="47.5" fill="var(--good)" opacity="0.85"/>
+<line x1="84.6" y1="168.2" x2="84.6" y2="73.9" stroke="var(--ink)" stroke-width="1.5"/>
+<text x="84.6" y="230" text-anchor="end" transform="rotate(-30 84.6 230)" class="ax">R-lens (0--15)</text>
+<rect x="142.6" y="120.7" width="38.6" height="50.4" fill="var(--good)" opacity="0.85"/>
+<line x1="161.9" y1="165.2" x2="161.9" y2="72.4" stroke="var(--ink)" stroke-width="1.5"/>
+<text x="161.9" y="230" text-anchor="end" transform="rotate(-30 161.9 230)" class="ax">J-lens (0--15)</text>
+<rect x="219.8" y="171.1" width="38.6" height="8.6" fill="var(--muted)" opacity="0.85"/>
+<line x1="239.1" y1="199.4" x2="239.1" y2="162.7" stroke="var(--ink)" stroke-width="1.5"/>
+<text x="239.1" y="230" text-anchor="end" transform="rotate(-30 239.1 230)" class="ax">logit lens (0--15)</text>
+<rect x="297.1" y="171.1" width="38.6" height="5.7" fill="var(--muted)" opacity="0.85"/>
+<line x1="316.4" y1="196.1" x2="316.4" y2="160.1" stroke="var(--ink)" stroke-width="1.5"/>
+<text x="316.4" y="230" text-anchor="end" transform="rotate(-30 316.4 230)" class="ax">random (0--15)</text>
+<rect x="374.3" y="97.7" width="38.6" height="73.4" fill="var(--good)" opacity="0.85"/>
+<line x1="393.6" y1="143.2" x2="393.6" y2="47.4" stroke="var(--ink)" stroke-width="1.5"/>
+<text x="393.6" y="230" text-anchor="end" transform="rotate(-30 393.6 230)" class="ax">R-lens (all)</text>
+<rect x="451.6" y="107.8" width="38.6" height="63.3" fill="var(--good)" opacity="0.85"/>
+<line x1="470.9" y1="151.7" x2="470.9" y2="59.6" stroke="var(--ink)" stroke-width="1.5"/>
+<text x="470.9" y="230" text-anchor="end" transform="rotate(-30 470.9 230)" class="ax">J-lens (all)</text>
+<rect x="528.8" y="171.1" width="38.6" height="1.4" fill="var(--muted)" opacity="0.85"/>
+<line x1="548.1" y1="187.4" x2="548.1" y2="158.2" stroke="var(--ink)" stroke-width="1.5"/>
+<text x="548.1" y="230" text-anchor="end" transform="rotate(-30 548.1 230)" class="ax">logit lens (all)</text>
+<rect x="606.1" y="171.1" width="38.6" height="15.8" fill="var(--muted)" opacity="0.85"/>
+<line x1="625.4" y1="207.7" x2="625.4" y2="169.7" stroke="var(--ink)" stroke-width="1.5"/>
+<text x="625.4" y="230" text-anchor="end" transform="rotate(-30 625.4 230)" class="ax">random (all)</text>
+</svg>
+<p class="cap"><b>Direction ablation. For each question and lens the unit direction d_\ell = \mathrm{normalize}(J_\ell^\top(\gamma\odot W_U[t])) of the intermediate's first token t is projected out of the residual at the stated positions during the prompt pass, at layers 0--15 or all 32. Eight samples per prompt; accuracy = answer alias in the continuation; 43 of 50 questions with baseline accuracy \ge 0.5 (mean 0.907). Intervals: bootstrap over questions.</b> </p><div class="tbl"><table><thead><tr><th class="">direction</th><th class="">layers</th><th class="">positions</th><th class="">accuracy after</th><th class="">relative loss</th><th class="num">95% CI</th></tr></thead><tbody>
+<tr><td class="">R-lens</td><td class="num">0--15</td><td class="num">-2</td><td class="num">0.811</td><td class="num">+0.106</td><td class="num">[+0.006, +0.218]</td></tr>
+<tr><td class="">J-lens</td><td class="num">0--15</td><td class="num">-2</td><td class="num">0.805</td><td class="num">+0.112</td><td class="num">[+0.019, +0.221]</td></tr>
+<tr><td class="">logit lens</td><td class="num">0--15</td><td class="num">-2</td><td class="num">0.924</td><td class="num">-0.019</td><td class="num">[-0.062, +0.019]</td></tr>
+<tr><td class="">random</td><td class="num">0--15</td><td class="num">-2</td><td class="num">0.919</td><td class="num">-0.013</td><td class="num">[-0.054, +0.025]</td></tr>
+<tr><td class="">R-lens</td><td class="num">0--15</td><td class="num">-2,-1</td><td class="num">0.823</td><td class="num">+0.093</td><td class="num">[-0.013, +0.211]</td></tr>
+<tr><td class="">J-lens</td><td class="num">0--15</td><td class="num">-2,-1</td><td class="num">0.797</td><td class="num">+0.122</td><td class="num">[+0.026, +0.223]</td></tr>
+<tr><td class="">logit lens</td><td class="num">0--15</td><td class="num">-2,-1</td><td class="num">0.942</td><td class="num">-0.038</td><td class="num">[-0.090, +0.003]</td></tr>
+<tr><td class="">random</td><td class="num">0--15</td><td class="num">-2,-1</td><td class="num">0.904</td><td class="num">+0.003</td><td class="num">[-0.042, +0.045]</td></tr>
+<tr><td class="">R-lens</td><td class="">all</td><td class="num">-2</td><td class="num">0.759</td><td class="num">+0.163</td><td class="num">[+0.062, +0.279]</td></tr>
+<tr><td class="">J-lens</td><td class="">all</td><td class="num">-2</td><td class="num">0.779</td><td class="num">+0.141</td><td class="num">[+0.040, +0.249]</td></tr>
+<tr><td class="">logit lens</td><td class="">all</td><td class="num">-2</td><td class="num">0.910</td><td class="num">-0.003</td><td class="num">[-0.038, +0.028]</td></tr>
+<tr><td class="">random</td><td class="">all</td><td class="num">-2</td><td class="num">0.939</td><td class="num">-0.035</td><td class="num">[-0.080, +0.003]</td></tr>
+<tr><td class="">R-lens</td><td class="">all</td><td class="num">-2,-1</td><td class="num">0.448</td><td class="num">+0.506</td><td class="num">[+0.390, +0.624]</td></tr>
+<tr><td class="">J-lens</td><td class="">all</td><td class="num">-2,-1</td><td class="num">0.398</td><td class="num">+0.561</td><td class="num">[+0.441, +0.683]</td></tr>
+<tr><td class="">logit lens</td><td class="">all</td><td class="num">-2,-1</td><td class="num">0.605</td><td class="num">+0.333</td><td class="num">[+0.228, +0.447]</td></tr>
+<tr><td class="">random</td><td class="">all</td><td class="num">-2,-1</td><td class="num">0.927</td><td class="num">-0.022</td><td class="num">[-0.073, +0.019]</td></tr>
+</tbody></table></div>
+<p class="cap"><b>Paired difference in accuracy after ablation, J-lens minus R-lens (positive: the R-lens direction removes more). Bootstrap over questions.</b> </p><div class="tbl"><table><thead><tr><th class="">layers</th><th class="">positions</th><th class="">mean</th><th class="num">95% CI</th></tr></thead><tbody>
+<tr><td class="num">0--15</td><td class="num">-2</td><td class="num">-0.006</td><td class="num">[-0.038, +0.023]</td></tr>
+<tr><td class="num">0--15</td><td class="num">-2,-1</td><td class="num">-0.026</td><td class="num">[-0.076, +0.020]</td></tr>
+<tr><td class="">all</td><td class="num">-2</td><td class="num">+0.020</td><td class="num">[-0.017, +0.058]</td></tr>
+<tr><td class="">all</td><td class="num">-2,-1</td><td class="num">-0.049</td><td class="num">[-0.090, -0.009]</td></tr>
+</tbody></table></div>
+<p>The lens directions are causally load-bearing and the logit-lens direction is not: one rank-one removal per layer costs 14–16% of two-hop accuracy for either lens and nothing for the controls; 4 questions go from correct to 0/8 under either lens direction and stay correct under the random one. R-lens and J-lens are not distinguishable by this test on this model: the post's larger R-lens effect does not reproduce here. Removing the direction at the last token too doubles the damage and makes even the logit-lens direction bite, which is why the penultimate position isolates the lens-specific contribution.</p>
+<p class="cap"><b>The twelve questions most affected by removing the lens direction at the penultimate token across all layers (accuracy over 8 samples).</b> </p><div class="tbl"><table><thead><tr><th class="">prompt (after ``Fact:'')</th><th class="">intermediate</th><th class="">base</th><th class="">R-lens</th><th class="">J-lens</th><th class="">logit</th><th class="">random</th></tr></thead><tbody>
+<tr><td class="">The currency of the country famous for the Great Pyramids is</td><td class="">Egypt</td><td class="num">1.00</td><td class="num">0.00</td><td class="num">0.00</td><td class="num">1.00</td><td class="num">1.00</td></tr>
+<tr><td class="">The largest city of the country whose capital is Canberra is</td><td class="">Australia</td><td class="num">1.00</td><td class="num">0.00</td><td class="num">0.00</td><td class="num">0.88</td><td class="num">1.00</td></tr>
+<tr><td class="">The capital of the most populous country in South America is</td><td class="">Brazil</td><td class="num">0.62</td><td class="num">0.00</td><td class="num">0.00</td><td class="num">0.62</td><td class="num">1.00</td></tr>
+<tr><td class="">The currency of the country whose capital is Ottawa is</td><td class="">Canada</td><td class="num">1.00</td><td class="num">0.00</td><td class="num">0.00</td><td class="num">1.00</td><td class="num">1.00</td></tr>
+<tr><td class="">The capital of the country whose national dish is paella is</td><td class="">Spain</td><td class="num">0.88</td><td class="num">0.00</td><td class="num">0.25</td><td class="num">0.75</td><td class="num">0.88</td></tr>
+<tr><td class="">The nationality of the painter of the Mona Lisa is</td><td class="">Leonardo</td><td class="num">0.62</td><td class="num">0.25</td><td class="num">0.12</td><td class="num">0.62</td><td class="num">0.50</td></tr>
+<tr><td class="">The continent containing the country whose capital is Nairobi is</td><td class="">Kenya</td><td class="num">0.50</td><td class="num">0.25</td><td class="num">0.50</td><td class="num">0.62</td><td class="num">0.50</td></tr>
+<tr><td class="">The capital of the country where the Blue Mosque of Istanbul is located is</td><td class="">Turkey</td><td class="num">0.50</td><td class="num">0.25</td><td class="num">0.50</td><td class="num">0.62</td><td class="num">0.62</td></tr>
+<tr><td class="">The capital of the state whose largest city is Chicago is</td><td class="">Illinois</td><td class="num">1.00</td><td class="num">0.25</td><td class="num">0.62</td><td class="num">1.00</td><td class="num">1.00</td></tr>
+<tr><td class="">The official language of the country whose capital is Beijing is</td><td class="">China</td><td class="num">1.00</td><td class="num">0.62</td><td class="num">0.25</td><td class="num">1.00</td><td class="num">1.00</td></tr>
+<tr><td class="">The capital of the state where Disney World is located is</td><td class="">Florida</td><td class="num">0.62</td><td class="num">0.50</td><td class="num">0.62</td><td class="num">0.88</td><td class="num">0.75</td></tr>
+<tr><td class="">The capital of the country where the Great Barrier Reef is located is</td><td class="">Australia</td><td class="num">0.62</td><td class="num">0.50</td><td class="num">0.88</td><td class="num">0.75</td><td class="num">1.00</td></tr>
+</tbody></table></div>
+<h3>The phrase benchmark under the matched lenses</h3>
+<p>Under the R-lens the early-layer phrase hits shrink (layers 4 / 8 / 12: 0 / 8 / 10% against 6 / 17 / 20% under the J-lens), the late layers are unchanged, and the real first token surfaces slightly earlier. Brennan's head stays saturated under either lens: its problem is the row.</p>
+<div class="legend"><span class="lg"><i style="border-top:2px solid var(--ink)"></i>first token, R-lens</span><span class="lg"><i style="border-top:2px dashed var(--ink)"></i>first token, J-lens</span><span class="lg"><i style="border-top:2px solid var(--good)"></i>phrase (LR no bias), R-lens</span><span class="lg"><i style="border-top:2px dashed var(--good)"></i>phrase (LR no bias), J-lens</span><span class="lg"><i style="border-top:2px dashed var(--muted)"></i>phrase (LR no bias), logit lens</span><span class="lg"><i style="border-top:2px solid var(--bad)"></i>phrase (Brennan), R-lens</span></div><svg viewBox="0 0 680 300" role="img" aria-label="fraction in top-10">
+<line x1="46" y1="260.0" x2="664" y2="260.0" stroke="var(--rule)"/><text x="40" y="264.0" text-anchor="end" class="ax">0.00</text>
+<line x1="46" y1="198.5" x2="664" y2="198.5" stroke="var(--rule)"/><text x="40" y="202.5" text-anchor="end" class="ax">0.25</text>
+<line x1="46" y1="137.0" x2="664" y2="137.0" stroke="var(--rule)"/><text x="40" y="141.0" text-anchor="end" class="ax">0.50</text>
+<line x1="46" y1="75.5" x2="664" y2="75.5" stroke="var(--rule)"/><text x="40" y="79.5" text-anchor="end" class="ax">0.75</text>
+<line x1="46" y1="14.0" x2="664" y2="14.0" stroke="var(--rule)"/><text x="40" y="18.0" text-anchor="end" class="ax">1.00</text>
+<text x="46.0" y="276" text-anchor="middle" class="ax">L4</text>
+<text x="107.8" y="276" text-anchor="middle" class="ax">L8</text>
+<text x="169.6" y="276" text-anchor="middle" class="ax">L12</text>
+<text x="231.4" y="276" text-anchor="middle" class="ax">L16</text>
+<text x="293.2" y="276" text-anchor="middle" class="ax">L18</text>
+<text x="355.0" y="276" text-anchor="middle" class="ax">L20</text>
+<text x="416.8" y="276" text-anchor="middle" class="ax">L22</text>
+<text x="478.6" y="276" text-anchor="middle" class="ax">L24</text>
+<text x="540.4" y="276" text-anchor="middle" class="ax">L26</text>
+<text x="602.2" y="276" text-anchor="middle" class="ax">L28</text>
+<text x="664.0" y="276" text-anchor="middle" class="ax">L30</text>
+<text x="355" y="294" text-anchor="middle" class="ax">layer</text>
+<polyline points="46.0,259.9 107.8,258.5 169.6,257.2 231.4,255.6 293.2,250.4 355.0,236.5 416.8,235.1 478.6,202.5 540.4,186.6 602.2,158.6 664.0,150.6" fill="none" stroke="var(--ink)" stroke-width="2" stroke-dasharray=""/>
+<polyline points="46.0,259.9 107.8,255.6 169.6,252.3 231.4,252.1 293.2,248.2 355.0,236.6 416.8,237.4 478.6,210.6 540.4,194.2 602.2,162.9 664.0,150.6" fill="none" stroke="var(--ink)" stroke-width="2" stroke-dasharray="4 3"/>
+<polyline points="46.0,259.0 107.8,240.8 169.6,236.0 231.4,223.7 293.2,204.2 355.0,186.9 416.8,173.2 478.6,145.6 540.4,135.8 602.2,137.1 664.0,149.4" fill="none" stroke="var(--good)" stroke-width="2" stroke-dasharray=""/>
+<polyline points="46.0,244.8 107.8,218.3 169.6,209.9 231.4,205.9 293.2,194.5 355.0,178.1 416.8,172.9 478.6,149.1 540.4,139.0 602.2,130.3 664.0,149.4" fill="none" stroke="var(--good)" stroke-width="2" stroke-dasharray="4 3"/>
+<polyline points="46.0,256.7 107.8,248.2 169.6,245.3 231.4,235.2 293.2,224.1 355.0,218.2 416.8,207.6 478.6,168.9 540.4,147.7 602.2,138.4 664.0,149.4" fill="none" stroke="var(--muted)" stroke-width="2" stroke-dasharray="2 3"/>
+<polyline points="46.0,253.2 107.8,170.9 169.6,125.6 231.4,95.3 293.2,63.3 355.0,62.2 416.8,53.7 478.6,47.0 540.4,44.9 602.2,44.4 664.0,36.7" fill="none" stroke="var(--bad)" stroke-width="2" stroke-dasharray=""/>
+</svg>
+<p class="cap"><b>Phrase-benchmark layer profiles (2,942 held-out contexts) under the matched J-lens / R-lens pair (target layer 30) and the logit lens.</b> </p><div class="tbl"><table><thead><tr><th class="">lens</th><th class="">token</th><th class="num">L4</th><th class="num">L8</th><th class="num">L12</th><th class="num">L16</th><th class="num">L20</th><th class="num">L24</th><th class="num">L28</th><th class="num">L30</th></tr></thead><tbody>
+<tr><td class="">R-lens</td><td class="">real first token</td><td class="num">0.00</td><td class="num">0.01</td><td class="num">0.01</td><td class="num">0.02</td><td class="num">0.10</td><td class="num">0.23</td><td class="num">0.41</td><td class="num">0.44</td></tr>
+<tr><td class="">J-lens</td><td class="">real first token</td><td class="num">0.00</td><td class="num">0.02</td><td class="num">0.03</td><td class="num">0.03</td><td class="num">0.10</td><td class="num">0.20</td><td class="num">0.39</td><td class="num">0.44</td></tr>
+<tr><td class="">logit lens</td><td class="">real first token</td><td class="num">0.00</td><td class="num">0.00</td><td class="num">0.00</td><td class="num">0.01</td><td class="num">0.04</td><td class="num">0.19</td><td class="num">0.36</td><td class="num">0.44</td></tr>
+<tr><td class="">R-lens</td><td class="">phrase, LR no bias</td><td class="num">0.00</td><td class="num">0.08</td><td class="num">0.10</td><td class="num">0.15</td><td class="num">0.30</td><td class="num">0.46</td><td class="num">0.50</td><td class="num">0.45</td></tr>
+<tr><td class="">J-lens</td><td class="">phrase, LR no bias</td><td class="num">0.06</td><td class="num">0.17</td><td class="num">0.20</td><td class="num">0.22</td><td class="num">0.33</td><td class="num">0.45</td><td class="num">0.53</td><td class="num">0.45</td></tr>
+<tr><td class="">logit lens</td><td class="">phrase, LR no bias</td><td class="num">0.01</td><td class="num">0.05</td><td class="num">0.06</td><td class="num">0.10</td><td class="num">0.17</td><td class="num">0.37</td><td class="num">0.49</td><td class="num">0.45</td></tr>
+<tr><td class="">R-lens</td><td class="">phrase, Brennan proj</td><td class="num">0.03</td><td class="num">0.36</td><td class="num">0.55</td><td class="num">0.67</td><td class="num">0.80</td><td class="num">0.87</td><td class="num">0.88</td><td class="num">0.91</td></tr>
+<tr><td class="">J-lens</td><td class="">phrase, Brennan proj</td><td class="num">0.13</td><td class="num">0.67</td><td class="num">0.82</td><td class="num">0.82</td><td class="num">0.87</td><td class="num">0.89</td><td class="num">0.90</td><td class="num">0.91</td></tr>
+<tr><td class="">R-lens</td><td class="">phrase in top-10, first token not</td><td class="num">0.00</td><td class="num">0.08</td><td class="num">0.09</td><td class="num">0.14</td><td class="num">0.24</td><td class="num">0.26</td><td class="num">0.14</td><td class="num">0.10</td></tr>
+<tr><td class="">J-lens</td><td class="">phrase in top-10, first token not</td><td class="num">0.06</td><td class="num">0.16</td><td class="num">0.19</td><td class="num">0.20</td><td class="num">0.27</td><td class="num">0.27</td><td class="num">0.18</td><td class="num">0.10</td></tr>
+</tbody></table></div>
+
+<h2>6. What to change in the fork</h2>
+<ol>
+<li>Use the Base model with a Base lens, or fit a lens on the post-trained model.</li>
+<li>Replace <code>PRIOR_REPRESENTATION_EMBED*</code> with the bias-free logistic head (no biases, positives weighted to the corpus prior, L-BFGS, L2 ≈ 1e-6). The states from <code>collect_embeddings.py</code> plus a generic-corpus pass are all that is needed; fitting takes under a minute.</li>
+<li>Keep the h̄ / Σ pipeline only as a closed-form fallback and label its logits as over-confident.</li>
+<li>Before any lens plot, report per row: AUROC vs generic and vs first-token siblings, mass vs prior, rank relative to the phrase's first token. A row that fails the sibling test is a first-token detector.</li>
+<li>Read the lens with the R-lens, show the phrase's first token alongside, and treat phrase hits below layer 16 as suspect until the row's early-layer false-positive rate is known.</li>
+<li>Use the ablation protocol with logit-lens and random controls as the causal check for any new head.</li>
+</ol>
+<p><b>Limitations.</b> One model at one size; Brennan's two-sentence contexts and copy bucket; fifty hand-written two-hop questions with alias matching; the post's projection operator is our reading; lenses fitted on 25 prompts as in the authors' artifacts. Full statements in the paper.</p>
+
+<div class="foot">Paper: <code>~/notes/brennan-jlens-review/paper/main.pdf</code> (source <code>main.tex</code>, tables from <code>make_tables.py</code>). Code: <code>~/notes/brennan-jlens-review/modal_exp/</code>. Earlier pages: “Multi-token J-lens Heads”, “Phrase-Head Benchmark”, “R-lens Attribution”.</div>
+</main>

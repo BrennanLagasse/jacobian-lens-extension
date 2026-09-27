@@ -1,0 +1,30 @@
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{The 15 phrases. Unique mined contexts (FineWeb 10BT sample, $14.9$M documents), training contexts available at the 2{,}400 scale after holding out 200, and the estimated per-token prior $\pi_p$ (occurrences per token in the scanned corpus).}
+\label{tab:phrases}
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{llrrr}
+\toprule
+phrase & single token & unique contexts & train @2400 & $\pi_p$ \\
+\midrule
+blackmail & yes & 4391 & 2400 & 1.9e-6 \\
+plagiarism & yes & 4322 & 2400 & 6.0e-6 \\
+cheating & yes & 4494 & 2400 & 1.0e-5 \\
+forgery & no & 4273 & 2400 & 1.5e-6 \\
+Connecticut & yes & 4498 & 2400 & 2.1e-5 \\
+Rhode Island & no & 4496 & 2400 & 8.7e-6 \\
+New Hampshire & no & 4499 & 2400 & 1.2e-5 \\
+George Washington & no & 4497 & 2400 & 5.0e-6 \\
+Abraham Lincoln & no & 4413 & 2400 & 3.0e-6 \\
+John Adams & no & 4239 & 2400 & 1.1e-6 \\
+New York & no & 4500 & 2400 & 2.7e-4 \\
+New Jersey & no & 4498 & 2400 & 3.8e-5 \\
+John Quincy Adams & no & 1317 & 1117 & 2.6e-7 \\
+Massachusetts & yes & 4499 & 2400 & 3.2e-5 \\
+Vermont & yes & 4495 & 2400 & 1.4e-5 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\par\smallskip\begin{minipage}{\textwidth}\footnotesize Phrases 11--15 (New York, New Jersey, John Quincy Adams, Massachusetts, Vermont) were added for the benchmark as confusables; the first ten are Brennan's.\end{minipage}
+\end{table}

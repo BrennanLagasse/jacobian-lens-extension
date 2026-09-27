@@ -1,0 +1,26 @@
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{The twelve questions most affected by removing the lens direction at the penultimate token across all layers (accuracy over 8 samples).}
+\label{tab:rlens_examples}
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{p{7.2cm}lrrrrr}
+\toprule
+prompt (after ``Fact:'') & intermediate & base & R-lens & J-lens & logit & random \\
+\midrule
+The currency of the country famous for the Great Pyramids is & Egypt & 1.00 & 0.00 & 0.00 & 1.00 & 1.00 \\
+The largest city of the country whose capital is Canberra is & Australia & 1.00 & 0.00 & 0.00 & 0.88 & 1.00 \\
+The capital of the most populous country in South America is & Brazil & 0.62 & 0.00 & 0.00 & 0.62 & 1.00 \\
+The currency of the country whose capital is Ottawa is & Canada & 1.00 & 0.00 & 0.00 & 1.00 & 1.00 \\
+The capital of the country whose national dish is paella is & Spain & 0.88 & 0.00 & 0.25 & 0.75 & 0.88 \\
+The nationality of the painter of the Mona Lisa is & Leonardo & 0.62 & 0.25 & 0.12 & 0.62 & 0.50 \\
+The continent containing the country whose capital is Nairobi is & Kenya & 0.50 & 0.25 & 0.50 & 0.62 & 0.50 \\
+The capital of the country where the Blue Mosque of Istanbul is located is & Turkey & 0.50 & 0.25 & 0.50 & 0.62 & 0.62 \\
+The capital of the state whose largest city is Chicago is & Illinois & 1.00 & 0.25 & 0.62 & 1.00 & 1.00 \\
+The official language of the country whose capital is Beijing is & China & 1.00 & 0.62 & 0.25 & 1.00 & 1.00 \\
+The capital of the state where Disney World is located is & Florida & 0.62 & 0.50 & 0.62 & 0.88 & 0.75 \\
+The capital of the country where the Great Barrier Reef is located is & Australia & 0.62 & 0.50 & 0.88 & 0.75 & 1.00 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}

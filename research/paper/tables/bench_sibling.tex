@@ -1,0 +1,22 @@
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{The first-token confound. Heads fitted on Brennan's ten phrases only (never shown New York, New Jersey or John Quincy Adams), scored at those phrases' pre-phrase positions.}
+\label{tab:bench_sibling}
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{llrrrr}
+\toprule
+head & phrase & AUROC own vs 1st-tok.\ sibling & top-10 rate at sibling positions & AUROC own vs category & own top-10 \\
+\midrule
+Brennan (proj + unit) & New Hampshire & 0.589 & 0.974 & 0.548 & 0.99 \\
+ & John Adams & 0.483 & 0.980 & 0.580 & 0.99 \\
+LDA & New Hampshire & 0.818 & 0.244 & 0.729 & 0.73 \\
+ & John Adams & 0.451 & 0.765 & 0.576 & 0.63 \\
+LR with bias & New Hampshire & 0.849 & 0.021 & 0.805 & 0.39 \\
+ & John Adams & 0.568 & 0.031 & 0.702 & 0.16 \\
+LR, no bias & New Hampshire & 0.855 & 0.067 & 0.815 & 0.57 \\
+ & John Adams & 0.546 & 0.077 & 0.665 & 0.27 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}

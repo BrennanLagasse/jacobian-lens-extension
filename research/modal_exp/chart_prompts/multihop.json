@@ -1,0 +1,559 @@
+[
+{
+"prompt": "Fact: The currency used in the country shaped like a boot is",
+"readout": -2,
+"intermediate": [
+"Italy",
+"Italian"
+],
+"answer": [
+"euro",
+"lira"
+]
+},
+{
+"prompt": "Fact: The capital of the country where the Eiffel Tower stands is",
+"readout": -2,
+"intermediate": [
+"France",
+"French"
+],
+"answer": [
+"Paris"
+]
+},
+{
+"prompt": "Fact: The official language of the country whose capital is Madrid is",
+"readout": -2,
+"intermediate": [
+"Spain"
+],
+"answer": [
+"Spanish",
+"Castilian"
+]
+},
+{
+"prompt": "Fact: The currency of the country famous for the Great Pyramids is",
+"readout": -2,
+"intermediate": [
+"Egypt",
+"Egyptian"
+],
+"answer": [
+"pound"
+]
+},
+{
+"prompt": "Fact: The capital of the country that hosted the 2016 Summer Olympics is",
+"readout": -2,
+"intermediate": [
+"Brazil",
+"Rio"
+],
+"answer": [
+"Bras",
+"Brasilia",
+"Brasília"
+]
+},
+{
+"prompt": "Fact: The largest city in the state whose capital is Sacramento is",
+"readout": -2,
+"intermediate": [
+"California"
+],
+"answer": [
+"Los Angeles"
+]
+},
+{
+"prompt": "Fact: The capital of the country where Mount Fuji is located is",
+"readout": -2,
+"intermediate": [
+"Japan",
+"Japanese"
+],
+"answer": [
+"Tokyo"
+]
+},
+{
+"prompt": "Fact: The currency of the country where the Kremlin stands is",
+"readout": -2,
+"intermediate": [
+"Russia",
+"Russian",
+"Moscow"
+],
+"answer": [
+"ruble",
+"rouble"
+]
+},
+{
+"prompt": "Fact: The continent containing the country whose capital is Nairobi is",
+"readout": -2,
+"intermediate": [
+"Kenya"
+],
+"answer": [
+"Africa"
+]
+},
+{
+"prompt": "Fact: The capital of the country that has the Taj Mahal is",
+"readout": -2,
+"intermediate": [
+"India",
+"Indian"
+],
+"answer": [
+"Delhi"
+]
+},
+{
+"prompt": "Fact: The national language of the country whose capital is Berlin is",
+"readout": -2,
+"intermediate": [
+"Germany"
+],
+"answer": [
+"German"
+]
+},
+{
+"prompt": "Fact: The capital of the country where the Colosseum stands is",
+"readout": -2,
+"intermediate": [
+"Italy",
+"Italian"
+],
+"answer": [
+"Rome"
+]
+},
+{
+"prompt": "Fact: The currency of the country where Big Ben is located is",
+"readout": -2,
+"intermediate": [
+"Britain",
+"England",
+"UK",
+"United"
+],
+"answer": [
+"pound",
+"sterling"
+]
+},
+{
+"prompt": "Fact: The largest city of the country whose capital is Canberra is",
+"readout": -2,
+"intermediate": [
+"Australia"
+],
+"answer": [
+"Sydney"
+]
+},
+{
+"prompt": "Fact: The capital of the country that produces the most maple syrup is",
+"readout": -2,
+"intermediate": [
+"Canada",
+"Canadian"
+],
+"answer": [
+"Ottawa"
+]
+},
+{
+"prompt": "Fact: The capital of the country whose flag is a red circle on a white field is",
+"readout": -2,
+"intermediate": [
+"Japan",
+"Japanese"
+],
+"answer": [
+"Tokyo"
+]
+},
+{
+"prompt": "Fact: The currency of the country where the Acropolis stands is",
+"readout": -2,
+"intermediate": [
+"Greece",
+"Greek",
+"Athens"
+],
+"answer": [
+"euro",
+"drachma"
+]
+},
+{
+"prompt": "Fact: The capital of the country where Machu Picchu is located is",
+"readout": -2,
+"intermediate": [
+"Peru",
+"Peruvian"
+],
+"answer": [
+"Lima"
+]
+},
+{
+"prompt": "Fact: The capital of the country where the Sydney Opera House stands is",
+"readout": -2,
+"intermediate": [
+"Australia",
+"Australian"
+],
+"answer": [
+"Canberra"
+]
+},
+{
+"prompt": "Fact: The official language of the country whose capital is Lisbon is",
+"readout": -2,
+"intermediate": [
+"Portugal"
+],
+"answer": [
+"Portuguese"
+]
+},
+{
+"prompt": "Fact: The capital of the country where the Sphinx of Giza is located is",
+"readout": -2,
+"intermediate": [
+"Egypt",
+"Egyptian"
+],
+"answer": [
+"Cairo"
+]
+},
+{
+"prompt": "Fact: The currency of the country whose capital is Bern is",
+"readout": -2,
+"intermediate": [
+"Switzerland",
+"Swiss"
+],
+"answer": [
+"franc"
+]
+},
+{
+"prompt": "Fact: The largest city in the state that borders both New York and Ohio is",
+"readout": -2,
+"intermediate": [
+"Pennsylvania"
+],
+"answer": [
+"Philadelphia"
+]
+},
+{
+"prompt": "Fact: The capital of the state where Disney World is located is",
+"readout": -2,
+"intermediate": [
+"Florida"
+],
+"answer": [
+"Tallahassee"
+]
+},
+{
+"prompt": "Fact: The capital of the state where the Golden Gate Bridge is located is",
+"readout": -2,
+"intermediate": [
+"California"
+],
+"answer": [
+"Sacramento"
+]
+},
+{
+"prompt": "Fact: The capital of the state whose largest city is Chicago is",
+"readout": -2,
+"intermediate": [
+"Illinois"
+],
+"answer": [
+"Springfield"
+]
+},
+{
+"prompt": "Fact: The capital of the state where Mount Rushmore is located is",
+"readout": -2,
+"intermediate": [
+"South",
+"Dakota"
+],
+"answer": [
+"Pierre"
+]
+},
+{
+"prompt": "Fact: The capital of the country where the Brandenburg Gate stands is",
+"readout": -2,
+"intermediate": [
+"Germany",
+"German"
+],
+"answer": [
+"Berlin"
+]
+},
+{
+"prompt": "Fact: The nationality of the painter of the Mona Lisa is",
+"readout": -2,
+"intermediate": [
+"Leonardo",
+"Vinci"
+],
+"answer": [
+"Italian"
+]
+},
+{
+"prompt": "Fact: The home country of the author of Hamlet is",
+"readout": -2,
+"intermediate": [
+"Shakespeare"
+],
+"answer": [
+"England",
+"Britain",
+"United Kingdom",
+"English"
+]
+},
+{
+"prompt": "Fact: The currency of the country where the Louvre is located is",
+"readout": -2,
+"intermediate": [
+"France",
+"French",
+"Paris"
+],
+"answer": [
+"euro",
+"franc"
+]
+},
+{
+"prompt": "Fact: The capital of the most populous country in South America is",
+"readout": -2,
+"intermediate": [
+"Brazil"
+],
+"answer": [
+"Bras",
+"Brasilia",
+"Brasília"
+]
+},
+{
+"prompt": "Fact: The capital of the country where the Great Barrier Reef is located is",
+"readout": -2,
+"intermediate": [
+"Australia",
+"Australian"
+],
+"answer": [
+"Canberra"
+]
+},
+{
+"prompt": "Fact: The official language of the country where the Kremlin stands is",
+"readout": -2,
+"intermediate": [
+"Russia",
+"Russian",
+"Moscow"
+],
+"answer": [
+"Russian"
+]
+},
+{
+"prompt": "Fact: The capital of the country where Angkor Wat is located is",
+"readout": -2,
+"intermediate": [
+"Cambodia",
+"Cambodian"
+],
+"answer": [
+"Phnom"
+]
+},
+{
+"prompt": "Fact: The currency of the country where the Forbidden City is located is",
+"readout": -2,
+"intermediate": [
+"China",
+"Chinese",
+"Beijing"
+],
+"answer": [
+"yuan",
+"renminbi",
+"RMB"
+]
+},
+{
+"prompt": "Fact: The capital of the country where Petra is located is",
+"readout": -2,
+"intermediate": [
+"Jordan"
+],
+"answer": [
+"Amman"
+]
+},
+{
+"prompt": "Fact: The capital of the country where the Blue Mosque of Istanbul is located is",
+"readout": -2,
+"intermediate": [
+"Turkey",
+"Turkish"
+],
+"answer": [
+"Ankara"
+]
+},
+{
+"prompt": "Fact: The capital of the country whose national dish is paella is",
+"readout": -2,
+"intermediate": [
+"Spain",
+"Spanish"
+],
+"answer": [
+"Madrid"
+]
+},
+{
+"prompt": "Fact: The official language of the country whose capital is Beijing is",
+"readout": -2,
+"intermediate": [
+"China"
+],
+"answer": [
+"Chinese",
+"Mandarin"
+]
+},
+{
+"prompt": "Fact: The currency of the country whose capital is Ottawa is",
+"readout": -2,
+"intermediate": [
+"Canada",
+"Canadian"
+],
+"answer": [
+"dollar"
+]
+},
+{
+"prompt": "Fact: The largest city in the state whose capital is Austin is",
+"readout": -2,
+"intermediate": [
+"Texas"
+],
+"answer": [
+"Houston"
+]
+},
+{
+"prompt": "Fact: The capital of the state whose largest city is Seattle is",
+"readout": -2,
+"intermediate": [
+"Washington"
+],
+"answer": [
+"Olympia"
+]
+},
+{
+"prompt": "Fact: The capital of the state where the Grand Canyon is located is",
+"readout": -2,
+"intermediate": [
+"Arizona"
+],
+"answer": [
+"Phoenix"
+]
+},
+{
+"prompt": "Fact: The capital of the state where Las Vegas is located is",
+"readout": -2,
+"intermediate": [
+"Nevada"
+],
+"answer": [
+"Carson"
+]
+},
+{
+"prompt": "Fact: The capital of the country where Chernobyl is located is",
+"readout": -2,
+"intermediate": [
+"Ukraine",
+"Ukrainian"
+],
+"answer": [
+"Kyiv",
+"Kiev"
+]
+},
+{
+"prompt": "Fact: The currency of the country where the Taj Mahal is located is",
+"readout": -2,
+"intermediate": [
+"India",
+"Indian"
+],
+"answer": [
+"rupee"
+]
+},
+{
+"prompt": "Fact: The capital of the country where the Parthenon stands is",
+"readout": -2,
+"intermediate": [
+"Greece",
+"Greek"
+],
+"answer": [
+"Athens"
+]
+},
+{
+"prompt": "Fact: The capital of the country where the Alhambra is located is",
+"readout": -2,
+"intermediate": [
+"Spain",
+"Spanish"
+],
+"answer": [
+"Madrid"
+]
+},
+{
+"prompt": "Fact: The capital of the country where Stonehenge is located is",
+"readout": -2,
+"intermediate": [
+"England",
+"Britain",
+"United"
+],
+"answer": [
+"London"
+]
+}
+]

@@ -1,0 +1,18 @@
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{Separate fits (one axis per softmax) $\to$ one joint fit of all 136 rows, per axis. Joint-head row redundancy: mean pairwise cosine 0.065, participation ratio 84 of 136.}
+\label{tab:gen_joint}
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{lrrrrrr}
+\toprule
+axis & phrases & AUROC vs generic & TPR@$10^{-3}$ & AUROC vs siblings & mass/prior & earliest layer (mean) \\
+\midrule
+compositional nouns & 45 & 0.988 $\to$ 0.983 & 0.75 $\to$ 0.74 & 0.899 $\to$ 0.885 & 2.9 $\to$ 1.7 & 19 $\to$ 17 \\
+verb phrases / idioms & 43 & 0.983 $\to$ 0.980 & 0.58 $\to$ 0.55 & 0.876 $\to$ 0.872 & 1.9 $\to$ 1.5 & 24 $\to$ 27 \\
+abstract concepts & 20 & 0.980 $\to$ 0.975 & 0.62 $\to$ 0.61 & 0.918 $\to$ 0.914 & 3.0 $\to$ 1.6 & 30 $\to$ 25 \\
+events, dates, years & 28 & 0.992 $\to$ 0.986 & 0.87 $\to$ 0.84 & 0.886 $\to$ 0.861 & 1.6 $\to$ 1.0 & 13 $\to$ 11 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}

@@ -1,0 +1,18 @@
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{Paired difference in accuracy after ablation, J-lens minus R-lens (positive: the R-lens direction removes more). Bootstrap over questions.}
+\label{tab:rlens_paired}
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{llrr}
+\toprule
+layers & positions & mean & 95\% CI \\
+\midrule
+0--15 & $-2$ & -0.006 & [-0.038, +0.023] \\
+0--15 & $-2,-1$ & -0.026 & [-0.076, +0.020] \\
+all & $-2$ & +0.020 & [-0.017, +0.058] \\
+all & $-2,-1$ & -0.049 & [-0.090, -0.009] \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}

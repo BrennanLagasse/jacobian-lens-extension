@@ -1,0 +1,20 @@
+\begin{table}[t]
+\centering
+\small
+\caption{Generalisation study: the bias-free logistic row per axis, means over phrases on held-out data. TPR at FPR $10^{-4}$ / $10^{-3}$ / $10^{-2}$ against generic text; sibling = first-token or category sibling for the English axes and, for the cross-lingual axis, the other eleven concepts in the same language. Earliest layer = median over phrases of the first R-lens layer at which TPR at FPR $10^{-2}$ reaches 0.5 (the full distribution is Table~\ref{tab:gen_earliest}).}
+\label{tab:gen_headline}
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{lrrrrrrrrr}
+\toprule
+axis & $n$ & AUROC & TPR@$10^{-4}$ & @$10^{-3}$ & @$10^{-2}$ & AUROC vs sib. & TPR@$10^{-2}$ vs sib. & mass/prior & earliest layer \\
+\midrule
+compositional nouns & 45 & 0.988 & 0.53 & 0.75 & 0.89 & 0.899 & 0.53 & 2.9 & 20 \\
+verb phrases / idioms & 43 & 0.983 & 0.35 & 0.58 & 0.82 & 0.876 & 0.43 & 1.9 & 20 \\
+abstract concepts & 20 & 0.980 & 0.41 & 0.62 & 0.81 & 0.918 & 0.53 & 3.0 & 24 \\
+events, dates, years & 28 & 0.992 & 0.71 & 0.87 & 0.94 & 0.886 & 0.58 & 1.6 & 8 \\
+cross-lingual & 48 & 0.996 & 0.74 & 0.88 & 0.96 & 0.982 & 0.83 & 0.9 & 24 \\
+joint, 136 rows in one softmax & 136 & 0.981 & 0.48 & 0.68 & 0.84 & 0.880 & 0.50 & 1.5 & 20 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}

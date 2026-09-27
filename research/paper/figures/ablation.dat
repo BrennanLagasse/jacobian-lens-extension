@@ -1,0 +1,9 @@
+idx label layers loss lo hi
+0 R-lens~(0--15) first_half 0.1058 0.0065 0.2166
+1 J-lens~(0--15) first_half 0.1122 0.0132 0.2200
+2 logit~lens~(0--15) first_half -0.0192 -0.0631 0.0187
+3 random~(0--15) first_half -0.0128 -0.0556 0.0245
+4 R-lens~(all) all 0.1635 0.0621 0.2756
+5 J-lens~(all) all 0.1410 0.0432 0.2484
+6 logit~lens~(all) all -0.0032 -0.0362 0.0287
+7 random~(all) all -0.0353 -0.0816 0.0031

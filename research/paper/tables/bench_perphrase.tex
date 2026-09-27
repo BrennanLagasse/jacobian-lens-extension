@@ -1,0 +1,29 @@
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{Benchmark, bias-free logistic head at 2{,}400 contexts, per phrase. Earliest layer: median over the phrase's held-out contexts of the first layer at which the phrase token is in the J-lens top-10 (99 = never in more than half of them).}
+\label{tab:bench_perphrase}
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{lrrrrrrrr}
+\toprule
+phrase & AUROC vs generic & vs 1st-tok.\ sibling & own rank & 1st-token rank & own top-10 & mass/prior & earliest top-10 layer & never \\
+\midrule
+blackmail & 0.976 & --- & 79 & 77 & 0.33 & 0.8 & 99 & 0.69 \\
+plagiarism & 0.980 & --- & 8 & 4 & 0.53 & 0.3 & 24 & 0.32 \\
+cheating & 0.977 & --- & 14 & 37 & 0.46 & 1.9 & 20 & 0.35 \\
+forgery & 0.986 & --- & 19 & 12 & 0.41 & 0.8 & 99 & 0.67 \\
+Connecticut & 0.984 & --- & 11 & 13 & 0.49 & 1.8 & 20 & 0.21 \\
+Rhode Island & 0.983 & --- & 11 & 8 & 0.50 & 0.4 & 28 & 0.45 \\
+New Hampshire & 0.991 & 0.855 & 8 & 4 & 0.54 & 0.5 & 24 & 0.34 \\
+George Washington & 0.976 & --- & 19 & 11 & 0.44 & 0.9 & 99 & 0.54 \\
+Abraham Lincoln & 0.975 & --- & 18 & 16 & 0.44 & 1.6 & 26 & 0.42 \\
+John Adams & 0.985 & 0.540 & 148 & 8 & 0.25 & 0.2 & 99 & 0.76 \\
+New York & 0.975 & 0.733 & 5 & 4 & 0.56 & 1.8 & 4 & 0.00 \\
+New Jersey & 0.983 & 0.817 & 5 & 4 & 0.60 & 2.0 & 12 & 0.07 \\
+John Quincy Adams & 0.982 & 0.708 & 214 & 4 & 0.16 & 0.1 & 99 & 0.81 \\
+Massachusetts & 0.988 & --- & 4 & 5 & 0.63 & 1.3 & 20 & 0.10 \\
+Vermont & 0.979 & --- & 15 & 24 & 0.46 & 1.0 & 20 & 0.27 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}

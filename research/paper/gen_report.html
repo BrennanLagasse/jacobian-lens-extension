@@ -1,0 +1,175 @@
+<title>Phrase Rows Beyond Proper Nouns</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+  :root { --paper: #f7f6f1; --ink: #1c2028; --muted: #676d78; --rule: #d8d5cc; --soft: #ebe9e2; --good: #0f766e; --good-bg: #e2f1ee; --bad: #b45309; --warn: #a16207; --blue: #1d4ed8;
+    --serif: "Fraunces", "Iowan Old Style", Georgia, serif; --sans: "Source Sans 3", "Helvetica Neue", Arial, sans-serif; --mono: "JetBrains Mono", "SFMono-Regular", Menlo, Consolas, monospace; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --paper: #15171c; --ink: #e8e6df; --muted: #9aa0ab; --rule: #33373f; --soft: #1f2228; --good: #5fd1c3; --good-bg: #123a36; --bad: #f2a45a; --warn: #e0b04a; --blue: #8ab4ff; } }
+  :root[data-theme="dark"] { --paper: #15171c; --ink: #e8e6df; --muted: #9aa0ab; --rule: #33373f; --soft: #1f2228; --good: #5fd1c3; --good-bg: #123a36; --bad: #f2a45a; --warn: #e0b04a; --blue: #8ab4ff; }
+  body { background: var(--paper); color: var(--ink); font-family: var(--sans); font-size: 16.5px; line-height: 1.5; padding-inline: 16px; padding-block: 0; }
+  main { max-width: 80ch; margin: 0 auto; padding-block: 40px 64px; }
+  h1 { font-family: var(--serif); font-weight: 500; font-size: 2.2rem; line-height: 1.1; margin: 0 0 8px; text-wrap: balance; }
+  h2 { font-family: var(--serif); font-weight: 600; font-size: 1.45rem; margin: 44px 0 10px; text-wrap: balance; }
+  .kicker { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
+  .lede { font-size: 1.1rem; max-width: 68ch; } p { max-width: 68ch; margin: 0 0 12px; }
+  .verdict { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin: 22px 0 8px; }
+  .verdict div { border-top: 3px solid var(--rule); padding-top: 8px; } .verdict .good { border-color: var(--good); } .verdict .bad { border-color: var(--bad); } .verdict .warn { border-color: var(--warn); }
+  .verdict b { display: block; font-family: var(--serif); font-size: 1.05rem; font-weight: 600; margin-bottom: 2px; } .verdict span { font-size: 0.93rem; color: var(--muted); }
+  .tbl { overflow-x: auto; margin: 8px 0 18px; } table { border-collapse: collapse; font-size: 0.84rem; font-variant-numeric: tabular-nums; }
+  th, td { padding: 5px 9px; text-align: left; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  th { font-weight: 600; font-size: 0.72rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+  td.num, th.num { font-family: var(--mono); font-size: 0.78rem; text-align: right; white-space: nowrap; }
+  .cap { font-size: 0.88rem; color: var(--muted); max-width: 70ch; margin: 18px 0 4px; } .cap b { color: var(--ink); }
+  svg { width: 100%; max-width: 100%; height: auto; display: block; } .ax { font-family: var(--mono); font-size: 11px; fill: var(--muted); }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 0.8rem; margin: 6px 0 4px; } .lg i { display: inline-block; width: 22px; margin-right: 6px; vertical-align: middle; }
+  code { font-family: var(--mono); font-size: 0.84em; background: var(--soft); padding: 0 4px; } ul { max-width: 68ch; padding-left: 20px; } li { margin-bottom: 6px; }
+  .foot { margin-top: 40px; border-top: 1px solid var(--rule); padding-top: 12px; font-size: 0.86rem; color: var(--muted); }
+</style>
+<main>
+<div class="kicker">Generalisation study · 5 axes · 184 phrases · Qwen3.5-9B-Base · 2026-09-14 · companion to main.pdf §8</div>
+<h1>Phrase rows beyond proper nouns: how far the readout reaches</h1>
+<p class="lede">Compositional nouns, verb phrases and idioms, abstract concepts, named events and dates, and the same concepts in four languages, each with sibling groups, scored with TPR at fixed false-positive rates and with per-layer detection thresholds, so “when does it pop up” is measured at a controlled FPR rather than by top-10 counts.</p>
+
+<div class="verdict">
+  <div class="good"><b>Direction</b><span>AUROC 0.98–0.99 on every axis · at FPR 1e-3 the rows recover 58% (verbs) to 87% (events) of upcoming phrases</span></div>
+  <div class="good"><b>Siblings</b><span>AUROC 0.88–0.92 · failures are near-synonyms and numerals (hard drive/disk, 1984/1989); successes are different worlds (machine learning/gun)</span></div>
+  <div class="warn"><b>When it pops up</b><span>events at layer 8 (median), nouns and verbs at 20, abstract concepts at 24 · the row leads the model's own first-token prediction at every layer</span></div>
+  <div><b>Joint fit</b><span>136 rows in one softmax: −0.005 AUROC, −0.01 to −0.03 TPR@1e-3, better calibration (mass/prior 1.0–1.7)</span></div>
+  <div class="good"><b>Cross-lingual</b><span>row directions transfer: English rows score 0.90 / 0.91 / 0.87 AUROC in Spanish / French / Chinese against language-matched negatives (0.98 at home); Spanish↔French 0.94</span></div>
+</div>
+
+<h2>Headline per axis</h2>
+<p class="cap"><b>Generalisation study: the bias-free logistic row per axis, means over phrases on held-out data. TPR at FPR 10^{-4} / 10^{-3} / 10^{-2} against generic text; sibling = first-token or category sibling for the English axes and, for the cross-lingual axis, the other eleven concepts in the same language. Earliest layer = median over phrases of the first R-lens layer at which TPR at FPR 10^{-2} reaches 0.5 (the full distribution is Table~\ref{tab:gen_earliest}).</b> </p><div class="tbl"><table><thead><tr><th class="">axis</th><th class="">n</th><th class="">AUROC</th><th class="num">TPR@10e-4</th><th class="num">@10e-3</th><th class="num">@10e-2</th><th class="">AUROC vs sib.</th><th class="num">TPR@10e-2 vs sib.</th><th class="">mass/prior</th><th class="">earliest layer</th></tr></thead><tbody>
+<tr><td class="">compositional nouns</td><td class="num">45</td><td class="num">0.988</td><td class="num">0.53</td><td class="num">0.75</td><td class="num">0.89</td><td class="num">0.899</td><td class="num">0.53</td><td class="num">2.9</td><td class="num">20</td></tr>
+<tr><td class="">verb phrases / idioms</td><td class="num">43</td><td class="num">0.983</td><td class="num">0.35</td><td class="num">0.58</td><td class="num">0.82</td><td class="num">0.876</td><td class="num">0.43</td><td class="num">1.9</td><td class="num">20</td></tr>
+<tr><td class="">abstract concepts</td><td class="num">20</td><td class="num">0.980</td><td class="num">0.41</td><td class="num">0.62</td><td class="num">0.81</td><td class="num">0.918</td><td class="num">0.53</td><td class="num">3.0</td><td class="num">24</td></tr>
+<tr><td class="">events, dates, years</td><td class="num">28</td><td class="num">0.992</td><td class="num">0.71</td><td class="num">0.87</td><td class="num">0.94</td><td class="num">0.886</td><td class="num">0.58</td><td class="num">1.6</td><td class="num">8</td></tr>
+<tr><td class="">cross-lingual</td><td class="num">48</td><td class="num">0.996</td><td class="num">0.74</td><td class="num">0.88</td><td class="num">0.96</td><td class="num">0.982</td><td class="num">0.83</td><td class="num">0.9</td><td class="num">24</td></tr>
+<tr><td class="">joint, 136 rows in one softmax</td><td class="num">136</td><td class="num">0.981</td><td class="num">0.48</td><td class="num">0.68</td><td class="num">0.84</td><td class="num">0.880</td><td class="num">0.50</td><td class="num">1.5</td><td class="num">20</td></tr>
+</tbody></table></div>
+
+<h2>When the phrase pops up</h2>
+<p>TPR of the bias-free row at a 1% false-positive rate by R-lens layer, with the threshold at each layer taken from generic text transported through the same lens. The dashed and dotted lines are the rate at which the phrase's real first token is in the lens top-10 at the same positions: the phrase row reads “this phrase is coming” well before the model has settled on its first token.</p>
+<div class="legend"><span class="lg"><i style="border-top:2px solid var(--good)"></i>nouns</span><span class="lg"><i style="border-top:2px solid var(--blue)"></i>verb phrases</span><span class="lg"><i style="border-top:2px solid var(--warn)"></i>abstract concepts</span><span class="lg"><i style="border-top:2px solid var(--bad)"></i>events, dates, years</span><span class="lg"><i style="border-top:2px dashed var(--ink)"></i>real first token in top-10 (nouns)</span><span class="lg"><i style="border-top:2px dashed var(--ink)"></i>real first token in top-10 (events)</span></div><svg viewBox="0 0 680 300" role="img" aria-label="TPR at FPR 1e-2, R-lens">
+<line x1="46" y1="260.0" x2="664" y2="260.0" stroke="var(--rule)"/><text x="40" y="264.0" text-anchor="end" class="ax">0.00</text>
+<line x1="46" y1="198.5" x2="664" y2="198.5" stroke="var(--rule)"/><text x="40" y="202.5" text-anchor="end" class="ax">0.25</text>
+<line x1="46" y1="137.0" x2="664" y2="137.0" stroke="var(--rule)"/><text x="40" y="141.0" text-anchor="end" class="ax">0.50</text>
+<line x1="46" y1="75.5" x2="664" y2="75.5" stroke="var(--rule)"/><text x="40" y="79.5" text-anchor="end" class="ax">0.75</text>
+<line x1="46" y1="14.0" x2="664" y2="14.0" stroke="var(--rule)"/><text x="40" y="18.0" text-anchor="end" class="ax">1.00</text>
+<text x="46.0" y="276" text-anchor="middle" class="ax">L8</text>
+<text x="169.6" y="276" text-anchor="middle" class="ax">L12</text>
+<text x="293.2" y="276" text-anchor="middle" class="ax">L16</text>
+<text x="416.8" y="276" text-anchor="middle" class="ax">L20</text>
+<text x="540.4" y="276" text-anchor="middle" class="ax">L24</text>
+<text x="664.0" y="276" text-anchor="middle" class="ax">L28</text>
+<text x="355" y="294" text-anchor="middle" class="ax">layer</text>
+<polyline points="46.0,191.3 169.6,172.7 293.2,171.9 416.8,121.8 540.4,70.5 664.0,54.0" fill="none" stroke="var(--good)" stroke-width="2" stroke-dasharray=""/>
+<polyline points="46.0,208.8 169.6,192.7 293.2,172.8 416.8,126.6 540.4,81.4 664.0,73.0" fill="none" stroke="var(--blue)" stroke-width="2" stroke-dasharray=""/>
+<polyline points="46.0,225.3 169.6,211.9 293.2,207.6 416.8,164.4 540.4,106.3 664.0,85.9" fill="none" stroke="var(--warn)" stroke-width="2" stroke-dasharray=""/>
+<polyline points="46.0,134.3 169.6,124.0 293.2,121.2 416.8,76.4 540.4,42.0 664.0,34.6" fill="none" stroke="var(--bad)" stroke-width="2" stroke-dasharray=""/>
+<polyline points="46.0,250.4 169.6,246.4 293.2,245.9 416.8,225.0 540.4,181.5 664.0,113.4" fill="none" stroke="var(--ink)" stroke-width="2" stroke-dasharray="4 3"/>
+<polyline points="46.0,230.1 169.6,239.4 293.2,240.9 416.8,229.6 540.4,195.4 664.0,114.2" fill="none" stroke="var(--ink)" stroke-width="2" stroke-dasharray="1 3"/>
+</svg>
+<p class="cap"><b>When the phrase pops up: TPR at FPR 10^{-2} of the phrase row by lens layer (thresholds from generic lens states of the same lens and layer), next to the rate at which the phrase's real first token is in the R-lens top-10 at the same positions.</b> </p><div class="tbl"><table><thead><tr><th class="">axis</th><th class="">readout</th><th class="num">L8</th><th class="num">L12</th><th class="num">L16</th><th class="num">L20</th><th class="num">L24</th><th class="num">L28</th></tr></thead><tbody>
+<tr><td class="">compositional nouns</td><td class="">phrase row, R-lens</td><td class="num">0.28</td><td class="num">0.35</td><td class="num">0.36</td><td class="num">0.56</td><td class="num">0.77</td><td class="num">0.84</td></tr>
+<tr><td class=""></td><td class="">phrase row, J-lens</td><td class="num">0.23</td><td class="num">0.31</td><td class="num">0.28</td><td class="num">0.54</td><td class="num">0.79</td><td class="num">0.84</td></tr>
+<tr><td class=""></td><td class="">real first token in top-10, R-lens</td><td class="num">0.04</td><td class="num">0.06</td><td class="num">0.06</td><td class="num">0.14</td><td class="num">0.32</td><td class="num">0.60</td></tr>
+<tr><td class="">verb phrases / idioms</td><td class="">phrase row, R-lens</td><td class="num">0.21</td><td class="num">0.27</td><td class="num">0.35</td><td class="num">0.54</td><td class="num">0.73</td><td class="num">0.76</td></tr>
+<tr><td class=""></td><td class="">phrase row, J-lens</td><td class="num">0.21</td><td class="num">0.28</td><td class="num">0.35</td><td class="num">0.55</td><td class="num">0.73</td><td class="num">0.76</td></tr>
+<tr><td class=""></td><td class="">real first token in top-10, R-lens</td><td class="num">0.11</td><td class="num">0.08</td><td class="num">0.09</td><td class="num">0.09</td><td class="num">0.10</td><td class="num">0.33</td></tr>
+<tr><td class="">abstract concepts</td><td class="">phrase row, R-lens</td><td class="num">0.14</td><td class="num">0.20</td><td class="num">0.21</td><td class="num">0.39</td><td class="num">0.62</td><td class="num">0.71</td></tr>
+<tr><td class=""></td><td class="">phrase row, J-lens</td><td class="num">0.11</td><td class="num">0.19</td><td class="num">0.21</td><td class="num">0.41</td><td class="num">0.66</td><td class="num">0.72</td></tr>
+<tr><td class=""></td><td class="">real first token in top-10, R-lens</td><td class="num">0.02</td><td class="num">0.05</td><td class="num">0.06</td><td class="num">0.20</td><td class="num">0.39</td><td class="num">0.45</td></tr>
+<tr><td class="">events, dates, years</td><td class="">phrase row, R-lens</td><td class="num">0.51</td><td class="num">0.55</td><td class="num">0.56</td><td class="num">0.75</td><td class="num">0.89</td><td class="num">0.92</td></tr>
+<tr><td class=""></td><td class="">phrase row, J-lens</td><td class="num">0.45</td><td class="num">0.51</td><td class="num">0.50</td><td class="num">0.72</td><td class="num">0.88</td><td class="num">0.92</td></tr>
+<tr><td class=""></td><td class="">real first token in top-10, R-lens</td><td class="num">0.12</td><td class="num">0.08</td><td class="num">0.08</td><td class="num">0.12</td><td class="num">0.26</td><td class="num">0.59</td></tr>
+<tr><td class="">cross-lingual</td><td class="">phrase row, R-lens</td><td class="num">0.11</td><td class="num">0.14</td><td class="num">0.12</td><td class="num">0.28</td><td class="num">0.62</td><td class="num">0.83</td></tr>
+<tr><td class=""></td><td class="">phrase row, J-lens</td><td class="num">0.07</td><td class="num">0.10</td><td class="num">0.08</td><td class="num">0.23</td><td class="num">0.61</td><td class="num">0.82</td></tr>
+<tr><td class=""></td><td class="">real first token in top-10, R-lens</td><td class="num">0.01</td><td class="num">0.02</td><td class="num">0.02</td><td class="num">0.06</td><td class="num">0.19</td><td class="num">0.51</td></tr>
+</tbody></table></div>
+<p class="cap"><b>Distribution over phrases of the earliest R-lens layer at which TPR at FPR 10^{-2} reaches 0.5 (99 = not by layer 28).</b> </p><div class="tbl"><table><thead><tr><th class="">axis</th><th class="num">L8</th><th class="num">L12</th><th class="num">L16</th><th class="num">L20</th><th class="num">L24</th><th class="num">L28</th><th class="">never</th></tr></thead><tbody>
+<tr><td class="">compositional nouns</td><td class="num">7</td><td class="num">3</td><td class="num">3</td><td class="num">15</td><td class="num">14</td><td class="num">3</td><td class="num">0</td></tr>
+<tr><td class="">verb phrases / idioms</td><td class="num">1</td><td class="num">4</td><td class="num">1</td><td class="num">20</td><td class="num">14</td><td class="num">1</td><td class="num">2</td></tr>
+<tr><td class="">abstract concepts</td><td class="num">1</td><td class="num">1</td><td class="num">0</td><td class="num">2</td><td class="num">10</td><td class="num">4</td><td class="num">2</td></tr>
+<tr><td class="">events, dates, years</td><td class="num">15</td><td class="num">3</td><td class="num">3</td><td class="num">4</td><td class="num">3</td><td class="num">0</td><td class="num">0</td></tr>
+<tr><td class="">cross-lingual</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td class="num">7</td><td class="num">25</td><td class="num">12</td><td class="num">1</td></tr>
+</tbody></table></div>
+
+<h2>Sibling separation</h2>
+<p>Every phrase was fitted with its first-token (or category) siblings present. Separation tracks semantic distance between the siblings, not syntax: the pairs that fail are the ones a reader could not tell apart at that position either.</p>
+<p class="cap"><b>Sibling separation, the eight hardest and the eight easiest phrases across the English axes (AUROC and TPR at FPR 10^{-2} of the phrase logit at its own pre-phrase positions against its siblings' pre-phrase positions).</b> </p><div class="tbl"><table><thead><tr><th class="">phrase</th><th class="">siblings</th><th class="">axis</th><th class="">AUROC</th><th class="num">TPR@10e-2</th></tr></thead><tbody>
+<tr><td class="num">1984</td><td class="num">1989</td><td class="">events, dates, years</td><td class="num">0.576</td><td class="num">0.02</td></tr>
+<tr><td class="num">1989</td><td class="num">1984</td><td class="">events, dates, years</td><td class="num">0.627</td><td class="num">0.02</td></tr>
+<tr><td class="">health care</td><td class="">health insurance</td><td class="">compositional nouns</td><td class="num">0.685</td><td class="num">0.07</td></tr>
+<tr><td class="">stock market</td><td class="">stock price, stock exchange</td><td class="">compositional nouns</td><td class="num">0.732</td><td class="num">0.09</td></tr>
+<tr><td class="num">July 20, 1969</td><td class="num">July 4, 1776</td><td class="">events, dates, years</td><td class="num">0.738</td><td class="num">0.51</td></tr>
+<tr><td class="">climate change</td><td class="">climate crisis</td><td class="">compositional nouns</td><td class="num">0.751</td><td class="num">0.26</td></tr>
+<tr><td class="">hard disk</td><td class="">hard drive, hard work</td><td class="">compositional nouns</td><td class="num">0.763</td><td class="num">0.05</td></tr>
+<tr><td class="">at least</td><td class="">at the end of the day, at the same time</td><td class="">verb phrases / idioms</td><td class="num">0.773</td><td class="num">0.23</td></tr>
+<tr><td class="">take place</td><td class="">take into account, take advantage, take care</td><td class="">verb phrases / idioms</td><td class="num">0.976</td><td class="num">0.83</td></tr>
+<tr><td class="">photosynthesis</td><td class="">evolution, gravity, entropy, recursion</td><td class="">abstract concepts</td><td class="num">0.977</td><td class="num">0.84</td></tr>
+<tr><td class="">middle east</td><td class="">middle class, middle school</td><td class="">compositional nouns</td><td class="num">0.979</td><td class="num">0.83</td></tr>
+<tr><td class="">civil engineering</td><td class="">civil war, civil rights</td><td class="">compositional nouns</td><td class="num">0.981</td><td class="num">0.73</td></tr>
+<tr><td class="">machine learning</td><td class="">machine gun</td><td class="">compositional nouns</td><td class="num">0.981</td><td class="num">0.92</td></tr>
+<tr><td class="">high court</td><td class="">high school, high speed</td><td class="">compositional nouns</td><td class="num">0.984</td><td class="num">0.90</td></tr>
+<tr><td class="">inflation</td><td class="">bankruptcy, negotiation, democracy</td><td class="">abstract concepts</td><td class="num">0.985</td><td class="num">0.80</td></tr>
+<tr><td class="">black pepper</td><td class="">black hole, black market</td><td class="">compositional nouns</td><td class="num">0.994</td><td class="num">0.93</td></tr>
+</tbody></table></div>
+
+<h2>Row vs presence probe: the position profile</h2>
+<p>The row (solid) fires at the token before the phrase and switches off inside it; the presence probe (dashed), trained on the pre-phrase and inside positions, covers the phrase and lingers after it, longer for abstract concepts than for idioms.</p>
+<div class="legend"><span class="lg"><i style="border-top:2px solid var(--good)"></i>nouns, row</span><span class="lg"><i style="border-top:2px dashed var(--good)"></i>nouns, presence probe</span><span class="lg"><i style="border-top:2px solid var(--blue)"></i>verb phrases, row</span><span class="lg"><i style="border-top:2px dashed var(--blue)"></i>verb phrases, probe</span><span class="lg"><i style="border-top:2px solid var(--warn)"></i>abstract, row</span><span class="lg"><i style="border-top:2px dashed var(--warn)"></i>abstract, probe</span></div><svg viewBox="0 0 680 300" role="img" aria-label="TPR at the generic FPR 1e-2 threshold">
+<line x1="46" y1="260.0" x2="664" y2="260.0" stroke="var(--rule)"/><text x="40" y="264.0" text-anchor="end" class="ax">0.00</text>
+<line x1="46" y1="198.5" x2="664" y2="198.5" stroke="var(--rule)"/><text x="40" y="202.5" text-anchor="end" class="ax">0.25</text>
+<line x1="46" y1="137.0" x2="664" y2="137.0" stroke="var(--rule)"/><text x="40" y="141.0" text-anchor="end" class="ax">0.50</text>
+<line x1="46" y1="75.5" x2="664" y2="75.5" stroke="var(--rule)"/><text x="40" y="79.5" text-anchor="end" class="ax">0.75</text>
+<line x1="46" y1="14.0" x2="664" y2="14.0" stroke="var(--rule)"/><text x="40" y="18.0" text-anchor="end" class="ax">1.00</text>
+<text x="46.0" y="276" text-anchor="middle" class="ax">-1</text>
+<text x="169.6" y="276" text-anchor="middle" class="ax">+0</text>
+<text x="293.2" y="276" text-anchor="middle" class="ax">+1</text>
+<text x="416.8" y="276" text-anchor="middle" class="ax">+2</text>
+<text x="540.4" y="276" text-anchor="middle" class="ax">+3</text>
+<text x="664.0" y="276" text-anchor="middle" class="ax">+4</text>
+<text x="355" y="294" text-anchor="middle" class="ax">position relative to the phrase (0 = token before, 1.. = inside)</text>
+<polyline points="46.0,103.2 169.6,40.5 293.2,127.0 416.8,162.6 540.4,157.6" fill="none" stroke="var(--good)" stroke-width="2" stroke-dasharray=""/>
+<polyline points="46.0,113.8 169.6,67.1 293.2,21.2 416.8,34.8 540.4,126.3" fill="none" stroke="var(--good)" stroke-width="2" stroke-dasharray="4 3"/>
+<polyline points="46.0,176.4 169.6,59.5 293.2,192.9 416.8,212.8 540.4,230.4 664.0,225.9" fill="none" stroke="var(--blue)" stroke-width="2" stroke-dasharray=""/>
+<polyline points="46.0,219.5 169.6,146.5 293.2,39.9 416.8,50.5 540.4,121.7 664.0,173.3" fill="none" stroke="var(--blue)" stroke-width="2" stroke-dasharray="4 3"/>
+<polyline points="46.0,135.5 169.6,60.2 293.2,199.1 416.8,172.1 540.4,165.0 664.0,145.3" fill="none" stroke="var(--warn)" stroke-width="2" stroke-dasharray=""/>
+<polyline points="46.0,147.8 169.6,98.3 293.2,28.6 416.8,110.6 540.4,124.4 664.0,133.0" fill="none" stroke="var(--warn)" stroke-width="2" stroke-dasharray="4 3"/>
+</svg>
+
+<h2>One softmax for everything</h2>
+<p class="cap"><b>Separate fits (one axis per softmax) \to one joint fit of all 136 rows, per axis. Joint-head row redundancy: mean pairwise cosine 0.065, participation ratio 84 of 136.</b> </p><div class="tbl"><table><thead><tr><th class="">axis</th><th class="">phrases</th><th class="">AUROC vs generic</th><th class="num">TPR@10e-3</th><th class="">AUROC vs siblings</th><th class="">mass/prior</th><th class="">earliest layer (mean)</th></tr></thead><tbody>
+<tr><td class="">compositional nouns</td><td class="num">45</td><td class="num">0.988 \to 0.983</td><td class="num">0.75 \to 0.74</td><td class="num">0.899 \to 0.885</td><td class="num">2.9 \to 1.7</td><td class="num">19 \to 17</td></tr>
+<tr><td class="">verb phrases / idioms</td><td class="num">43</td><td class="num">0.983 \to 0.980</td><td class="num">0.58 \to 0.55</td><td class="num">0.876 \to 0.872</td><td class="num">1.9 \to 1.5</td><td class="num">24 \to 27</td></tr>
+<tr><td class="">abstract concepts</td><td class="num">20</td><td class="num">0.980 \to 0.975</td><td class="num">0.62 \to 0.61</td><td class="num">0.918 \to 0.914</td><td class="num">3.0 \to 1.6</td><td class="num">30 \to 25</td></tr>
+<tr><td class="">events, dates, years</td><td class="num">28</td><td class="num">0.992 \to 0.986</td><td class="num">0.87 \to 0.84</td><td class="num">0.886 \to 0.861</td><td class="num">1.6 \to 1.0</td><td class="num">13 \to 11</td></tr>
+</tbody></table></div>
+
+<h2>Cross-lingual transfer</h2>
+<p>Twelve concepts in English, Spanish, French and Chinese, each language mined from its own corpus. A row fitted on one language is scored at another language's positions of the same concept against that language's positions of the other eleven concepts, so language identity cannot carry the score. Mean AUROC over concepts:</p>
+<div class="tbl"><table><thead><tr><th>row fitted on</th><th class="num">scored in English</th><th class="num">scored in Spanish</th><th class="num">scored in French</th><th class="num">scored in Chinese</th></tr></thead><tbody><tr><td>English row</td><td class="num">—</td><td class="num">0.90</td><td class="num">0.91</td><td class="num">0.87</td></tr><tr><td>Spanish row</td><td class="num">0.88</td><td class="num">—</td><td class="num">0.94</td><td class="num">0.82</td></tr><tr><td>French row</td><td class="num">0.89</td><td class="num">0.94</td><td class="num">—</td><td class="num">0.83</td></tr><tr><td>Chinese row</td><td class="num">0.87</td><td class="num">0.84</td><td class="num">0.84</td><td class="num">—</td></tr></tbody></table></div>
+<p class="cap"><b>Cross-lingual transfer per concept, language-matched AUROC: the English row scored in Spanish / French / Chinese, and each language's row scored in English.</b> </p><div class="tbl"><table><thead><tr><th class="">concept</th><th class="">en\toes</th><th class="">en\tofr</th><th class="">en\tozh</th><th class="">es\toen</th><th class="">fr\toen</th><th class="">zh\toen</th></tr></thead><tbody>
+<tr><td class="">ice cream</td><td class="num">0.84</td><td class="num">0.90</td><td class="num">0.82</td><td class="num">0.81</td><td class="num">0.86</td><td class="num">0.82</td></tr>
+<tr><td class="">climate change</td><td class="num">0.93</td><td class="num">0.92</td><td class="num">0.92</td><td class="num">0.91</td><td class="num">0.95</td><td class="num">0.97</td></tr>
+<tr><td class="">credit card</td><td class="num">0.69</td><td class="num">0.90</td><td class="num">0.90</td><td class="num">0.87</td><td class="num">0.89</td><td class="num">0.88</td></tr>
+<tr><td class="">human rights</td><td class="num">0.93</td><td class="num">0.99</td><td class="num">0.84</td><td class="num">0.80</td><td class="num">0.88</td><td class="num">0.84</td></tr>
+<tr><td class="">solar system</td><td class="num">0.94</td><td class="num">0.97</td><td class="num">0.90</td><td class="num">0.96</td><td class="num">0.96</td><td class="num">0.91</td></tr>
+<tr><td class="">black hole</td><td class="num">0.93</td><td class="num">0.87</td><td class="num">0.81</td><td class="num">0.91</td><td class="num">0.91</td><td class="num">0.89</td></tr>
+<tr><td class="">prime minister</td><td class="num">0.89</td><td class="num">0.90</td><td class="num">0.90</td><td class="num">0.83</td><td class="num">0.85</td><td class="num">0.89</td></tr>
+<tr><td class="">stock market</td><td class="num">0.93</td><td class="num">0.78</td><td class="num">0.90</td><td class="num">0.89</td><td class="num">0.83</td><td class="num">0.86</td></tr>
+<tr><td class="">civil war</td><td class="num">0.93</td><td class="num">0.93</td><td class="num">0.88</td><td class="num">0.91</td><td class="num">0.92</td><td class="num">0.89</td></tr>
+<tr><td class="">middle class</td><td class="num">0.94</td><td class="num">0.91</td><td class="num">0.83</td><td class="num">0.92</td><td class="num">0.90</td><td class="num">0.94</td></tr>
+<tr><td class="">real estate</td><td class="num">0.88</td><td class="num">0.88</td><td class="num">0.82</td><td class="num">0.89</td><td class="num">0.80</td><td class="num">0.79</td></tr>
+<tr><td class="">health insurance</td><td class="num">0.91</td><td class="num">0.98</td><td class="num">0.94</td><td class="num">0.87</td><td class="num">0.89</td><td class="num">0.80</td></tr>
+</tbody></table></div>
+
+<h2>What generalised and what did not</h2>
+<ul>
+<li><b>Generalised:</b> the pre-phrase readout works for compound nouns, verb phrases and idioms, surface-form-defined abstract concepts, and multi-word events with jagged tokenisation, with the same head, the same prior weighting and no per-axis tuning.</li>
+<li><b>Did not:</b> near-synonyms (hard drive / hard disk), numerals sharing a context type (1984 / 1989, World War I / II), abstract nouns with ambiguous surface forms (irony), and the rarest idiom for the presence probe.</li>
+<li><b>Partly:</b> cross-lingual transfer of a row's direction (AUROC 0.87–0.94 against language-matched negatives, 0.98 at home); the presence probe transfers better than the row.</li>
+<li><b>Measure it at fixed FPR.</b> Top-10 counts inflate under the J-lens at early layers; TPR at FPR 1e-2 with lens-matched thresholds gives the same answer under both lenses.</li>
+</ul>
+<div class="foot">Code: <code>~/notes/brennan-jlens-review/modal_exp/jlens_gen.py</code> (Modal app <code>jlens-gen</code>). Findings note: <code>GENERALIZATION_2026-09-14.md</code>. Paper section 8 of <code>paper/main.pdf</code>.</div>
+</main>

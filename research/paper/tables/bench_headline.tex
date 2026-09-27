@@ -1,0 +1,28 @@
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{Benchmark, 2{,}400 contexts per phrase, means over the 15 phrases. The random row and the avg.\ $W_U$ row do not depend on the training scale. The validation-loss picks were $\lambda{=}10^{-4}$ (bias) and $10^{-6}$ (no bias).}
+\label{tab:bench_headline}
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{lrrrrrrrrr}
+\toprule
+head & AUROC vs generic & vs 1st-tok.\ sibling & vs category & own top-10 & own rank & $\log(\mathrm{rank}/\mathrm{rank}_{\mathrm{first}})$ & generic top-10 & mass/prior & ECE \\
+\midrule
+random unit row & 0.508 & 0.514 & 0.508 & 0.00 & 29835 & +7.45 & 0.0003 & 4.8 & 4.7e-5 \\
+Brennan (proj + unit) & 0.969 & 0.582 & 0.642 & 0.95 & 1 & -2.70 & 0.2031 & 7686.7 & 2.2e-2 \\
+avg. $W_U$ rows & 0.966 & 0.575 & 0.734 & 0.30 & 43 & +1.17 & 0.0001 & 1.2 & 2.4e-5 \\
+LDA & 0.980 & 0.663 & 0.714 & 0.69 & 1 & -1.43 & 0.0008 & 73.6 & 4.8e-4 \\
+LDA, $W_U$-scaled & 0.980 & 0.663 & 0.714 & 0.69 & 2 & -1.30 & 0.0007 & 68.0 & 2.2e-4 \\
+\midrule
+LR bias, $\lambda{=}10^{-5}$ & 0.982 & 0.750 & 0.826 & 0.42 & 21 & +0.81 & 0.0004 & 2.7 & 3.4e-5 \\
+LR bias, $\lambda{=}10^{-4}$ & 0.980 & 0.736 & 0.819 & 0.37 & 25 & +0.88 & 0.0003 & 0.4 & 1.3e-5 \\
+LR bias, $\lambda{=}10^{-3}$ & 0.972 & 0.710 & 0.794 & 0.32 & 31 & +1.03 & 0.0002 & 0.3 & 1.4e-5 \\
+\midrule
+LR no bias, $\lambda{=}10^{-6}$ & 0.981 & 0.731 & 0.813 & 0.45 & 14 & +0.22 & 0.0003 & 1.0 & 4.6e-5 \\
+LR no bias, $\lambda{=}10^{-7}$ & 0.982 & 0.741 & 0.823 & 0.48 & 10 & +0.09 & 0.0004 & 2.1 & 8.4e-5 \\
+LR no bias, $\lambda{=}10^{-8}$ & 0.982 & 0.741 & 0.824 & 0.48 & 10 & +0.09 & 0.0004 & 2.7 & 9.7e-5 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\par\smallskip\begin{minipage}{\textwidth}\footnotesize Sibling AUROC: phrase logit at own positions vs positions of phrases sharing the first token (defined for New Hampshire, New York, New Jersey, John Adams, John Quincy Adams). Rank ratio: median over own positions of $\log(\mathrm{rank}_{\mathrm{phrase}}/\mathrm{rank}_{\mathrm{first\ token}})$; $0$ means the row is exactly as confident as the model is about the phrase's first token. mass/prior: mean extended-softmax mass on the phrase token over generic text divided by $\pi_p$. ECE is prior-weighted.\end{minipage}
+\end{table}

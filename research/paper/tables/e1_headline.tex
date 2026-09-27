@@ -1,0 +1,30 @@
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{Experiment 1 (Brennan's ten phrases): calibration of each head against the number of training contexts per phrase. Means over phrases on held-out data. The avg.\ $W_U$ row head does not depend on the training set.}
+\label{tab:e1_headline}
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{llrrrrrr}
+\toprule
+contexts & head & own top-10 & own rank & generic top-10 & new-token mass & AUROC & generic logit $\mu\pm\sigma$ \\
+\midrule
+150 & Brennan (proj + unit) & 0.98 & 1 & 0.1881 & 3.2e-1 & 0.974 & -0.6 $\pm$ 18.1 \\
+ & avg. $W_U$ rows & 0.34 & 37 & 0.0000 & 3.4e-5 & 0.971 & 2.1 $\pm$ 2.3 \\
+ & LDA & 0.68 & 1 & 0.0006 & 4.0e-3 & 0.978 & -172.5 $\pm$ 20.5 \\
+ & LDA, $W_U$-scaled & 0.70 & 1 & 0.0007 & 2.2e-3 & 0.978 & -1.7 $\pm$ 2.0 \\
+ & LR (bias, val.\ pick) & 0.47 & 16 & 0.0001 & 2.5e-5 & 0.977 & 1.6 $\pm$ 2.5 \\
+\midrule
+600 & Brennan (proj + unit) & 0.98 & 1 & 0.1877 & 3.2e-1 & 0.974 & -0.6 $\pm$ 18.1 \\
+ & LDA & 0.69 & 1 & 0.0007 & 4.8e-3 & 0.979 & -171.9 $\pm$ 20.3 \\
+ & LDA, $W_U$-scaled & 0.70 & 1 & 0.0008 & 2.6e-3 & 0.979 & -1.7 $\pm$ 2.0 \\
+ & LR (bias, val.\ pick) & 0.47 & 16 & 0.0001 & 2.5e-5 & 0.985 & -0.1 $\pm$ 3.1 \\
+\midrule
+2400 & Brennan (proj + unit) & 0.98 & 1 & 0.1880 & 3.2e-1 & 0.973 & -0.6 $\pm$ 18.2 \\
+ & LDA & 0.70 & 1 & 0.0008 & 5.2e-3 & 0.979 & -165.2 $\pm$ 20.0 \\
+ & LDA, $W_U$-scaled & 0.71 & 1 & 0.0008 & 2.8e-3 & 0.979 & -1.7 $\pm$ 2.0 \\
+ & LR (bias, val.\ pick) & 0.39 & 24 & 0.0001 & 2.7e-5 & 0.985 & -0.6 $\pm$ 3.5 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\par\smallskip\begin{minipage}{\textwidth}\footnotesize Own = held-out pre-phrase positions (100 per phrase). Generic = 71,012 held-out FineWeb positions; true prior mass of the ten phrases together is 7.1e-05. A real $W_U$ row has generic logit mean -1.7, std 1.80.\end{minipage}
+\end{table}
